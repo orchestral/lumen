@@ -10,7 +10,14 @@
     ],
     "require": {
         "laravel/lumen-framework": "5.0.*",
+        "orchestra/config": "3.0.*",
+        "orchestra/auth": "3.0.*",
         "orchestra/support": "3.0.*"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.0-dev"
+        }
     },
     "minimum-stability": "dev"
 }
