@@ -1,0 +1,16 @@
+{
+    "name": "orchestra/lumen",
+    "description": "Lumen Framework for Orchestra Platform",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mior Muhammad Zaki",
+            "email": "crynobone@gmail.com"
+        }
+    ],
+    "require": {
+        "laravel/lumen-framework": "5.0.*",
+        "orchestra/support": "3.0.*"
+    },
+    "minimum-stability": "dev"
+}
