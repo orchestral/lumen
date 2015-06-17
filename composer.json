@@ -9,10 +9,10 @@
         }
     ],
     "require": {
-        "laravel/lumen-framework": "5.1.*",
-        "orchestra/config": "3.1.*",
-        "orchestra/auth": "3.1.*",
-        "orchestra/support": "3.1.*"
+        "laravel/lumen-framework": "~5.1.0",
+        "orchestra/config": "~3.1.0",
+        "orchestra/auth": "~3.1.0",
+        "orchestra/support": "~3.1.0"
     },
     "extra": {
         "branch-alias": {
