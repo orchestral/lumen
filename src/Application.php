@@ -3,7 +3,10 @@
 use Orchestra\Config\FileLoader;
 use Orchestra\Config\Repository;
 use Illuminate\Filesystem\Filesystem;
+use Orchestra\Auth\AuthServiceProvider;
+use Orchestra\View\ViewServiceProvider;
 use Laravel\Lumen\Application as BaseApplication;
+use Orchestra\Auth\Passwords\PasswordResetServiceProvider;
 
 class Application extends BaseApplication
 {
@@ -15,15 +18,15 @@ class Application extends BaseApplication
     protected function registerAuthBindings()
     {
         $this->singleton('auth', function () {
-            return $this->loadComponent('auth', 'Orchestra\Auth\AuthServiceProvider', 'auth');
+            return $this->loadComponent('auth', AuthServiceProvider::class, 'auth');
         });
 
         $this->singleton('auth.driver', function () {
-            return $this->loadComponent('auth', 'Orchestra\Auth\AuthServiceProvider', 'auth.driver');
+            return $this->loadComponent('auth', AuthServiceProvider::class, 'auth.driver');
         });
 
         $this->singleton('auth.password', function () {
-            return $this->loadComponent('auth', 'Orchestra\Auth\Passwords\PasswordResetServiceProvider', 'auth.password');
+            return $this->loadComponent('auth', PasswordResetServiceProvider::class, 'auth.password');
         });
     }
 
@@ -47,7 +50,7 @@ class Application extends BaseApplication
     protected function registerViewBindings()
     {
         $this->singleton('view', function () {
-            return $this->loadComponent('view', 'Orchestra\View\ViewServiceProvider');
+            return $this->loadComponent('view', ViewServiceProvider::class);
         });
     }
 }
