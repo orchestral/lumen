@@ -39,7 +39,7 @@ class Application extends BaseApplication
     {
         $loader = new FileLoader(new Filesystem(), $this->configPath ?: $this->resourcePath('config'));
 
-        $app->instance('config', $config = new Repository($loader, $this->environment()));
+        $this->instance('config', $config = new Repository($loader, $this->environment()));
     }
 
     /**
