@@ -854,6 +854,8 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     {
         if (file_exists($path = $this->basePath('lumen/config/').$name.'.php')) {
             return $path;
+        } elseif (file_exists($path = __DIR__.'/../config/'.$name.'.php')) {
+            return $path;
         }
     }
 
