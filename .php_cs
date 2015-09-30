@@ -3,6 +3,8 @@
 $finder = Symfony\Component\Finder\Finder::create()
     ->files()
     ->in(__DIR__.'/src')
+    ->in(__DIR__.'/config')
+    ->in(__DIR__.'/lang')
     ->ignoreDotFiles(true)
     ->ignoreVCS(true);
 
@@ -21,6 +23,7 @@ return Symfony\CS\Config\Config::create()
         'include',
         'join_function',
         'multiline_array_trailing_comma',
+        'multiline_spaces_before_semicolon',
         'new_with_braces',
         'no_blank_lines_after_class_opening',
         'no_blank_lines_before_namespace',
@@ -28,6 +31,7 @@ return Symfony\CS\Config\Config::create()
         'object_operator',
         'operators_spaces',
         'phpdoc_indent',
+        'phpdoc_inline_tag',
         'phpdoc_no_access',
         '-phpdoc_no_empty_return',
         'phpdoc_no_package',

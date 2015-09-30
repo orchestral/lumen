@@ -1,6 +1,4 @@
-<?php
-
-namespace Laravel\Lumen;
+<?php namespace Laravel\Lumen;
 
 use Error;
 use Closure;
@@ -24,7 +22,6 @@ use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Illuminate\Http\Exception\HttpResponseException;
-use Illuminate\Config\Repository as ConfigRepository;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -154,6 +151,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Create a new Lumen application instance.
      *
      * @param  string|null  $basePath
+     *
      * @return void
      */
     public function __construct($basePath = null)
@@ -194,6 +192,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Get or check the current application environment.
      *
      * @param  mixed
+     *
      * @return string
      */
     public function environment()
@@ -247,6 +246,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * @param  \Illuminate\Support\ServiceProvider|string  $provider
      * @param  array  $options
      * @param  bool   $force
+     *
      * @return \Illuminate\Support\ServiceProvider
      */
     public function register($provider, $options = [], $force = false)
@@ -270,6 +270,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      *
      * @param  string  $provider
      * @param  string  $service
+     *
      * @return void
      */
     public function registerDeferredProvider($provider, $service = null)
@@ -291,6 +292,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Register a new boot listener.
      *
      * @param  mixed  $callback
+     *
      * @return void
      */
     public function booting($callback)
@@ -302,6 +304,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Register a new "booted" listener.
      *
      * @param  mixed  $callback
+     *
      * @return void
      */
     public function booted($callback)
@@ -341,6 +344,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Determine if the error type is fatal.
      *
      * @param  int  $type
+     *
      * @return bool
      */
     protected function isFatalError($type)
@@ -358,6 +362,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Send the exception to the handler and return the response.
      *
      * @param  \Throwable  $e
+     *
      * @return Response
      */
     protected function sendExceptionToHandler($e)
@@ -377,6 +382,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Handle an uncaught exception instance.
      *
      * @param  \Throwable  $e
+     *
      * @return void
      */
     protected function handleUncaughtException($e)
@@ -390,7 +396,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         $handler->report($e);
 
         if ($this->runningInConsole()) {
-            $handler->renderForConsole(new ConsoleOutput, $e);
+            $handler->renderForConsole(new ConsoleOutput(), $e);
         } else {
             $handler->render($this->make('request'), $e)->send();
         }
@@ -402,6 +408,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * @param  int     $code
      * @param  string  $message
      * @param  array   $headers
+     *
      * @return void
      *
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
@@ -420,6 +427,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      *
      * @param  string  $abstract
      * @param  array   $parameters
+     *
      * @return mixed
      */
     public function make($abstract, array $parameters = [])
@@ -601,7 +609,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     protected function registerFilesBindings()
     {
         $this->singleton('files', function () {
-            return new Filesystem;
+            return new Filesystem();
         });
 
         $this->singleton('filesystem', function () {
@@ -796,6 +804,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * @param  string  $config
      * @param  array|string  $providers
      * @param  string|null  $return
+     *
      * @return mixed
      */
     protected function loadComponent($config, $providers, $return = null)
@@ -833,6 +842,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Get the path to the given configuration file.
      *
      * @param  string  $name
+     *
      * @return string
      */
     protected function getConfigurationPath($name)
@@ -893,6 +903,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      *
      * @param  array  $attributes
      * @param  Closure  $callback
+     *
      * @return void
      */
     public function group(array $attributes, Closure $callback)
@@ -911,6 +922,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      *
      * @param  string  $uri
      * @param  mixed  $action
+     *
      * @return $this
      */
     public function get($uri, $action)
@@ -925,6 +937,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      *
      * @param  string  $uri
      * @param  mixed  $action
+     *
      * @return $this
      */
     public function post($uri, $action)
@@ -939,6 +952,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      *
      * @param  string  $uri
      * @param  mixed  $action
+     *
      * @return $this
      */
     public function put($uri, $action)
@@ -953,6 +967,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      *
      * @param  string  $uri
      * @param  mixed  $action
+     *
      * @return $this
      */
     public function patch($uri, $action)
@@ -967,6 +982,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      *
      * @param  string  $uri
      * @param  mixed  $action
+     *
      * @return $this
      */
     public function delete($uri, $action)
@@ -981,6 +997,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      *
      * @param  string  $uri
      * @param  mixed  $action
+     *
      * @return $this
      */
     public function options($uri, $action)
@@ -1022,6 +1039,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Parse the action into an array format.
      *
      * @param  mixed  $action
+     *
      * @return array
      */
     protected function parseAction($action)
@@ -1039,6 +1057,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Merge the group attributes into the action.
      *
      * @param  array  $action
+     *
      * @return array
      */
     protected function mergeGroupAttributes(array $action)
@@ -1052,6 +1071,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Merge the namespace group into the action.
      *
      * @param  array  $action
+     *
      * @return array
      */
     protected function mergeNamespaceGroup(array $action)
@@ -1067,6 +1087,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Merge the middleware group into the action.
      *
      * @param  array  $action
+     *
      * @return array
      */
     protected function mergeMiddlewareGroup($action)
@@ -1086,6 +1107,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Add new middleware to the application.
      *
      * @param  array  $middleware
+     *
      * @return $this
      */
     public function middleware(array $middleware)
@@ -1099,6 +1121,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Define the route middleware for the application.
      *
      * @param  array  $middleware
+     *
      * @return $this
      */
     public function routeMiddleware(array $middleware)
@@ -1120,6 +1143,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Run the application and send the response.
      *
      * @param  SymfonyRequest|null  $request
+     *
      * @return void
      */
     public function run($request = null)
@@ -1141,6 +1165,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Call the terminable middleware.
      *
      * @param  mixed  $response
+     *
      * @return void
      */
     protected function callTerminableMiddleware($response)
@@ -1160,6 +1185,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Dispatch the incoming request.
      *
      * @param  SymfonyRequest|null  $request
+     *
      * @return Response
      */
     public function dispatch($request = null)
@@ -1168,10 +1194,10 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
             $this->instance('Illuminate\Http\Request', $request);
             $this->ranServiceBinders['registerRequestBindings'] = true;
 
-            $method = $request->getMethod();
+            $method   = $request->getMethod();
             $pathInfo = $request->getPathInfo();
         } else {
-            $method = $this->getMethod();
+            $method   = $this->getMethod();
             $pathInfo = $this->getPathInfo();
         }
 
@@ -1210,6 +1236,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Set the FastRoute dispatcher instance.
      *
      * @param  \FastRoute\Dispatcher  $dispatcher
+     *
      * @return void
      */
     public function setDispatcher(Dispatcher $dispatcher)
@@ -1221,13 +1248,14 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Handle the response from the FastRoute dispatcher.
      *
      * @param  array  $routeInfo
+     *
      * @return mixed
      */
     protected function handleDispatcherResponse($routeInfo)
     {
         switch ($routeInfo[0]) {
             case Dispatcher::NOT_FOUND:
-                throw new NotFoundHttpException;
+                throw new NotFoundHttpException();
 
             case Dispatcher::METHOD_NOT_ALLOWED:
                 throw new MethodNotAllowedHttpException($routeInfo[1]);
@@ -1241,6 +1269,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Handle a route found by the dispatcher.
      *
      * @param  array  $routeInfo
+     *
      * @return mixed
      */
     protected function handleFoundRoute($routeInfo)
@@ -1267,6 +1296,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Call the Closure on the array based route.
      *
      * @param  array  $routeInfo
+     *
      * @return mixed
      */
     protected function callActionOnArrayBasedRoute($routeInfo)
@@ -1279,7 +1309,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
         foreach ($action as $value) {
             if ($value instanceof Closure) {
-                $closure = $value->bindTo(new Routing\Closure);
+                $closure = $value->bindTo(new Routing\Closure());
                 break;
             }
         }
@@ -1295,6 +1325,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Call a controller based route.
      *
      * @param  array  $routeInfo
+     *
      * @return mixed
      */
     protected function callControllerAction($routeInfo)
@@ -1302,7 +1333,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         list($controller, $method) = explode('@', $routeInfo[1]['uses']);
 
         if (! method_exists($instance = $this->make($controller), $method)) {
-            throw new NotFoundHttpException;
+            throw new NotFoundHttpException();
         }
 
         if ($instance instanceof Routing\Controller) {
@@ -1320,6 +1351,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * @param  mixed  $instance
      * @param  string  $method
      * @param  array  $routeInfo
+     *
      * @return mixed
      */
     protected function callLumenController($instance, $method, $routeInfo)
@@ -1346,6 +1378,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * @param  string  $method
      * @param  array  $routeInfo
      * @param  array  $middleware
+     *
      * @return mixed
      */
     protected function callLumenControllerWithMiddleware($instance, $method, $routeInfo, $middleware)
@@ -1364,6 +1397,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      *
      * @param  array  $callable
      * @param  array $parameters
+     *
      * @return mixed
      */
     protected function callControllerCallable(array $callable, array $parameters)
@@ -1381,6 +1415,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Gather the full class names for the middleware short-cut string.
      *
      * @param  string  $middleware
+     *
      * @return array
      */
     protected function gatherMiddlewareClassNames($middleware)
@@ -1399,6 +1434,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      *
      * @param  array  $middleware
      * @param  Closure  $then
+     *
      * @return mixed
      */
     protected function sendThroughPipeline(array $middleware, Closure $then)
@@ -1420,6 +1456,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Prepare the response for sending.
      *
      * @param  mixed  $response
+     *
      * @return Response
      */
     public function prepareResponse($response)
@@ -1499,6 +1536,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Get the base path for the application.
      *
      * @param  string  $path
+     *
      * @return string
      */
     public function basePath($path = null)
@@ -1520,6 +1558,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Get the storage path for the application.
      *
      * @param  string  $path
+     *
      * @return string
      */
     public function storagePath($path = null)
@@ -1535,6 +1574,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Set a custom storage path for the application.
      *
      * @param  string  $path
+     *
      * @return $this
      */
     public function useStoragePath($path)
@@ -1558,6 +1598,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Set a custom configuration path for the application.
      *
      * @param  string  $path
+     *
      * @return $this
      */
     public function useConfigPath($path)
@@ -1571,6 +1612,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Get the resource path for the application.
      *
      * @param  string  $path
+     *
      * @return string
      */
     public function resourcePath($path = null)
@@ -1586,6 +1628,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Set a custom resource path for the application.
      *
      * @param  string  $path
+     *
      * @return $this
      */
     public function useResourcePath($path)
@@ -1638,6 +1681,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Set the cached routes.
      *
      * @param  array  $routes
+     *
      * @return void
      */
     public function setRoutes(array $routes)
@@ -1654,28 +1698,28 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     {
         $this->aliases = [
             'Illuminate\Contracts\Foundation\Application' => 'app',
-            'Illuminate\Contracts\Auth\Guard' => 'auth.driver',
-            'Illuminate\Contracts\Auth\PasswordBroker' => 'auth.password',
-            'Illuminate\Contracts\Cache\Factory' => 'cache',
-            'Illuminate\Contracts\Cache\Repository' => 'cache.store',
-            'Illuminate\Contracts\Config\Repository' => 'config',
-            'Illuminate\Container\Container' => 'app',
-            'Illuminate\Contracts\Container\Container' => 'app',
-            'Illuminate\Contracts\Cookie\Factory' => 'cookie',
+            'Illuminate\Contracts\Auth\Guard'             => 'auth.driver',
+            'Illuminate\Contracts\Auth\PasswordBroker'    => 'auth.password',
+            'Illuminate\Contracts\Cache\Factory'          => 'cache',
+            'Illuminate\Contracts\Cache\Repository'       => 'cache.store',
+            'Illuminate\Contracts\Config\Repository'      => 'config',
+            'Illuminate\Container\Container'              => 'app',
+            'Illuminate\Contracts\Container\Container'    => 'app',
+            'Illuminate\Contracts\Cookie\Factory'         => 'cookie',
             'Illuminate\Contracts\Cookie\QueueingFactory' => 'cookie',
-            'Illuminate\Contracts\Encryption\Encrypter' => 'encrypter',
-            'Illuminate\Contracts\Events\Dispatcher' => 'events',
-            'Illuminate\Contracts\Filesystem\Factory' => 'filesystem',
-            'Illuminate\Contracts\Hashing\Hasher' => 'hash',
-            'log' => 'Psr\Log\LoggerInterface',
-            'Illuminate\Contracts\Mail\Mailer' => 'mailer',
-            'Illuminate\Contracts\Queue\Factory' => 'queue',
-            'Illuminate\Contracts\Queue\Queue' => 'queue.connection',
-            'Illuminate\Redis\Database' => 'redis',
-            'Illuminate\Contracts\Redis\Database' => 'redis',
-            'request' => 'Illuminate\Http\Request',
-            'Illuminate\Session\SessionManager' => 'session',
-            'Illuminate\Contracts\View\Factory' => 'view',
+            'Illuminate\Contracts\Encryption\Encrypter'   => 'encrypter',
+            'Illuminate\Contracts\Events\Dispatcher'      => 'events',
+            'Illuminate\Contracts\Filesystem\Factory'     => 'filesystem',
+            'Illuminate\Contracts\Hashing\Hasher'         => 'hash',
+            'log'                                         => 'Psr\Log\LoggerInterface',
+            'Illuminate\Contracts\Mail\Mailer'            => 'mailer',
+            'Illuminate\Contracts\Queue\Factory'          => 'queue',
+            'Illuminate\Contracts\Queue\Queue'            => 'queue.connection',
+            'Illuminate\Redis\Database'                   => 'redis',
+            'Illuminate\Contracts\Redis\Database'         => 'redis',
+            'request'                                     => 'Illuminate\Http\Request',
+            'Illuminate\Session\SessionManager'           => 'session',
+            'Illuminate\Contracts\View\Factory'           => 'view',
         ];
     }
 
@@ -1685,52 +1729,52 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * @var array
      */
     public $availableBindings = [
-        'auth' => 'registerAuthBindings',
-        'auth.driver' => 'registerAuthBindings',
-        'Illuminate\Contracts\Auth\Guard' => 'registerAuthBindings',
-        'auth.password' => 'registerAuthBindings',
-        'Illuminate\Contracts\Auth\PasswordBroker' => 'registerAuthBindings',
+        'auth'                                          => 'registerAuthBindings',
+        'auth.driver'                                   => 'registerAuthBindings',
+        'Illuminate\Contracts\Auth\Guard'               => 'registerAuthBindings',
+        'auth.password'                                 => 'registerAuthBindings',
+        'Illuminate\Contracts\Auth\PasswordBroker'      => 'registerAuthBindings',
         'Illuminate\Contracts\Broadcasting\Broadcaster' => 'registerBroadcastingBindings',
-        'Illuminate\Contracts\Bus\Dispatcher' => 'registerBusBindings',
-        'cache' => 'registerCacheBindings',
-        'Illuminate\Contracts\Cache\Factory' => 'registerCacheBindings',
-        'Illuminate\Contracts\Cache\Repository' => 'registerCacheBindings',
-        'config' => 'registerConfigBindings',
-        'composer' => 'registerComposerBindings',
-        'cookie' => 'registerCookieBindings',
-        'Illuminate\Contracts\Cookie\Factory' => 'registerCookieBindings',
-        'Illuminate\Contracts\Cookie\QueueingFactory' => 'registerCookieBindings',
-        'db' => 'registerDatabaseBindings',
-        'Illuminate\Database\Eloquent\Factory' => 'registerDatabaseBindings',
-        'encrypter' => 'registerEncrypterBindings',
-        'Illuminate\Contracts\Encryption\Encrypter' => 'registerEncrypterBindings',
-        'events' => 'registerEventBindings',
-        'Illuminate\Contracts\Events\Dispatcher' => 'registerEventBindings',
-        'Illuminate\Contracts\Debug\ExceptionHandler' => 'registerErrorBindings',
-        'files' => 'registerFilesBindings',
-        'filesystem' => 'registerFilesBindings',
-        'Illuminate\Contracts\Filesystem\Factory' => 'registerFilesBindings',
-        'hash' => 'registerHashBindings',
-        'Illuminate\Contracts\Hashing\Hasher' => 'registerHashBindings',
-        'log' => 'registerLogBindings',
-        'Psr\Log\LoggerInterface' => 'registerLogBindings',
-        'mailer' => 'registerMailBindings',
-        'Illuminate\Contracts\Mail\Mailer' => 'registerMailBindings',
-        'queue' => 'registerQueueBindings',
-        'queue.connection' => 'registerQueueBindings',
-        'Illuminate\Contracts\Queue\Factory' => 'registerQueueBindings',
-        'Illuminate\Contracts\Queue\Queue' => 'registerQueueBindings',
-        'redis' => 'registerRedisBindings',
-        'request' => 'registerRequestBindings',
-        'Illuminate\Http\Request' => 'registerRequestBindings',
-        'session' => 'registerSessionBindings',
-        'session.store' => 'registerSessionBindings',
-        'Illuminate\Session\SessionManager' => 'registerSessionBindings',
-        'translator' => 'registerTranslationBindings',
-        'url' => 'registerUrlGeneratorBindings',
-        'validator' => 'registerValidatorBindings',
-        'view' => 'registerViewBindings',
-        'Illuminate\Contracts\View\Factory' => 'registerViewBindings',
+        'Illuminate\Contracts\Bus\Dispatcher'           => 'registerBusBindings',
+        'cache'                                         => 'registerCacheBindings',
+        'Illuminate\Contracts\Cache\Factory'            => 'registerCacheBindings',
+        'Illuminate\Contracts\Cache\Repository'         => 'registerCacheBindings',
+        'config'                                        => 'registerConfigBindings',
+        'composer'                                      => 'registerComposerBindings',
+        'cookie'                                        => 'registerCookieBindings',
+        'Illuminate\Contracts\Cookie\Factory'           => 'registerCookieBindings',
+        'Illuminate\Contracts\Cookie\QueueingFactory'   => 'registerCookieBindings',
+        'db'                                            => 'registerDatabaseBindings',
+        'Illuminate\Database\Eloquent\Factory'          => 'registerDatabaseBindings',
+        'encrypter'                                     => 'registerEncrypterBindings',
+        'Illuminate\Contracts\Encryption\Encrypter'     => 'registerEncrypterBindings',
+        'events'                                        => 'registerEventBindings',
+        'Illuminate\Contracts\Events\Dispatcher'        => 'registerEventBindings',
+        'Illuminate\Contracts\Debug\ExceptionHandler'   => 'registerErrorBindings',
+        'files'                                         => 'registerFilesBindings',
+        'filesystem'                                    => 'registerFilesBindings',
+        'Illuminate\Contracts\Filesystem\Factory'       => 'registerFilesBindings',
+        'hash'                                          => 'registerHashBindings',
+        'Illuminate\Contracts\Hashing\Hasher'           => 'registerHashBindings',
+        'log'                                           => 'registerLogBindings',
+        'Psr\Log\LoggerInterface'                       => 'registerLogBindings',
+        'mailer'                                        => 'registerMailBindings',
+        'Illuminate\Contracts\Mail\Mailer'              => 'registerMailBindings',
+        'queue'                                         => 'registerQueueBindings',
+        'queue.connection'                              => 'registerQueueBindings',
+        'Illuminate\Contracts\Queue\Factory'            => 'registerQueueBindings',
+        'Illuminate\Contracts\Queue\Queue'              => 'registerQueueBindings',
+        'redis'                                         => 'registerRedisBindings',
+        'request'                                       => 'registerRequestBindings',
+        'Illuminate\Http\Request'                       => 'registerRequestBindings',
+        'session'                                       => 'registerSessionBindings',
+        'session.store'                                 => 'registerSessionBindings',
+        'Illuminate\Session\SessionManager'             => 'registerSessionBindings',
+        'translator'                                    => 'registerTranslationBindings',
+        'url'                                           => 'registerUrlGeneratorBindings',
+        'validator'                                     => 'registerValidatorBindings',
+        'view'                                          => 'registerViewBindings',
+        'Illuminate\Contracts\View\Factory'             => 'registerViewBindings',
     ];
 
     /**

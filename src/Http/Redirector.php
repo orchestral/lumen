@@ -1,6 +1,4 @@
-<?php
-
-namespace Laravel\Lumen\Http;
+<?php namespace Laravel\Lumen\Http;
 
 use Laravel\Lumen\Application;
 use Illuminate\Http\RedirectResponse;
@@ -18,6 +16,7 @@ class Redirector
      * Create a new redirector instance.
      *
      * @param  Application  $app
+     *
      * @return void
      */
     public function __construct(Application $app)
@@ -32,6 +31,7 @@ class Redirector
      * @param  int     $status
      * @param  array   $headers
      * @param  bool    $secure
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function to($path, $status = 302, $headers = [], $secure = null)
@@ -48,6 +48,7 @@ class Redirector
      * @param  array   $parameters
      * @param  int     $status
      * @param  array   $headers
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function route($route, $parameters = [], $status = 302, $headers = [])
@@ -62,6 +63,7 @@ class Redirector
      *
      * @param  int    $status
      * @param  array  $headers
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function back($status = 302, $headers = [])
@@ -81,6 +83,7 @@ class Redirector
      * @param  string  $path
      * @param  int     $status
      * @param  array   $headers
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     protected function createRedirect($path, $status, $headers)

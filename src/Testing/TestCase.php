@@ -1,6 +1,4 @@
-<?php
-
-namespace Laravel\Lumen\Testing;
+<?php namespace Laravel\Lumen\Testing;
 
 use Mockery;
 use PHPUnit_Framework_TestCase;
@@ -69,6 +67,7 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
      * Register a callback to be run before the application is destroyed.
      *
      * @param  callable  $callback
+     *
      * @return void
      */
     protected function beforeApplicationDestroyed(callable $callback)

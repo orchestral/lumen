@@ -1,6 +1,4 @@
-<?php
-
-namespace Laravel\Lumen\Http\Middleware;
+<?php namespace Laravel\Lumen\Http\Middleware;
 
 use Closure;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -21,6 +19,7 @@ class VerifyCsrfToken
      * Create a new middleware instance.
      *
      * @param  \Illuminate\Contracts\Encryption\Encrypter  $encrypter
+     *
      * @return void
      */
     public function __construct(Encrypter $encrypter)
@@ -33,6 +32,7 @@ class VerifyCsrfToken
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
+     *
      * @return mixed
      *
      * @throws \Illuminate\Session\TokenMismatchException
@@ -43,13 +43,14 @@ class VerifyCsrfToken
             return $this->addCookieToResponse($request, $next($request));
         }
 
-        throw new TokenMismatchException;
+        throw new TokenMismatchException();
     }
 
     /**
      * Determine if the session and input CSRF tokens match.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return bool
      */
     protected function tokensMatch($request)
@@ -68,6 +69,7 @@ class VerifyCsrfToken
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Http\Response  $response
+     *
      * @return \Illuminate\Http\Response
      */
     protected function addCookieToResponse($request, $response)
@@ -83,6 +85,7 @@ class VerifyCsrfToken
      * Determine if the HTTP request uses a ‘read’ verb.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return bool
      */
     protected function isReading($request)

@@ -10,6 +10,7 @@ if (! function_exists('abort')) {
      * @param  int     $code
      * @param  string  $message
      * @param  array   $headers
+     *
      * @return void
      *
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
@@ -27,6 +28,7 @@ if (! function_exists('app')) {
      *
      * @param  string  $make
      * @param  array   $parameters
+     *
      * @return mixed|\Laravel\Lumen\Application
      */
     function app($make = null, $parameters = [])
@@ -44,6 +46,7 @@ if (! function_exists('base_path')) {
      * Get the path to the base of the install.
      *
      * @param  string  $path
+     *
      * @return string
      */
     function base_path($path = '')
@@ -58,6 +61,7 @@ if (! function_exists('bcrypt')) {
      *
      * @param  string  $value
      * @param  array   $options
+     *
      * @return string
      */
     function bcrypt($value, $options = [])
@@ -74,6 +78,7 @@ if (! function_exists('config')) {
      *
      * @param  array|string  $key
      * @param  mixed  $default
+     *
      * @return mixed
      */
     function config($key = null, $default = null)
@@ -101,6 +106,7 @@ if (! function_exists('cookie')) {
      * @param  string  $domain
      * @param  bool    $secure
      * @param  bool    $httpOnly
+     *
      * @return \Symfony\Component\HttpFoundation\Cookie
      */
     function cookie($name = null, $value = null, $minutes = 0, $path = null, $domain = null, $secure = false, $httpOnly = true)
@@ -138,6 +144,7 @@ if (! function_exists('database_path')) {
      * Get the path to the database directory of the install.
      *
      * @param  string  $path
+     *
      * @return string
      */
     function database_path($path = '')
@@ -152,6 +159,7 @@ if (! function_exists('env')) {
      *
      * @param  string  $key
      * @param  mixed   $default
+     *
      * @return mixed
      */
     function env($key, $default = null)
@@ -195,6 +203,7 @@ if (! function_exists('event')) {
      * @param  string  $event
      * @param  mixed   $payload
      * @param  bool    $halt
+     *
      * @return array|null
      */
     function event($event, $payload = [], $halt = false)
@@ -208,6 +217,7 @@ if (! function_exists('factory')) {
      * Create a model factory builder for a given class, name, and amount.
      *
      * @param  dynamic  class|class,name|class,amount|class,name,amount
+     *
      * @return \Illuminate\Database\Eloquent\FactoryBuilder
      */
     function factory()
@@ -234,6 +244,7 @@ if (! function_exists('info')) {
      *
      * @param  string  $message
      * @param  array   $context
+     *
      * @return void
      */
     function info($message, $context = [])
@@ -248,6 +259,7 @@ if (! function_exists('old')) {
      *
      * @param  string  $key
      * @param  mixed   $default
+     *
      * @return mixed
      */
     function old($key = null, $default = null)
@@ -264,6 +276,7 @@ if (! function_exists('redirect')) {
      * @param  int     $status
      * @param  array   $headers
      * @param  bool    $secure
+     *
      * @return \Laravel\Lumen\Http\Redirector|\Illuminate\Http\RedirectResponse
      */
     function redirect($to = null, $status = 302, $headers = [], $secure = null)
@@ -285,6 +298,7 @@ if (! function_exists('response')) {
      * @param  string  $content
      * @param  int     $status
      * @param  array   $headers
+     *
      * @return \Symfony\Component\HttpFoundation\Response|\Laravel\Lumen\Http\ResponseFactory
      */
     function response($content = '', $status = 200, array $headers = [])
@@ -305,6 +319,7 @@ if (! function_exists('route')) {
      *
      * @param  string  $name
      * @param  array   $parameters
+     *
      * @return string
      */
     function route($name, $parameters = [])
@@ -322,6 +337,7 @@ if (! function_exists('session')) {
      *
      * @param  array|string  $key
      * @param  mixed  $default
+     *
      * @return mixed
      */
     function session($key = null, $default = null)
@@ -342,6 +358,7 @@ if (! function_exists('storage_path')) {
      * Get the path to the storage folder.
      *
      * @param  string  $path
+     *
      * @return string
      */
     function storage_path($path = '')
@@ -358,6 +375,7 @@ if (! function_exists('trans')) {
      * @param  array   $parameters
      * @param  string  $domain
      * @param  string  $locale
+     *
      * @return string
      */
     function trans($id = null, $parameters = [], $domain = 'messages', $locale = null)
@@ -379,6 +397,7 @@ if (! function_exists('trans_choice')) {
      * @param  array   $parameters
      * @param  string  $domain
      * @param  string  $locale
+     *
      * @return string
      */
     function trans_choice($id, $number, array $parameters = [], $domain = 'messages', $locale = null)
@@ -394,6 +413,7 @@ if (! function_exists('url')) {
      * @param  string  $path
      * @param  mixed   $parameters
      * @param  bool    $secure
+     *
      * @return string
      */
     function url($path = null, $parameters = [], $secure = null)
@@ -410,6 +430,7 @@ if (! function_exists('view')) {
      * @param  string  $view
      * @param  array   $data
      * @param  array   $mergeData
+     *
      * @return \Illuminate\View\View
      */
     function view($view = null, $data = [], $mergeData = [])

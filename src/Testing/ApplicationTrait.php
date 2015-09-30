@@ -1,6 +1,4 @@
-<?php
-
-namespace Laravel\Lumen\Testing;
+<?php namespace Laravel\Lumen\Testing;
 
 use Mockery;
 use Exception;
@@ -43,6 +41,7 @@ trait ApplicationTrait
      * These events will be mocked, so that handlers will not actually be executed.
      *
      * @param  array|dynamic  $events
+     *
      * @return $this
      */
     public function expectsEvents($events)
@@ -96,6 +95,7 @@ trait ApplicationTrait
      * These jobs will be mocked, so that handlers will not actually be executed.
      *
      * @param  array|dynamic  $jobs
+     *
      * @return $this
      */
     protected function expectsJobs($jobs)
@@ -120,6 +120,7 @@ trait ApplicationTrait
      * Set the session to the given array.
      *
      * @param  array  $data
+     *
      * @return $this
      */
     public function withSession(array $data)
@@ -133,6 +134,7 @@ trait ApplicationTrait
      * Set the session to the given array.
      *
      * @param  array  $data
+     *
      * @return void
      */
     public function session(array $data)
@@ -173,6 +175,7 @@ trait ApplicationTrait
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @param  string|null  $driver
+     *
      * @return $this
      */
     public function actingAs(UserContract $user, $driver = null)
@@ -187,6 +190,7 @@ trait ApplicationTrait
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @param  string  $driver
+     *
      * @return void
      */
     public function be(UserContract $user, $driver = null)
@@ -199,6 +203,7 @@ trait ApplicationTrait
      *
      * @param  string  $table
      * @param  array  $data
+     *
      * @return $this
      */
     protected function seeInDatabase($table, array $data)
@@ -217,6 +222,7 @@ trait ApplicationTrait
      *
      * @param  string  $table
      * @param  array  $data
+     *
      * @return $this
      */
     protected function missingFromDatabase($table, array $data)
@@ -229,6 +235,7 @@ trait ApplicationTrait
      *
      * @param  string  $table
      * @param  array  $data
+     *
      * @return $this
      */
     protected function notSeeInDatabase($table, array $data)
@@ -246,6 +253,7 @@ trait ApplicationTrait
      * Seed a given database connection.
      *
      * @param  string  $class
+     *
      * @return void
      */
     public function seed($class = 'DatabaseSeeder')
@@ -258,6 +266,7 @@ trait ApplicationTrait
      *
      * @param string  $command
      * @param array   $parameters
+     *
      * @return int
      */
     public function artisan($command, $parameters = [])

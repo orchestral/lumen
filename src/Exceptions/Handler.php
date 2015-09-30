@@ -1,6 +1,4 @@
-<?php
-
-namespace Laravel\Lumen\Exceptions;
+<?php namespace Laravel\Lumen\Exceptions;
 
 use Exception;
 use Illuminate\Http\Response;
@@ -21,6 +19,7 @@ class Handler implements ExceptionHandler
      * Report or log an exception.
      *
      * @param  \Exception  $e
+     *
      * @return void
      */
     public function report(Exception $e)
@@ -34,6 +33,7 @@ class Handler implements ExceptionHandler
      * Determine if the exception should be reported.
      *
      * @param  \Exception  $e
+     *
      * @return bool
      */
     public function shouldReport(Exception $e)
@@ -45,6 +45,7 @@ class Handler implements ExceptionHandler
      * Determine if the exception is in the "do not report" list.
      *
      * @param  \Exception  $e
+     *
      * @return bool
      */
     protected function shouldntReport(Exception $e)
@@ -63,6 +64,7 @@ class Handler implements ExceptionHandler
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Exception  $e
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function render($request, Exception $e)
@@ -77,6 +79,7 @@ class Handler implements ExceptionHandler
      *
      * @param  \Symfony\Component\HttpFoundation\Response  $response
      * @param  \Exception  $e
+     *
      * @return \Illuminate\Http\Response
      */
     protected function toIlluminateResponse($response, Exception $e)
@@ -93,10 +96,11 @@ class Handler implements ExceptionHandler
      *
      * @param  \Symfony\Component\Console\Output\OutputInterface  $output
      * @param  \Exception  $e
+     *
      * @return void
      */
     public function renderForConsole($output, Exception $e)
     {
-        (new ConsoleApplication)->renderException($e, $output);
+        (new ConsoleApplication())->renderException($e, $output);
     }
 }

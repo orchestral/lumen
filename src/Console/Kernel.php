@@ -1,6 +1,4 @@
-<?php
-
-namespace Laravel\Lumen\Console;
+<?php namespace Laravel\Lumen\Console;
 
 use Exception;
 use Throwable;
@@ -38,6 +36,7 @@ class Kernel implements KernelContract
      * Create a new console kernel instance.
      *
      * @param  \Laravel\Lumen\Application  $app
+     *
      * @return void
      */
     public function __construct(Application $app)
@@ -59,7 +58,7 @@ class Kernel implements KernelContract
     protected function defineConsoleSchedule()
     {
         $this->app->instance(
-            'Illuminate\Console\Scheduling\Schedule', $schedule = new Schedule
+            'Illuminate\Console\Scheduling\Schedule', $schedule = new Schedule()
         );
 
         $this->schedule($schedule);
@@ -70,6 +69,7 @@ class Kernel implements KernelContract
      *
      * @param  \Symfony\Component\Console\Input\InputInterface  $input
      * @param  \Symfony\Component\Console\Output\OutputInterface  $output
+     *
      * @return int
      */
     public function handle($input, $output = null)
@@ -97,6 +97,7 @@ class Kernel implements KernelContract
      * Define the application's command schedule.
      *
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     *
      * @return void
      */
     protected function schedule(Schedule $schedule)
@@ -109,6 +110,7 @@ class Kernel implements KernelContract
      *
      * @param  string  $command
      * @param  array  $parameters
+     *
      * @return int
      */
     public function call($command, array $parameters = [])
@@ -121,6 +123,7 @@ class Kernel implements KernelContract
      *
      * @param  string  $command
      * @param  array   $parameters
+     *
      * @return void
      */
     public function queue($command, array $parameters = [])
@@ -184,6 +187,7 @@ class Kernel implements KernelContract
      * Report the exception to the exception handler.
      *
      * @param  \Exception  $e
+     *
      * @return void
      */
     protected function reportException(Exception $e)
@@ -196,6 +200,7 @@ class Kernel implements KernelContract
      *
      * @param  \Symfony\Component\Console\Output\OutputInterface  $output
      * @param  \Exception  $e
+     *
      * @return void
      */
     protected function renderException($output, Exception $e)

@@ -1,6 +1,4 @@
-<?php
-
-namespace Laravel\Lumen\Http;
+<?php namespace Laravel\Lumen\Http;
 
 use Illuminate\Support\Str;
 use Illuminate\Http\Response;
@@ -16,6 +14,7 @@ class ResponseFactory
      * @param  string  $content
      * @param  int     $status
      * @param  array   $headers
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function make($content = '', $status = 200, array $headers = [])
@@ -30,6 +29,7 @@ class ResponseFactory
      * @param  int    $status
      * @param  array  $headers
      * @param  int    $options
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function json($data = [], $status = 200, array $headers = [], $options = 0)
@@ -48,6 +48,7 @@ class ResponseFactory
      * @param  string  $name
      * @param  array   $headers
      * @param  null|string  $disposition
+     *
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function download($file, $name = null, array $headers = [], $disposition = 'attachment')

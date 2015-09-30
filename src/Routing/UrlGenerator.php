@@ -1,6 +1,4 @@
-<?php
-
-namespace Laravel\Lumen\Routing;
+<?php namespace Laravel\Lumen\Routing;
 
 use Laravel\Lumen\Application;
 use Illuminate\Contracts\Routing\UrlRoutable;
@@ -39,6 +37,7 @@ class UrlGenerator
      * Create a new URL redirector instance.
      *
      * @param  Application  $application
+     *
      * @return void
      */
     public function __construct(Application $app)
@@ -72,6 +71,7 @@ class UrlGenerator
      * @param  string  $path
      * @param  array  $extra
      * @param  bool  $secure
+     *
      * @return string
      */
     public function to($path, $extra = [], $secure = null)
@@ -104,6 +104,7 @@ class UrlGenerator
      *
      * @param  string  $path
      * @param  array   $parameters
+     *
      * @return string
      */
     public function secure($path, $parameters = [])
@@ -116,6 +117,7 @@ class UrlGenerator
      *
      * @param  string  $path
      * @param  bool|null  $secure
+     *
      * @return string
      */
     public function asset($path, $secure = null)
@@ -136,6 +138,7 @@ class UrlGenerator
      * Remove the index.php file from a path.
      *
      * @param  string  $root
+     *
      * @return string
      */
     protected function removeIndex($root)
@@ -149,6 +152,7 @@ class UrlGenerator
      * Generate a URL to a secure asset.
      *
      * @param  string  $path
+     *
      * @return string
      */
     public function secureAsset($path)
@@ -160,6 +164,7 @@ class UrlGenerator
      * Get the scheme for a raw URL.
      *
      * @param  bool|null  $secure
+     *
      * @return string
      */
     protected function getScheme($secure)
@@ -175,6 +180,7 @@ class UrlGenerator
      * Force the schema for URLs.
      *
      * @param  string  $schema
+     *
      * @return void
      */
     public function forceSchema($schema)
@@ -187,6 +193,7 @@ class UrlGenerator
      *
      * @param  string  $name
      * @param  mixed   $parameters
+     *
      * @return string
      *
      * @throws \InvalidArgumentException
@@ -218,6 +225,7 @@ class UrlGenerator
      * Determine if the given path is a valid URL.
      *
      * @param  string  $path
+     *
      * @return bool
      */
     protected function isValidUrl($path)
@@ -233,6 +241,7 @@ class UrlGenerator
      * Get the scheme for a raw URL.
      *
      * @param  bool|null  $secure
+     *
      * @return string
      */
     protected function getSchemeForUrl($secure)
@@ -252,6 +261,7 @@ class UrlGenerator
      * Format the array of URL parameters.
      *
      * @param  mixed|array  $parameters
+     *
      * @return array
      */
     protected function formatParametersForUrl($parameters)
@@ -263,6 +273,7 @@ class UrlGenerator
      * Replace UrlRoutable parameters with their route parameter.
      *
      * @param  array  $parameters
+     *
      * @return array
      */
     protected function replaceRoutableParametersForUrl($parameters = [])
@@ -283,6 +294,7 @@ class UrlGenerator
      *
      * @param  string  $scheme
      * @param  string  $root
+     *
      * @return string
      */
     protected function getRootUrl($scheme, $root = null)
@@ -306,6 +318,7 @@ class UrlGenerator
      * @param  string  $root
      * @param  string  $path
      * @param  string  $tail
+     *
      * @return string
      */
     protected function trimUrl($root, $path, $tail = '')

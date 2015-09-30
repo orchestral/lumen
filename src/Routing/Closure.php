@@ -1,6 +1,4 @@
-<?php
-
-namespace Laravel\Lumen\Routing;
+<?php namespace Laravel\Lumen\Routing;
 
 use Closure as BaseClosure;
 use Illuminate\Http\Request;
@@ -31,6 +29,7 @@ class Closure
      * Set the response builder callback.
      *
      * @param  \Closure  $callback
+     *
      * @return void
      */
     public static function buildResponseUsing(BaseClosure $callback)
@@ -42,6 +41,7 @@ class Closure
      * Set the error formatter callback.
      *
      * @param  \Closure  $callback
+     *
      * @return void
      */
     public static function formatErrorsUsing(BaseClosure $callback)

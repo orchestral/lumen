@@ -1,6 +1,4 @@
-<?php
-
-namespace Laravel\Lumen\Providers;
+<?php namespace Laravel\Lumen\Providers;
 
 use Illuminate\Cache\Console\ClearCommand;
 use Illuminate\Cache\CacheServiceProvider as BaseProvider;

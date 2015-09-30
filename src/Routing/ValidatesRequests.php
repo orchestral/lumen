@@ -1,6 +1,4 @@
-<?php
-
-namespace Laravel\Lumen\Routing;
+<?php namespace Laravel\Lumen\Routing;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -16,6 +14,7 @@ trait ValidatesRequests
      * @param  array  $rules
      * @param  array  $messages
      * @param  array  $customAttributes
+     *
      * @return void
      */
     public function validate(Request $request, array $rules, array $messages = [], array $customAttributes = [])
@@ -32,6 +31,7 @@ trait ValidatesRequests
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Contracts\Validation\Validator  $validator
+     *
      * @return void
      */
     protected function throwValidationException(Request $request, $validator)
@@ -46,6 +46,7 @@ trait ValidatesRequests
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  array  $errors
+     *
      * @return \Illuminate\Http\Response
      */
     protected function buildFailedValidationResponse(Request $request, array $errors)
@@ -63,6 +64,7 @@ trait ValidatesRequests
      * Format the validation errors to be returned.
      *
      * @param  \Illuminate\Validation\Validator  $validator
+     *
      * @return array
      */
     protected function formatValidationErrors(Validator $validator)

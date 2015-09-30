@@ -1,6 +1,4 @@
-<?php
-
-namespace Laravel\Lumen\Testing;
+<?php namespace Laravel\Lumen\Testing;
 
 use Illuminate\Http\Request;
 use InvalidArgumentException;
@@ -42,6 +40,7 @@ trait CrawlerTrait
      * Visit the given URI with a GET request.
      *
      * @param  string  $uri
+     *
      * @return $this
      */
     public function visit($uri)
@@ -54,6 +53,7 @@ trait CrawlerTrait
      *
      * @param  string  $uri
      * @param  array  $headers
+     *
      * @return $this
      */
     public function get($uri, array $headers = [])
@@ -71,6 +71,7 @@ trait CrawlerTrait
      * @param  string  $uri
      * @param  array  $data
      * @param  array  $headers
+     *
      * @return $this
      */
     public function post($uri, array $data = [], array $headers = [])
@@ -88,6 +89,7 @@ trait CrawlerTrait
      * @param  string  $uri
      * @param  array  $data
      * @param  array  $headers
+     *
      * @return $this
      */
     public function put($uri, array $data = [], array $headers = [])
@@ -105,6 +107,7 @@ trait CrawlerTrait
      * @param  string  $uri
      * @param  array  $data
      * @param  array  $headers
+     *
      * @return $this
      */
     public function patch($uri, array $data = [], array $headers = [])
@@ -122,6 +125,7 @@ trait CrawlerTrait
      * @param  string  $uri
      * @param  array  $data
      * @param  array  $headers
+     *
      * @return $this
      */
     public function delete($uri, array $data = [], array $headers = [])
@@ -137,6 +141,7 @@ trait CrawlerTrait
      * Send the given request through the application.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return $this
      */
     public function handle(Request $request)
@@ -181,6 +186,7 @@ trait CrawlerTrait
      * @param  array  $parameters
      * @param  array  $cookies
      * @param  array  $files
+     *
      * @return $this
      */
     protected function makeRequest($method, $uri, $parameters = [], $cookies = [], $files = [])
@@ -202,6 +208,7 @@ trait CrawlerTrait
      * Make a request to the application using the given form.
      *
      * @param  \Symfony\Component\DomCrawler\Form  $form
+     *
      * @return $this
      */
     protected function makeRequestUsingForm(Form $form)
@@ -215,6 +222,7 @@ trait CrawlerTrait
      * Extract the parameters from the given form.
      *
      * @param  \Symfony\Component\DomCrawler\Form  $form
+     *
      * @return array
      */
     protected function extractParametersFromForm(Form $form)
@@ -255,6 +263,7 @@ trait CrawlerTrait
      *
      * @param  string  $uri
      * @param  string|null  $message
+     *
      * @return void
      */
     protected function assertPageLoaded($uri, $message = null)
@@ -275,6 +284,7 @@ trait CrawlerTrait
      *
      * @param  string  $text
      * @param  bool  $negate
+     *
      * @return $this
      */
     protected function see($text, $negate = false)
@@ -290,6 +300,7 @@ trait CrawlerTrait
      * Assert that a given string is not seen on the page.
      *
      * @param  string  $text
+     *
      * @return $this
      */
     protected function dontSee($text)
@@ -301,6 +312,7 @@ trait CrawlerTrait
      * Assert that the response contains JSON.
      *
      * @param  array|null  $data
+     *
      * @return $this
      */
     protected function shouldReturnJson(array $data = null)
@@ -312,6 +324,7 @@ trait CrawlerTrait
      * Assert that the response contains JSON.
      *
      * @param  array|null  $data
+     *
      * @return $this
      */
     protected function receiveJson($data = null)
@@ -327,6 +340,7 @@ trait CrawlerTrait
      * Assert that the response contains an exact JSON array.
      *
      * @param  array  $data
+     *
      * @return $this
      */
     public function seeJsonEquals(array $data)
@@ -344,6 +358,7 @@ trait CrawlerTrait
      * Assert that the response contains JSON.
      *
      * @param  array|null  $data
+     *
      * @return $this
      */
     public function seeJson(array $data = null)
@@ -359,6 +374,7 @@ trait CrawlerTrait
      * Assert that the response contains the given JSON.
      *
      * @param  array  $data
+     *
      * @return $this
      */
     protected function seeJsonContains(array $data)
@@ -384,6 +400,7 @@ trait CrawlerTrait
      *
      * @param  string  $key
      * @param  mixed  $value
+     *
      * @return string
      */
     protected function formatToExpectedJson($key, $value)
@@ -405,6 +422,7 @@ trait CrawlerTrait
      * Asserts that the status code of the response matches the given code.
      *
      * @param  int  $status
+     *
      * @return $this
      */
     protected function seeStatusCode($status)
@@ -418,6 +436,7 @@ trait CrawlerTrait
      * Assert that the current page matches a given URI.
      *
      * @param  string  $uri
+     *
      * @return $this
      */
     protected function seePageIs($uri)
@@ -429,6 +448,7 @@ trait CrawlerTrait
      * Assert that the current page matches a given URI.
      *
      * @param  string  $uri
+     *
      * @return $this
      */
     protected function onPage($uri)
@@ -440,6 +460,7 @@ trait CrawlerTrait
      * Assert that the current page matches a given URI.
      *
      * @param  string  $uri
+     *
      * @return $this
      */
     protected function landOn($uri)
@@ -457,6 +478,7 @@ trait CrawlerTrait
      * Click a link with the given body, name, or ID attribute.
      *
      * @param  string  $name
+     *
      * @return $this
      */
     protected function click($name)
@@ -483,6 +505,7 @@ trait CrawlerTrait
      *
      * @param  string  $text
      * @param  string  $element
+     *
      * @return $this
      */
     protected function type($text, $element)
@@ -494,6 +517,7 @@ trait CrawlerTrait
      * Check a checkbox on the page.
      *
      * @param  string  $element
+     *
      * @return $this
      */
     protected function check($element)
@@ -506,6 +530,7 @@ trait CrawlerTrait
      *
      * @param  string  $option
      * @param  string  $element
+     *
      * @return $this
      */
     protected function select($option, $element)
@@ -518,6 +543,7 @@ trait CrawlerTrait
      *
      * @param  string  $absolutePath
      * @param  string  $element
+     *
      * @return $this
      */
     protected function attach($absolutePath, $element)
@@ -529,6 +555,7 @@ trait CrawlerTrait
      * Submit a form using the button with the given text value.
      *
      * @param  string  $buttonText
+     *
      * @return $this
      */
     protected function press($buttonText)
@@ -541,6 +568,7 @@ trait CrawlerTrait
      *
      * @param  string  $buttonText
      * @param  array  $inputs
+     *
      * @return $this
      */
     protected function submitForm($buttonText, $inputs = [])
@@ -555,6 +583,7 @@ trait CrawlerTrait
      *
      * @param  string  $buttonText
      * @param  array  $inputs
+     *
      * @return \Symfony\Component\DomCrawler\Form
      */
     protected function fillForm($buttonText, $inputs = [])
@@ -572,6 +601,7 @@ trait CrawlerTrait
      * Get the form from the page with the given submit button text.
      *
      * @param  string|null  $buttonText
+     *
      * @return \Symfony\Component\DomCrawler\Form
      */
     protected function getForm($buttonText = null)
@@ -594,6 +624,7 @@ trait CrawlerTrait
      *
      * @param  string  $element
      * @param  string  $text
+     *
      * @return $this
      */
     protected function storeInput($element, $text)
@@ -611,6 +642,7 @@ trait CrawlerTrait
      * Assert that a filtered Crawler returns nodes.
      *
      * @param  string  $filter
+     *
      * @return void
      */
     protected function assertFilterProducesResults($filter)
@@ -629,6 +661,7 @@ trait CrawlerTrait
      *
      * @param  string  $name
      * @param  string  $element
+     *
      * @return \Symfony\Component\DomCrawler\Crawler
      */
     protected function filterByNameOrId($name, $element = '*')
@@ -648,6 +681,7 @@ trait CrawlerTrait
      * @param  array   $files
      * @param  array   $server
      * @param  string  $content
+     *
      * @return \Illuminate\Http\Response
      */
     public function call($method, $uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null)
@@ -672,6 +706,7 @@ trait CrawlerTrait
      * @param  array   $files
      * @param  array   $server
      * @param  string  $content
+     *
      * @return \Illuminate\Http\Response
      */
     public function callSecure($method, $uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null)
@@ -692,6 +727,7 @@ trait CrawlerTrait
      * @param  array   $files
      * @param  array   $server
      * @param  string  $content
+     *
      * @return \Illuminate\Http\Response
      */
     public function action($method, $action, $wildcards = [], $parameters = [], $cookies = [], $files = [], $server = [], $content = null)
@@ -712,6 +748,7 @@ trait CrawlerTrait
      * @param  array   $files
      * @param  array   $server
      * @param  string  $content
+     *
      * @return \Illuminate\Http\Response
      */
     public function route($method, $name, $routeParameters = [], $parameters = [], $cookies = [], $files = [], $server = [], $content = null)
@@ -725,6 +762,7 @@ trait CrawlerTrait
      * Turn the given URI into a fully qualified URL.
      *
      * @param  string  $uri
+     *
      * @return string
      */
     protected function prepareUrlForRequest($uri)

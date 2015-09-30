@@ -1,6 +1,4 @@
-<?php
-
-namespace Laravel\Lumen\Testing;
+<?php namespace Laravel\Lumen\Testing;
 
 use Illuminate\View\View;
 use PHPUnit_Framework_Assert as PHPUnit;
@@ -23,6 +21,7 @@ trait AssertionsTrait
      * Assert that the client response has a given code.
      *
      * @param  int  $code
+     *
      * @return void
      */
     public function assertResponseStatus($code)
@@ -37,6 +36,7 @@ trait AssertionsTrait
      *
      * @param  string|array  $key
      * @param  mixed  $value
+     *
      * @return void
      */
     public function assertViewHas($key, $value = null)
@@ -60,6 +60,7 @@ trait AssertionsTrait
      * Assert that the view has a given list of bound data.
      *
      * @param  array  $bindings
+     *
      * @return void
      */
     public function assertViewHasAll(array $bindings)
@@ -77,6 +78,7 @@ trait AssertionsTrait
      * Assert that the response view is missing a piece of bound data.
      *
      * @param  string  $key
+     *
      * @return void
      */
     public function assertViewMissing($key)
@@ -93,6 +95,7 @@ trait AssertionsTrait
      *
      * @param  string  $uri
      * @param  array   $with
+     *
      * @return void
      */
     public function assertRedirectedTo($uri, $with = [])
@@ -110,6 +113,7 @@ trait AssertionsTrait
      * @param  string  $name
      * @param  array   $parameters
      * @param  array   $with
+     *
      * @return void
      */
     public function assertRedirectedToRoute($name, $parameters = [], $with = [])
@@ -122,6 +126,7 @@ trait AssertionsTrait
      *
      * @param  string|array  $key
      * @param  mixed  $value
+     *
      * @return void
      */
     public function assertSessionHas($key, $value = null)
@@ -141,6 +146,7 @@ trait AssertionsTrait
      * Assert that the session has a given list of values.
      *
      * @param  array  $bindings
+     *
      * @return void
      */
     public function assertSessionHasAll(array $bindings)
@@ -159,6 +165,7 @@ trait AssertionsTrait
      *
      * @param  string|array  $bindings
      * @param  mixed  $format
+     *
      * @return void
      */
     public function assertSessionHasErrors($bindings = [], $format = null)

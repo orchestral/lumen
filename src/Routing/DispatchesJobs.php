@@ -1,6 +1,4 @@
-<?php
-
-namespace Laravel\Lumen\Routing;
+<?php namespace Laravel\Lumen\Routing;
 
 use ArrayAccess;
 
@@ -10,6 +8,7 @@ trait DispatchesJobs
      * Dispatch a job to its appropriate handler.
      *
      * @param  mixed  $job
+     *
      * @return mixed
      */
     protected function dispatch($job)
@@ -22,6 +21,7 @@ trait DispatchesJobs
      *
      * @param  mixed  $job
      * @param  array  $array
+     *
      * @return mixed
      */
     protected function dispatchFromArray($job, array $array)
@@ -35,6 +35,7 @@ trait DispatchesJobs
      * @param  mixed  $job
      * @param  \ArrayAccess  $source
      * @param  array  $extras
+     *
      * @return mixed
      */
     protected function dispatchFrom($job, ArrayAccess $source, $extras = [])
