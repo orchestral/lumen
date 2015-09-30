@@ -846,15 +846,11 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      *
      * @param  string  $name
      *
-     * @return string
+     * @return string|null
      */
     protected function getConfigurationPath($name)
     {
-        $appConfigPath = ($this->configPath ?: $this->basePath('resources/config')).'/'.$name.'.php';
-
-        if (file_exists($appConfigPath)) {
-            return $appConfigPath;
-        } elseif (file_exists($path = __DIR__.'/../config/'.$name.'.php')) {
+        if (file_exists($path = __DIR__.'/config/'.$name.'.php')) {
             return $path;
         }
     }
