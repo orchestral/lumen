@@ -836,7 +836,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
         $path = $this->getConfigurationPath($name);
 
-        if ($path) {
+        if (! is_null($path)) {
             $this->make('config')->set($name, require $path);
         }
     }
@@ -850,7 +850,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     protected function getConfigurationPath($name)
     {
-        if (file_exists($path = __DIR__.'/config/'.$name.'.php')) {
+        if (file_exists($path = $this->basePath('lumen/config/').$name.'.php')) {
             return $path;
         }
     }
