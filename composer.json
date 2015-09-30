@@ -1,25 +1,75 @@
 {
-	"name": "orchestra/lumen",
-	"description": "Lumen Framework for Orchestra Platform",
-	"license": "MIT",
-	"authors": [
-		{
-			"name": "Mior Muhammad Zaki",
-			"email": "crynobone@gmail.com"
-		}
-	],
-	"require": {
-		"laravel/lumen-framework": "~5.1.0",
-		"dingo/api": "^0.9.0",
-		"orchestra/config": "~3.1.0",
-		"orchestra/auth": "~3.1.0",
-		"orchestra/support": "~3.1.0",
-		"orchestra/view": "~3.1.0"
-	},
-	"extra": {
-		"branch-alias": {
-			"dev-master": "3.1-dev"
-		}
-	},
-	"minimum-stability": "dev"
+    "name": "orchestra/lumen",
+    "description": "Lumen Framework for Orchestra Platform",
+    "keywords": ["framework", "laravel", "lumen", "orchestral", "orchestra-platform"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mior Muhammad Zaki",
+            "email": "crynobone@gmail.com"
+        },
+        {
+            "name": "Taylor Otwell",
+            "email": "taylorotwell@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Laravel\\Lumen\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "require": {
+        "php": ">=5.5.9",
+        "illuminate/auth": "5.1.*",
+        "illuminate/bus": "5.1.*",
+        "illuminate/broadcasting": "5.1.*",
+        "illuminate/config": "5.1.*",
+        "illuminate/container": "5.1.*",
+        "illuminate/contracts": "5.1.*",
+        "illuminate/cache": "5.1.*",
+        "illuminate/console": "5.1.*",
+        "illuminate/cookie": "5.1.*",
+        "illuminate/database": "5.1.*",
+        "illuminate/encryption": "5.1.*",
+        "illuminate/events": "5.1.*",
+        "illuminate/filesystem": "5.1.*",
+        "illuminate/hashing": "5.1.*",
+        "illuminate/http": "5.1.*",
+        "illuminate/pagination": "5.1.*",
+        "illuminate/queue": "5.1.*",
+        "illuminate/session": "5.1.*",
+        "illuminate/support": "5.1.*",
+        "illuminate/translation": "5.1.*",
+        "illuminate/validation": "5.1.*",
+        "illuminate/view": "5.1.*",
+        "monolog/monolog": "~1.0",
+        "mtdowling/cron-expression": "~1.0",
+        "nikic/fast-route": "0.4.*",
+        "symfony/dom-crawler": "2.7.*",
+        "symfony/http-kernel": "2.7.*",
+        "symfony/http-foundation": "2.7.*",
+        "symfony/security-core": "2.7.*",
+        "symfony/var-dumper": "2.7.*",
+        "orchestra/config": "~3.1.0",
+        "orchestra/auth": "~3.1.0",
+        "orchestra/support": "~3.1.0",
+        "orchestra/view": "~3.1.0",
+        "dingo/api": "^0.9.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.0",
+        "mockery/mockery": "~0.9"
+    },
+    "suggest": {
+        "vlucas/phpdotenv": "Required to use .env files (~1.0)."
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.1-dev"
+        }
+    },
+    "minimum-stability": "dev"
 }
