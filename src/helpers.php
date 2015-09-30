@@ -1,8 +1,11 @@
-<?php
+<?php namespace api;
 
-namespace Laravel\Lumen;
+use Laravel\Lumen\Http\Redirector;
+use Illuminate\Container\Container;
+use Laravel\Lumen\Http\ResponseFactory;
+use Laravel\Lumen\Routing\UrlGenerator;
 
-if (! function_exists('redirect')) {
+if (! function_exists('api\redirect')) {
     /**
      * Get an instance of the redirector.
      *
@@ -15,7 +18,7 @@ if (! function_exists('redirect')) {
      */
     function redirect($to = null, $status = 302, $headers = [], $secure = null)
     {
-        $redirector = new Http\Redirector(Container::getInstance()->make('app'));
+        $redirector = new Redirector(Container::getInstance()->make('app'));
 
         if (is_null($to)) {
             return $redirector;
@@ -25,7 +28,7 @@ if (! function_exists('redirect')) {
     }
 }
 
-if (! function_exists('response')) {
+if (! function_exists('api\response')) {
     /**
      * Return a new response from the application.
      *
@@ -37,7 +40,7 @@ if (! function_exists('response')) {
      */
     function response($content = '', $status = 200, array $headers = [])
     {
-        $factory = new Http\ResponseFactory();
+        $factory = new ResponseFactory();
 
         if (func_num_args() === 0) {
             return $factory;
@@ -47,7 +50,7 @@ if (! function_exists('response')) {
     }
 }
 
-if (! function_exists('route')) {
+if (! function_exists('api\route')) {
     /**
      * Generate a URL to a named route.
      *
@@ -58,7 +61,26 @@ if (! function_exists('route')) {
      */
     function route($name, $parameters = [])
     {
-        return (new Routing\UrlGenerator(app()))
-                ->route($name, $parameters);
+        return (new UrlGenerator(Container::getInstance()->make('app')))
+                    ->route($name, $parameters);
+    }
+}
+
+
+if (! function_exists('api\url')) {
+    /**
+     * Generate a url for the application.
+     *
+     * @param  string  $path
+     * @param  mixed   $parameters
+     * @param  bool    $secure
+     *
+     * @return string
+     */
+
+    function url($path = null, $parameters = [], $secure = null)
+    {
+        return (new UrlGenerator(Container::getInstance()->make('app')))
+                    ->to($path, $parameters, $secure);
     }
 }

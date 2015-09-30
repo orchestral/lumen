@@ -4,7 +4,7 @@ use Mockery as m;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Application;
 
-class ExampleTest extends PHPUnit_Framework_TestCase
+class FullApplicationTest extends PHPUnit_Framework_TestCase
 {
     public function tearDown()
     {
@@ -16,11 +16,10 @@ class ExampleTest extends PHPUnit_Framework_TestCase
         $app = new Application;
 
         $app->get('/', function () {
-            return response('Hello World');
+            return api\response('Hello World');
         });
 
         $response = $app->handle(Request::create('/', 'GET'));
-
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('Hello World', $response->getContent());
     }
@@ -30,7 +29,7 @@ class ExampleTest extends PHPUnit_Framework_TestCase
         $app = new Application;
 
         $app->get('/', function () {
-            return response('Hello World');
+            return api\response('Hello World');
         });
 
         $_SERVER['REQUEST_METHOD'] = 'GET';
@@ -49,7 +48,7 @@ class ExampleTest extends PHPUnit_Framework_TestCase
         $app = new Application;
 
         $app->get('/foo', function () {
-            return response('Hello World');
+            return api\response('Hello World');
         });
 
         $_SERVER['REQUEST_METHOD'] = 'GET';
@@ -68,7 +67,7 @@ class ExampleTest extends PHPUnit_Framework_TestCase
         $app = new Application;
 
         $app->get('/foo/{bar}/{baz}', function ($bar, $baz) {
-            return response($bar.$baz);
+            return api\response($bar.$baz);
         });
 
         $response = $app->handle(Request::create('/foo/1/2', 'GET'));
@@ -93,7 +92,7 @@ class ExampleTest extends PHPUnit_Framework_TestCase
     {
         $app = new Application;
         $app->get('/foo-bar/{baz}', function ($baz = 'default-value') {
-          return response($baz);
+          return api\response($baz);
         });
 
         $response = $app->handle(Request::create('/foo-bar/something', 'GET'));
@@ -120,7 +119,7 @@ class ExampleTest extends PHPUnit_Framework_TestCase
         $app->middleware(['LumenTestMiddleware']);
 
         $app->get('/', function () {
-            return response('Hello World');
+            return api\response('Hello World');
         });
 
         $response = $app->handle(Request::create('/', 'GET'));
@@ -136,11 +135,11 @@ class ExampleTest extends PHPUnit_Framework_TestCase
         $app->routeMiddleware(['foo' => 'LumenTestMiddleware']);
 
         $app->get('/', function () {
-            return response('Hello World');
+            return api\response('Hello World');
         });
 
         $app->get('/foo', ['middleware' => 'foo', function () {
-            return response('Hello World');
+            return api\response('Hello World');
         }]);
 
         $response = $app->handle(Request::create('/', 'GET'));
@@ -159,7 +158,7 @@ class ExampleTest extends PHPUnit_Framework_TestCase
         $app->middleware(['LumenTestParameterizedMiddleware:foo,bar']);
 
         $app->get('/', function () {
-            return response('Hello World');
+            return api\response('Hello World');
         });
 
         $response = $app->handle(Request::create('/', 'GET'));
@@ -175,7 +174,7 @@ class ExampleTest extends PHPUnit_Framework_TestCase
         $app->routeMiddleware(['foo' => 'LumenTestParameterizedMiddleware']);
 
         $app->get('/', ['middleware' => 'foo:bar,boom', function () {
-            return response('Hello World');
+            return api\response('Hello World');
         }]);
 
         $response = $app->handle(Request::create('/', 'GET'));
@@ -225,7 +224,7 @@ class ExampleTest extends PHPUnit_Framework_TestCase
         $app->instance('middleware.disable', true);
 
         $app->get('/', function () {
-            return response('Hello World');
+            return api\response('Hello World');
         });
 
         $response = $app->handle(Request::create('/', 'GET'));
@@ -240,15 +239,15 @@ class ExampleTest extends PHPUnit_Framework_TestCase
 
         $app->group(['prefix' => 'user'], function ($app) {
             $app->get('/', function () {
-                return response('User Index');
+                return api\response('User Index');
             });
 
             $app->get('profile', function () {
-                return response('User Profile');
+                return api\response('User Profile');
             });
 
             $app->get('/show', function () {
-                return response('User Show');
+                return api\response('User Show');
             });
         });
 
@@ -272,7 +271,7 @@ class ExampleTest extends PHPUnit_Framework_TestCase
         $mock->shouldIgnoreMissing();
 
         $app->get('/', function () {
-            return response('Hello World');
+            return api\response('Hello World');
         });
 
         $response = $app->handle(Request::create('/foo', 'GET'));
@@ -287,7 +286,7 @@ class ExampleTest extends PHPUnit_Framework_TestCase
         $mock->shouldIgnoreMissing();
 
         $app->post('/', function () {
-            return response('Hello World');
+            return api\response('Hello World');
         });
 
         $response = $app->handle(Request::create('/', 'GET'));
@@ -343,10 +342,10 @@ class ExampleTest extends PHPUnit_Framework_TestCase
             //
         }]);
 
-        $this->assertEquals('http://lumen.laravel.com/something', url('something'));
-        $this->assertEquals('http://lumen.laravel.com/foo-bar', route('foo'));
-        $this->assertEquals('http://lumen.laravel.com/foo-bar/1/2', route('bar', ['baz' => 1, 'boom' => 2]));
-        $this->assertEquals('http://lumen.laravel.com/foo-bar?baz=1&boom=2', route('foo', ['baz' => 1, 'boom' => 2]));
+        $this->assertEquals('http://lumen.laravel.com/something', api\url('something'));
+        $this->assertEquals('http://lumen.laravel.com/foo-bar', api\route('foo'));
+        $this->assertEquals('http://lumen.laravel.com/foo-bar/1/2', api\route('bar', ['baz' => 1, 'boom' => 2]));
+        $this->assertEquals('http://lumen.laravel.com/foo-bar?baz=1&boom=2', api\route('foo', ['baz' => 1, 'boom' => 2]));
     }
 
     public function testGeneratingUrlsForRegexParameters()
@@ -371,12 +370,12 @@ class ExampleTest extends PHPUnit_Framework_TestCase
             //
         }]);
 
-        $this->assertEquals('http://lumen.laravel.com/something', url('something'));
-        $this->assertEquals('http://lumen.laravel.com/foo-bar', route('foo'));
-        $this->assertEquals('http://lumen.laravel.com/foo-bar/1/2', route('bar', ['baz' => 1, 'boom' => 2]));
-        $this->assertEquals('http://lumen.laravel.com/foo-bar/1/2', route('baz', ['baz' => 1, 'boom' => 2]));
-        $this->assertEquals('http://lumen.laravel.com/foo-bar/{baz:[0-9]+}/{boom:[0-9]+}?ba=1&bo=2', route('baz', ['ba' => 1, 'bo' => 2]));
-        $this->assertEquals('http://lumen.laravel.com/foo-bar/5', route('boom', ['baz' => 5]));
+        $this->assertEquals('http://lumen.laravel.com/something', api\url('something'));
+        $this->assertEquals('http://lumen.laravel.com/foo-bar', api\route('foo'));
+        $this->assertEquals('http://lumen.laravel.com/foo-bar/1/2', api\route('bar', ['baz' => 1, 'boom' => 2]));
+        $this->assertEquals('http://lumen.laravel.com/foo-bar/1/2', api\route('baz', ['baz' => 1, 'boom' => 2]));
+        $this->assertEquals('http://lumen.laravel.com/foo-bar/{baz:[0-9]+}/{boom:[0-9]+}?ba=1&bo=2', api\route('baz', ['ba' => 1, 'bo' => 2]));
+        $this->assertEquals('http://lumen.laravel.com/foo-bar/5', api\route('boom', ['baz' => 5]));
     }
 
     public function testRegisterServiceProvider()
@@ -391,7 +390,7 @@ class ExampleTest extends PHPUnit_Framework_TestCase
         $routes = new FastRoute\RouteCollector(new FastRoute\RouteParser\Std, new FastRoute\DataGenerator\GroupCountBased);
 
         $routes->addRoute('GET', '/', [function () {
-            return response('Hello World');
+            return api\response('Hello World');
         }]);
 
         $app = new Application;
@@ -438,7 +437,7 @@ class LumenTestMiddleware
 {
     public function handle($request, $next)
     {
-        return response('Middleware');
+        return api\response('Middleware');
     }
 }
 
@@ -457,7 +456,7 @@ class LumenTestParameterizedMiddleware
 {
     public function handle($request, $next, $parameter1, $parameter2)
     {
-        return response("Middleware - $parameter1 - $parameter2");
+        return api\response("Middleware - $parameter1 - $parameter2");
     }
 }
 
@@ -472,16 +471,16 @@ class LumenTestController
 
     public function action()
     {
-        return response(__CLASS__);
+        return api\response(__CLASS__);
     }
 
     public function actionWithParameter($baz)
     {
-        return response($baz);
+        return api\response($baz);
     }
 
     public function actionWithDefaultParameter($baz = 'default-value')
     {
-        return response($baz);
+        return api\response($baz);
     }
 }
