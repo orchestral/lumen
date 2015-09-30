@@ -1,8 +1,7 @@
-<?php namespace Laravel\Lumen;
+<?php
 
-use Orchestra\Config\FileLoader;
-use Orchestra\Config\Repository;
-use Illuminate\Filesystem\Filesystem;
+namespace Laravel\Lumen;
+
 use Error;
 use Closure;
 use Exception;
@@ -13,8 +12,11 @@ use RuntimeException;
 use FastRoute\Dispatcher;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Orchestra\Config\FileLoader;
+use Orchestra\Config\Repository;
 use Illuminate\Pipeline\Pipeline;
 use Monolog\Handler\StreamHandler;
+use Illuminate\Container\Container;
 use Illuminate\Foundation\Composer;
 use Monolog\Formatter\LineFormatter;
 use Illuminate\Filesystem\Filesystem;
