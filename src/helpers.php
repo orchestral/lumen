@@ -303,7 +303,7 @@ if (! function_exists('response')) {
      */
     function response($content = '', $status = 200, array $headers = [])
     {
-        $factory = new Laravel\Lumen\Http\ResponseFactory(Container::getInstance()->make('app'));
+        $factory = new Laravel\Lumen\Http\ResponseFactory();
 
         if (func_num_args() === 0) {
             return $factory;

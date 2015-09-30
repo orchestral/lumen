@@ -8,7 +8,7 @@ class UrlGenerator
     /**
      * The application instance.
      *
-     * @var Application
+     * @var \Laravel\Lumen\Application
      */
     protected $app;
 
@@ -36,9 +36,7 @@ class UrlGenerator
     /**
      * Create a new URL redirector instance.
      *
-     * @param  Application  $application
-     *
-     * @return void
+     * @param  \Laravel\Lumen\Application  $app
      */
     public function __construct(Application $app)
     {

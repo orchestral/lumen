@@ -19,8 +19,6 @@ class VerifyCsrfToken
      * Create a new middleware instance.
      *
      * @param  \Illuminate\Contracts\Encryption\Encrypter  $encrypter
-     *
-     * @return void
      */
     public function __construct(Encrypter $encrypter)
     {

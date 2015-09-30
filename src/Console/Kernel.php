@@ -26,6 +26,15 @@ class Kernel implements KernelContract
     protected $artisan;
 
     /**
+     * The Artisan commands provided by your application.
+     *
+     * @var array
+     */
+    protected $commands = [
+        //
+    ];
+
+    /**
      * Include the default Artisan commands.
      *
      * @var bool
@@ -36,8 +45,6 @@ class Kernel implements KernelContract
      * Create a new console kernel instance.
      *
      * @param  \Laravel\Lumen\Application  $app
-     *
-     * @return void
      */
     public function __construct(Application $app)
     {
