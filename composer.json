@@ -33,7 +33,7 @@
     },
     "require-dev": {
         "mockery/mockery": "^0.9.1",
-        "dingo/api": "^0.9.0"
+        "dingo/api": "~1.0"
     },
     "suggest": {
         "dingo/api": "Better API routing support (~1.0)",
