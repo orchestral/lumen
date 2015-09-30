@@ -262,7 +262,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         $this->loadedProviders[$providerName] = true;
 
         $provider->register();
-        $provider->boot();
+        $this->call([$provider, 'boot']);
     }
 
     /**
