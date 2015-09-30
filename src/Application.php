@@ -172,6 +172,8 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
         $this->instance('app', $this);
         $this->instance('path', $this->path());
+        $this->instance('path.config', $this->configPath ?: $this->basePath('resources/config'));
+        $this->instance('path.storage', $this->storagePath());
 
         $this->registerContainerAliases();
     }
@@ -848,7 +850,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     protected function getConfigurationPath($name)
     {
-        $appConfigPath = ($this->configPath ?: $this->basePath('config')).'/'.$name.'.php';
+        $appConfigPath = ($this->configPath ?: $this->basePath('resources/config')).'/'.$name.'.php';
 
         if (file_exists($appConfigPath)) {
             return $appConfigPath;
@@ -1581,6 +1583,8 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     public function useStoragePath($path)
     {
         $this->storagePath = $path;
+
+        $this['path.storage'] = $path;
 
         return $this;
     }
