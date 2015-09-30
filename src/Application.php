@@ -151,8 +151,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Create a new Lumen application instance.
      *
      * @param  string|null  $basePath
-     *
-     * @return void
      */
     public function __construct($basePath = null)
     {
@@ -262,7 +260,10 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         $this->loadedProviders[$providerName] = true;
 
         $provider->register();
-        $this->call([$provider, 'boot']);
+
+        if (method_exists($provider, 'boot')) {
+            $this->call([$provider, 'boot']);
+        }
     }
 
     /**
@@ -527,7 +528,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     protected function registerComposerBindings()
     {
-        $this->app->singleton('composer', function ($app) {
+        $this->singleton('composer', function ($app) {
             return new Composer($app->make('files'), $this->basePath());
         });
     }
