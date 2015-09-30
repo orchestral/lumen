@@ -66,7 +66,6 @@ if (! function_exists('api\route')) {
     }
 }
 
-
 if (! function_exists('api\url')) {
     /**
      * Generate a url for the application.
@@ -77,7 +76,6 @@ if (! function_exists('api\url')) {
      *
      * @return string
      */
-
     function url($path = null, $parameters = [], $secure = null)
     {
         return (new UrlGenerator(Container::getInstance()->make('app')))

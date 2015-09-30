@@ -247,7 +247,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * @param  array  $options
      * @param  bool   $force
      *
-     * @return \Illuminate\Support\ServiceProvider
+     * @return void
      */
     public function register($provider, $options = [], $force = false)
     {
@@ -824,6 +824,8 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     /**
      * Load a configuration file into the application.
      *
+     * @param string $name
+     *
      * @return void
      */
     public function configure($name)
@@ -901,7 +903,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Register a set of routes with a set of shared attributes.
      *
      * @param  array  $attributes
-     * @param  Closure  $callback
+     * @param  \Closure  $callback
      *
      * @return void
      */
@@ -1432,7 +1434,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Send the request through the pipeline with the given callback.
      *
      * @param  array  $middleware
-     * @param  Closure  $then
+     * @param  \Closure  $then
      *
      * @return mixed
      */
@@ -1456,7 +1458,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      *
      * @param  mixed  $response
      *
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function prepareResponse($response)
     {
