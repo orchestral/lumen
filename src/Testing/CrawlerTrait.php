@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use InvalidArgumentException;
 use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\DomCrawler\Crawler;
+use Illuminate\Foundation\Testing\HttpException;
 use PHPUnit_Framework_ExpectationFailedException as PHPUnitException;
 
 trait CrawlerTrait
@@ -275,7 +276,7 @@ trait CrawlerTrait
         } catch (PHPUnitException $e) {
             $message = $message ?: "A request to [{$uri}] failed. Received status code [{$status}].";
 
-            throw new PHPUnitException($message, null, $this->response->exception);
+            throw new HttpException($message, null, $this->response->exception);
         }
     }
 
