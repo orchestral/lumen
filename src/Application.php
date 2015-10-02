@@ -743,7 +743,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
             $this->instance('path.lang', $this->getLanguagePath());
 
-            $this->register('Illuminate\Translation\TranslationServiceProvider');
+            $this->register('Orchestra\Translation\TranslationServiceProvider');
 
             return $this->make('translator');
         });

@@ -29,6 +29,7 @@
         "orchestra/config": "~3.1.0",
         "orchestra/auth": "~3.1.0",
         "orchestra/support": "~3.1.0",
+        "orchestra/translation": "~3.1.0",
         "orchestra/view": "~3.1.0"
     },
     "require-dev": {
