@@ -185,7 +185,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function version()
     {
-        return 'Lumen (5.1.4) (Laravel Components 5.1.*)';
+        return 'Lumen (5.2.0-dev) (Laravel Components 5.2.*)';
     }
 
     /**
@@ -1490,7 +1490,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      *
      * @return string
      */
-    public function getPathInfo()
+    protected function getPathInfo()
     {
         $query = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '';
 
