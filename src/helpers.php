@@ -18,7 +18,7 @@ if (! function_exists('api\redirect')) {
      */
     function redirect($to = null, $status = 302, $headers = [], $secure = null)
     {
-        $redirector = new Redirector(Container::getInstance()->make('app'));
+        $redirector = new Redirector(app());
 
         if (is_null($to)) {
             return $redirector;
@@ -61,7 +61,7 @@ if (! function_exists('api\route')) {
      */
     function route($name, $parameters = [])
     {
-        return (new UrlGenerator(Container::getInstance()->make('app')))
+        return (new UrlGenerator(app()))
                     ->route($name, $parameters);
     }
 }
@@ -78,7 +78,6 @@ if (! function_exists('api\url')) {
      */
     function url($path = null, $parameters = [], $secure = null)
     {
-        return (new UrlGenerator(Container::getInstance()->make('app')))
-                    ->to($path, $parameters, $secure);
+        return (new UrlGenerator(app()))->to($path, $parameters, $secure);
     }
 }

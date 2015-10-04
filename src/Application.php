@@ -824,7 +824,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     /**
      * Load a configuration file into the application.
      *
-     * @param string $name
+     * @param  string  $name
      *
      * @return void
      */
