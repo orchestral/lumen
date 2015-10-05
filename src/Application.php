@@ -756,11 +756,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     protected function getLanguagePath()
     {
-        if (is_dir($appPath = $this->resourcePath('lang'))) {
-            return $appPath;
-        } else {
-            return __DIR__.'/../lang';
-        }
+        return $this->resourcePath('lang');
     }
 
     /**
