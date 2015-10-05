@@ -1838,6 +1838,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
             'Illuminate\Contracts\Redis\Database'             => 'redis',
             'request'                                         => 'Illuminate\Http\Request',
             'Illuminate\Session\SessionManager'               => 'session',
+            'Illuminate\Session\Store'                        => 'session.store',
             'Illuminate\Contracts\View\Factory'               => 'view',
         ];
     }
@@ -1902,6 +1903,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         'session'                                         => 'registerSessionBindings',
         'session.store'                                   => 'registerSessionBindings',
         'Illuminate\Session\SessionManager'               => 'registerSessionBindings',
+        'Illuminate\Session\Store'                        => 'registerSessionBindings',
         'translator'                                      => 'registerTranslationBindings',
         'url'                                             => 'registerUrlGeneratorBindings',
         'validator'                                       => 'registerValidatorBindings',
