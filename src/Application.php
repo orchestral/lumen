@@ -1715,6 +1715,8 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     {
         $this->configPath = $path;
 
+        $this['path.config'] = $path;
+
         return $this;
     }
 
