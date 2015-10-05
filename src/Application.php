@@ -36,6 +36,34 @@ use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 class Application extends Container implements ApplicationContract, HttpKernelInterface
 {
     /**
+     * Indicates if the application has "booted".
+     *
+     * @var bool
+     */
+    protected $booted = false;
+
+    /**
+     * The array of booting callbacks.
+     *
+     * @var array
+     */
+    protected $bootingCallbacks = [];
+
+    /**
+     * The array of booted callbacks.
+     *
+     * @var array
+     */
+    protected $bootedCallbacks = [];
+
+    /**
+     * The array of terminating callbacks.
+     *
+     * @var array
+     */
+    protected $terminatingCallbacks = [];
+
+    /**
      * Indicates if the class aliases have been registered.
      *
      * @var bool
@@ -288,7 +316,18 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function boot()
     {
-        //
+        if ($this->booted) {
+            return;
+        }
+
+        // Once the application has booted we will also fire some "booted" callbacks
+        // for any listeners that need to do work after this initial booting gets
+        // finished. This is useful when ordering the boot-up processes we run.
+        $this->fireAppCallbacks($this->bootingCallbacks);
+
+        $this->booted = true;
+
+        $this->fireAppCallbacks($this->bootedCallbacks);
     }
 
     /**
@@ -300,7 +339,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function booting($callback)
     {
-        //
+        $this->bootingCallbacks[] = $callback;
     }
 
     /**
@@ -312,7 +351,37 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function booted($callback)
     {
-        //
+        $this->bootedCallbacks[] = $callback;
+
+        if ($this->isBooted()) {
+            $this->fireAppCallbacks([$callback]);
+        }
+    }
+
+    /**
+     * Register a terminating callback with the application.
+     *
+     * @param  \Closure  $callback
+     * @return $this
+     */
+    public function terminating(Closure $callback)
+    {
+        $this->terminatingCallbacks[] = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Call the booting callbacks for the application.
+     *
+     * @param  array  $callbacks
+     * @return void
+     */
+    protected function fireAppCallbacks(array $callbacks)
+    {
+        foreach ($callbacks as $callback) {
+            call_user_func($callback, $this);
+        }
     }
 
     /**
