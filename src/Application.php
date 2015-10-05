@@ -409,44 +409,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     }
 
     /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerUrlGeneratorBindings()
-    {
-        $this->singleton('url', function () {
-            return new Routing\UrlGenerator($this);
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerValidatorBindings()
-    {
-        $this->singleton('validator', function () {
-            $this->register('Illuminate\Validation\ValidationServiceProvider');
-
-            return $this->make('validator');
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerViewBindings()
-    {
-        $this->singleton('view', function () {
-            return $this->loadComponent('view', 'Orchestra\View\ViewServiceProvider');
-        });
-    }
-
-    /**
      * Configure and load the given component and provider.
      *
      * @param  string  $config

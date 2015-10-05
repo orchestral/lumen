@@ -8,6 +8,7 @@ use Monolog\Handler\StreamHandler;
 use Illuminate\Foundation\Composer;
 use Monolog\Formatter\LineFormatter;
 use Illuminate\Filesystem\Filesystem;
+use Laravel\Lumen\Routing\UrlGenerator;
 
 trait CoreBindings
 {
@@ -464,6 +465,44 @@ trait CoreBindings
             $this->register('Orchestra\Translation\TranslationServiceProvider');
 
             return $this->make('translator');
+        });
+    }
+
+    /**
+     * Register container bindings for the application.
+     *
+     * @return void
+     */
+    protected function registerUrlGeneratorBindings()
+    {
+        $this->singleton('url', function () {
+            return new UrlGenerator($this);
+        });
+    }
+
+    /**
+     * Register container bindings for the application.
+     *
+     * @return void
+     */
+    protected function registerValidatorBindings()
+    {
+        $this->singleton('validator', function () {
+            $this->register('Illuminate\Validation\ValidationServiceProvider');
+
+            return $this->make('validator');
+        });
+    }
+
+    /**
+     * Register container bindings for the application.
+     *
+     * @return void
+     */
+    protected function registerViewBindings()
+    {
+        $this->singleton('view', function () {
+            return $this->loadComponent('view', 'Orchestra\View\ViewServiceProvider');
         });
     }
 }
