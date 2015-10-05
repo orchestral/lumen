@@ -1,7 +1,6 @@
 <?php namespace api;
 
 use Laravel\Lumen\Http\Redirector;
-use Illuminate\Container\Container;
 use Laravel\Lumen\Http\ResponseFactory;
 use Laravel\Lumen\Routing\UrlGenerator;
 

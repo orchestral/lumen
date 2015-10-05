@@ -28,6 +28,7 @@
         "symfony/security-core": "3.0.*",
         "orchestra/config": "~3.2.0",
         "orchestra/auth": "~3.2.0",
+        "orchestra/memory": "~3.2.0",
         "orchestra/support": "~3.2.0",
         "orchestra/translation": "~3.2.0",
         "orchestra/view": "~3.2.0"
