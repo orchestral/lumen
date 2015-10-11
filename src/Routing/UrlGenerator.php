@@ -13,6 +13,13 @@ class UrlGenerator
     protected $app;
 
     /**
+     * The forced URL root.
+     *
+     * @var string
+     */
+    protected $forcedRoot;
+
+    /**
      * The cached URL scheme for generating URLs.
      *
      * @var string|null
@@ -299,7 +306,7 @@ class UrlGenerator
     {
         if (is_null($root)) {
             if (is_null($this->cachedRoot)) {
-                $this->cachedRoot = $this->app->make('request')->root();
+                $this->cachedRoot = $this->forcedRoot ?: $this->app->make('request')->root();
             }
 
             $root = $this->cachedRoot;
@@ -308,6 +315,18 @@ class UrlGenerator
         $start = starts_with($root, 'http://') ? 'http://' : 'https://';
 
         return preg_replace('~'.$start.'~', $scheme, $root, 1);
+    }
+
+    /**
+     * Set the forced root URL.
+     *
+     * @param  string  $root
+     * @return void
+     */
+    public function forceRootUrl($root)
+    {
+        $this->forcedRoot = rtrim($root, '/');
+        $this->cachedRoot = null;
     }
 
     /**
