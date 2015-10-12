@@ -330,17 +330,6 @@ class UrlGenerator
     }
 
     /**
-     * Clear the forced root URL.
-     *
-     * @return void
-     */
-    public function clearForceRootUrl()
-    {
-        $this->cachedRoot = $this->app->make('request')->root();
-        $this->forcedRoot = null;
-    }
-
-    /**
      * Format the given URL segments into a single URL.
      *
      * @param  string  $root
