@@ -13,6 +13,13 @@ class UrlGenerator
     protected $app;
 
     /**
+     * The forced URL root.
+     *
+     * @var string
+     */
+    protected $forcedRoot;
+
+    /**
      * The cached URL scheme for generating URLs.
      *
      * @var string|null
@@ -128,6 +135,24 @@ class UrlGenerator
         // file in the paths. If it does, we will remove it since it is not needed
         // for asset paths, but only for routes to endpoints in the application.
         $root = $this->getRootUrl($this->getScheme($secure));
+
+        return $this->removeIndex($root).'/'.trim($path, '/');
+    }
+
+    /**
+     * Generate a URL to an application asset from a root domain such as CDN etc.
+     *
+     * @param  string  $root
+     * @param  string  $path
+     * @param  bool|null  $secure
+     * @return string
+     */
+    public function assetFrom($root, $path, $secure = null)
+    {
+        // Once we get the root URL, we will check to see if it contains an index.php
+        // file in the paths. If it does, we will remove it since it is not needed
+        // for asset paths, but only for routes to endpoints in the application.
+        $root = $this->getRootUrl($this->getScheme($secure), $root);
 
         return $this->removeIndex($root).'/'.trim($path, '/');
     }
@@ -299,7 +324,7 @@ class UrlGenerator
     {
         if (is_null($root)) {
             if (is_null($this->cachedRoot)) {
-                $this->cachedRoot = $this->app->make('request')->root();
+                $this->cachedRoot = $this->forcedRoot ?: $this->app->make('request')->root();
             }
 
             $root = $this->cachedRoot;
@@ -308,6 +333,18 @@ class UrlGenerator
         $start = starts_with($root, 'http://') ? 'http://' : 'https://';
 
         return preg_replace('~'.$start.'~', $scheme, $root, 1);
+    }
+
+    /**
+     * Set the forced root URL.
+     *
+     * @param  string  $root
+     * @return void
+     */
+    public function forceRootUrl($root)
+    {
+        $this->forcedRoot = rtrim($root, '/');
+        $this->cachedRoot = null;
     }
 
     /**
