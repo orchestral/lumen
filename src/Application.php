@@ -360,7 +360,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     {
         $this->bootedCallbacks[] = $callback;
 
-        if ($this->isBooted()) {
+        if ($this->booted) {
             $this->fireAppCallbacks([$callback]);
         }
     }
