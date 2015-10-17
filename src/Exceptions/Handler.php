@@ -1,7 +1,7 @@
 <?php namespace Laravel\Lumen\Exceptions;
 
 use Exception;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Symfony\Component\Debug\Exception\FlattenException;
 use Symfony\Component\Console\Application as ConsoleApplication;
