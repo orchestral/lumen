@@ -145,6 +145,7 @@ class UrlGenerator
      * @param  string  $root
      * @param  string  $path
      * @param  bool|null  $secure
+     *
      * @return string
      */
     public function assetFrom($root, $path, $secure = null)
@@ -339,6 +340,7 @@ class UrlGenerator
      * Set the forced root URL.
      *
      * @param  string  $root
+     *
      * @return void
      */
     public function forceRootUrl($root)
