@@ -466,15 +466,18 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     }
 
     /**
-     * Get the path to the given configuration file.
+     * Get the path to the given configuration file, or to the directory if the argument is
+     * empty.
      *
      * @param  string  $name
      *
      * @return string|null
      */
-    protected function getConfigurationPath($name)
+    public function getConfigurationPath($name = null)
     {
-        if (file_exists($path = $this->basePath('lumen/config/').$name.'.php')) {
+        if (is_null($name)) {
+            return config_path();
+        } elseif (file_exists($path = $this->basePath('lumen/config/').$name.'.php')) {
             return $path;
         }
     }
