@@ -206,7 +206,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function version()
     {
-        return 'Lumen (5.1.5) (Laravel Components 5.1.*)';
+        return 'Lumen (5.1.6) (Laravel Components 5.1.*)';
     }
 
     /**
@@ -307,7 +307,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Register a deferred provider and service.
      *
      * @param  string  $provider
-     * @param  string  $service
+     * @param  string|null  $service
      *
      * @return void
      */
@@ -466,10 +466,11 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     }
 
     /**
-     * Get the path to the given configuration file, or to the directory if the argument is
-     * empty.
+     * Get the path to the given configuration file.
      *
-     * @param  string  $name
+     * If no name is provided, then we'll return the path to the config folder.
+     *
+     * @param  string|null  $name
      *
      * @return string|null
      */
@@ -1161,7 +1162,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     /**
      * Get the base path for the application.
      *
-     * @param  string  $path
+     * @param  string|null  $path
      *
      * @return string
      */
@@ -1183,7 +1184,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     /**
      * Get the storage path for the application.
      *
-     * @param  string  $path
+     * @param  string|null  $path
      *
      * @return string
      */
@@ -1241,7 +1242,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     /**
      * Get the resource path for the application.
      *
-     * @param  string  $path
+     * @param  string|null  $path
      *
      * @return string
      */
