@@ -1,10 +1,10 @@
 <?php namespace Laravel\Lumen\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Cookie;
 use Illuminate\Contracts\Encryption\Encrypter;
 use Illuminate\Session\TokenMismatchException;
-use Symfony\Component\Security\Core\Util\StringUtils;
 
 class VerifyCsrfToken
 {
@@ -59,7 +59,7 @@ class VerifyCsrfToken
             $token = $this->encrypter->decrypt($header);
         }
 
-        return StringUtils::equals($request->session()->token(), $token);
+        return Str::equals($request->session()->token(), $token);
     }
 
     /**
