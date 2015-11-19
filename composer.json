@@ -38,8 +38,7 @@
         "dingo/api": "~1.0"
     },
     "suggest": {
-        "dingo/api": "Better API routing support (~1.0)",
-        "vlucas/phpdotenv": "Required to use .env files (~1.0)."
+        "dingo/api": "Better API routing support (~1.0)"
     },
     "extra": {
         "branch-alias": {
