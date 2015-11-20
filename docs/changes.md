@@ -5,6 +5,13 @@ title: Lumen Change Log
 
 ## Version 3.1 {#v3-1}
 
+### v3.1.3 {#v3-1-3}
+
+* Fixes `php artisan serve` command to load the correct path.
+* Use `hash_equal()` method by default for comparing CSRF token.
+* Load `DotEnv` by default.
+* Clean-up unused stub.
+
 ### v3.1.2 {#v3-1-2}
 
 * Allow getting path from `Laravel\Lumen\Application::getConfigurationPath()`.
