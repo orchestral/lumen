@@ -36,7 +36,7 @@ class ServeCommand extends Command
 
         $this->info("Lumen development server started on http://{$host}:{$port}/");
 
-        passthru('"'.PHP_BINARY.'"'." -S {$host}:{$port} \"{$base}\"/server.php");
+        passthru('"'.PHP_BINARY.'"'." -S {$host}:{$port} \"{$base}\"/lumen/server.php");
     }
 
     /**
