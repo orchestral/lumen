@@ -23,14 +23,14 @@
     },
     "require": {
         "php": ">=5.5.9",
-        "laravel/framework": "~5.2.0",
+        "laravel/framework": "~5.3.0",
         "nikic/fast-route": "0.6.*",
-        "orchestra/config": "~3.2.0",
-        "orchestra/auth": "~3.2.0",
-        "orchestra/memory": "~3.2.0",
-        "orchestra/support": "~3.2.0",
-        "orchestra/translation": "~3.2.0",
-        "orchestra/view": "~3.2.0"
+        "orchestra/config": "~3.3.0",
+        "orchestra/auth": "~3.3.0",
+        "orchestra/memory": "~3.3.0",
+        "orchestra/support": "~3.3.0",
+        "orchestra/translation": "~3.3.0",
+        "orchestra/view": "~3.3.0"
     },
     "require-dev": {
         "mockery/mockery": "^0.9.1",
