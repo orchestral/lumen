@@ -7,7 +7,7 @@ title: Lumen Change Log
 
 ### v3.1.4 {#v3-1-4}
 
-* Revert `hash_equals()` method with `Illuminate\Support\Str::equals()` as the polyfill helper is only exist under Laravel 5.2+.
+* Add `symfony/polyfill-php56` to add support `hash_equals()` on < PHP 5.6.
 
 ### v3.1.3 {#v3-1-3}
 
