@@ -5,6 +5,10 @@ title: Lumen Change Log
 
 ## Version 3.1 {#v3-1}
 
+### v3.1.4 {#v3-1-4}
+
+* Revert `hash_equals()` method with `Illuminate\Support\Str::equals()` as the polyfill helper is only exist under Laravel 5.2+.
+
 ### v3.1.3 {#v3-1-3}
 
 * Fixes `php artisan serve` command to load the correct path.
