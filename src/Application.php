@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Foundation\CoreBindings;
 use Laravel\Lumen\Foundation\ErrorHandlings;
+use Orchestra\Foundation\Listeners\UserAccess;
 use Illuminate\Http\Exception\HttpResponseException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -486,7 +487,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     /**
      * Register the facades for the application.
      *
-     * @return void
+     * @return $this
      */
     public function withFacades()
     {
@@ -513,16 +514,35 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
             class_alias('Illuminate\Support\Facades\Storage', 'Storage');
             class_alias('Illuminate\Support\Facades\Validator', 'Validator');
         }
+
+        return $this;
+    }
+
+    /**
+     * Bootstrap Orchestra Platform Foundation.
+     *
+     * @return $this
+     */
+    public function withFoundation()
+    {
+        $this->make('events')->listen('orchestra.auth: roles', UserAccess::class);
+
+        $this->registerMemoryBindings();
+        $this->registerAuthorizationBindings();
+
+        return $this;
     }
 
     /**
      * Load the Eloquent library for the application.
      *
-     * @return void
+     * @return $this
      */
     public function withEloquent()
     {
         $this->make('db');
+
+        return $this;
     }
 
     /**

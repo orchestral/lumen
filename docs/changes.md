@@ -5,6 +5,10 @@ title: Lumen Change Log
 
 ## Version 3.1 {#v3-1}
 
+### v3.1.4 {#v3-1-4}
+
+* Add `symfony/polyfill-php56` to add support `hash_equals()` on < PHP 5.6.
+
 ### v3.1.3 {#v3-1-3}
 
 * Fixes `php artisan serve` command to load the correct path.
