@@ -29,6 +29,7 @@
         "nikic/fast-route": "0.4.*",
         "orchestra/config": "~3.1.0",
         "orchestra/auth": "~3.1.0",
+        "orchestra/foundation": "~3.1.19",
         "orchestra/memory": "~3.1.0",
         "orchestra/support": "~3.1.0",
         "orchestra/translation": "~3.1.0",
