@@ -5,6 +5,11 @@ title: Lumen Change Log
 
 ## Version 3.1 {#v3-1}
 
+### v3.1.5 {#v3-1-5}
+
+* Add `Laravel\Lumen\Application::withFoundation()` to boot basic Orchestra Platform support.
+* Allow method chaining on `withFacades()`, `withEloquent()` and `withFoundation()`.
+
 ### v3.1.4 {#v3-1-4}
 
 * Add `symfony/polyfill-php56` to add support `hash_equals()` on < PHP 5.6.
