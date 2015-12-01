@@ -1,14 +1,12 @@
-<?php namespace Laravel\Lumen\Foundation;
+<?php namespace Laravel\Lumen\Concerns;
 
 use ErrorException;
 use PhpParser\Error;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-trait ErrorHandlings
+trait RegistersExceptionHandlers
 {
     /**
      * Set the error handling for the application.
@@ -98,25 +96,5 @@ trait ErrorHandlings
         } else {
             $handler->render($this->make('request'), $e)->send();
         }
-    }
-
-    /**
-     * Throw an HttpException with the given data.
-     *
-     * @param  int     $code
-     * @param  string  $message
-     * @param  array   $headers
-     *
-     * @return void
-     *
-     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
-     */
-    public function abort($code, $message = '', array $headers = [])
-    {
-        if ($code == 404) {
-            throw new NotFoundHttpException($message);
-        }
-
-        throw new HttpException($code, $message, null, $headers);
     }
 }

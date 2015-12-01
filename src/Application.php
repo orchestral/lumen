@@ -10,11 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Container\Container;
-use Illuminate\Foundation\Composer;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Lumen\Foundation\CoreBindings;
-use Laravel\Lumen\Foundation\ErrorHandlings;
 use Orchestra\Foundation\Listeners\UserAccess;
 use Illuminate\Http\Exception\HttpResponseException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -27,7 +24,8 @@ use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class Application extends Container implements ApplicationContract, HttpKernelInterface
 {
-    use CoreBindings, ErrorHandlings;
+    use Concerns\CoreBindings,
+        Concerns\RegistersExceptionHandlers;
 
     /**
      * Indicates if the application has "booted".
@@ -315,6 +313,26 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     public function registerDeferredProvider($provider, $service = null)
     {
         return $this->register($provider);
+    }
+
+    /**
+     * Throw an HttpException with the given data.
+     *
+     * @param  int     $code
+     * @param  string  $message
+     * @param  array   $headers
+     *
+     * @return void
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+     */
+    public function abort($code, $message = '', array $headers = [])
+    {
+        if ($code == 404) {
+            throw new NotFoundHttpException($message);
+        }
+
+        throw new HttpException($code, $message, null, $headers);
     }
 
     /**

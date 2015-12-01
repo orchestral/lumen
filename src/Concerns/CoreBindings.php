@@ -1,4 +1,4 @@
-<?php namespace Laravel\Lumen\Foundation;
+<?php namespace Laravel\Lumen\Concerns;
 
 use Monolog\Logger;
 use Illuminate\Http\Request;
