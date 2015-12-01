@@ -4,6 +4,7 @@ use Closure;
 use Illuminate\Support\Str;
 use Illuminate\Container\Container;
 use Illuminate\Support\ServiceProvider;
+use Orchestra\Foundation\Listeners\UserAccess;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
