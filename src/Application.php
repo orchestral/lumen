@@ -1,33 +1,18 @@
 <?php namespace Laravel\Lumen;
 
 use Closure;
-use Exception;
-use Throwable;
-use RuntimeException;
-use FastRoute\Dispatcher;
 use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Pipeline\Pipeline;
 use Illuminate\Container\Container;
-use Illuminate\Foundation\Composer;
-use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Lumen\Foundation\CoreBindings;
-use Laravel\Lumen\Foundation\ErrorHandlings;
 use Orchestra\Foundation\Listeners\UserAccess;
-use Illuminate\Http\Exception\HttpResponseException;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
-use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Illuminate\Contracts\Foundation\Application as ApplicationContract;
-use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
-class Application extends Container implements ApplicationContract, HttpKernelInterface
+class Application extends Container
 {
-    use CoreBindings, ErrorHandlings;
+    use Concerns\CoreBindings,
+        Concerns\RoutesRequests,
+        Concerns\RegistersExceptionHandlers;
 
     /**
      * Indicates if the application has "booted".
@@ -72,74 +57,11 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     protected $basePath;
 
     /**
-     * The storage path of the application installation.
-     *
-     * @var string
-     */
-    protected $storagePath;
-
-    /**
-     * The configuration path of the application installation.
-     *
-     * @var string
-     */
-    protected $configPath;
-
-    /**
-     * The resource path of the application installation.
-     *
-     * @var string
-     */
-    protected $resourcePath;
-
-    /**
      * All of the loaded configuration files.
      *
      * @var array
      */
     protected $loadedConfigurations = [];
-
-    /**
-     * All of the routes waiting to be registered.
-     *
-     * @var array
-     */
-    protected $routes = [];
-
-    /**
-     * All of the named routes and URI pairs.
-     *
-     * @var array
-     */
-    public $namedRoutes = [];
-
-    /**
-     * The shared attributes for the current route group.
-     *
-     * @var array|null
-     */
-    protected $groupAttributes;
-
-    /**
-     * All of the global middleware for the application.
-     *
-     * @var array
-     */
-    protected $middleware = [];
-
-    /**
-     * All of the route specific middleware short-hands.
-     *
-     * @var array
-     */
-    protected $routeMiddleware = [];
-
-    /**
-     * The current route being dispatched.
-     *
-     * @var array
-     */
-    protected $currentRoute;
 
     /**
      * The loaded service providers.
@@ -154,13 +76,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * @var array
      */
     protected $ranServiceBinders = [];
-
-    /**
-     * The FastRoute dispatcher.
-     *
-     * @var \FastRoute\Dispatcher
-     */
-    protected $dispatcher;
 
     /**
      * The application namespace.
@@ -179,6 +94,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
 
         $this->basePath = $basePath;
+
         $this->bootstrapContainer();
         $this->registerErrorHandling();
     }
@@ -193,8 +109,10 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         static::setInstance($this);
 
         $this->instance('app', $this);
+        $this->instance('Laravel\Lumen\Application', $this);
+
         $this->instance('path', $this->path());
-        $this->instance('path.config', $this->configPath ?: $this->basePath('resources/config'));
+        $this->instance('path.config', $this->basePath('resources/config'));
         $this->instance('path.storage', $this->storagePath());
 
         $this->registerContainerAliases();
@@ -207,7 +125,17 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function version()
     {
-        return 'Lumen (5.2.0-dev) (Laravel Components 5.2.*)';
+        return 'Lumen (6.0.0-dev) (Laravel Components 5.2.*)';
+    }
+
+    /**
+     * Determine if the application is currently down for maintenance.
+     *
+     * @return bool
+     */
+    public function isDownForMaintenance()
+    {
+        return false;
     }
 
     /**
@@ -234,46 +162,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         }
 
         return $env;
-    }
-
-    /**
-     * Determine if the application is currently down for maintenance.
-     *
-     * @return bool
-     */
-    public function isDownForMaintenance()
-    {
-        return file_exists($this->storagePath().'/framework/down');
-    }
-
-    /**
-     * Register all of the configured providers.
-     *
-     * @return void
-     */
-    public function registerConfiguredProviders()
-    {
-        //
-    }
-
-    /**
-     * Get the path to the cached "compiled.php" file.
-     *
-     * @return string
-     */
-    public function getCachedCompilePath()
-    {
-        throw new Exception(__FUNCTION__.' is not implemented by Lumen.');
-    }
-
-    /**
-     * Get the path to the cached services.json file.
-     *
-     * @return string
-     */
-    public function getCachedServicesPath()
-    {
-        throw new Exception(__FUNCTION__.' is not implemented by Lumen.');
     }
 
     /**
@@ -315,6 +203,26 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     public function registerDeferredProvider($provider, $service = null)
     {
         return $this->register($provider);
+    }
+
+    /**
+     * Throw an HttpException with the given data.
+     *
+     * @param  int     $code
+     * @param  string  $message
+     * @param  array   $headers
+     *
+     * @return void
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+     */
+    public function abort($code, $message = '', array $headers = [])
+    {
+        if ($code == 404) {
+            throw new NotFoundHttpException($message);
+        }
+
+        throw new HttpException($code, $message, null, $headers);
     }
 
     /**
@@ -485,40 +393,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     }
 
     /**
-     * Register the facades for the application.
-     *
-     * @return $this
-     */
-    public function withFacades()
-    {
-        Facade::setFacadeApplication($this);
-
-        if (! static::$aliasesRegistered) {
-            static::$aliasesRegistered = true;
-
-            class_alias('Illuminate\Support\Facades\App', 'App');
-            class_alias('Illuminate\Support\Facades\Auth', 'Auth');
-            class_alias('Illuminate\Support\Facades\Bus', 'Bus');
-            class_alias('Illuminate\Support\Facades\DB', 'DB');
-            class_alias('Illuminate\Support\Facades\Cache', 'Cache');
-            class_alias('Illuminate\Support\Facades\Cookie', 'Cookie');
-            class_alias('Illuminate\Support\Facades\Crypt', 'Crypt');
-            class_alias('Illuminate\Support\Facades\Event', 'Event');
-            class_alias('Illuminate\Support\Facades\Hash', 'Hash');
-            class_alias('Illuminate\Support\Facades\Log', 'Log');
-            class_alias('Illuminate\Support\Facades\Mail', 'Mail');
-            class_alias('Illuminate\Support\Facades\Queue', 'Queue');
-            class_alias('Illuminate\Support\Facades\Request', 'Request');
-            class_alias('Illuminate\Support\Facades\Schema', 'Schema');
-            class_alias('Illuminate\Support\Facades\Session', 'Session');
-            class_alias('Illuminate\Support\Facades\Storage', 'Storage');
-            class_alias('Illuminate\Support\Facades\Validator', 'Validator');
-        }
-
-        return $this;
-    }
-
-    /**
      * Bootstrap Orchestra Platform Foundation.
      *
      * @return $this
@@ -543,630 +417,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         $this->make('db');
 
         return $this;
-    }
-
-    /**
-     * Register a set of routes with a set of shared attributes.
-     *
-     * @param  array  $attributes
-     * @param  \Closure  $callback
-     *
-     * @return void
-     */
-    public function group(array $attributes, Closure $callback)
-    {
-        $parentGroupAttributes = $this->groupAttributes;
-
-        $this->groupAttributes = $attributes;
-
-        call_user_func($callback, $this);
-
-        $this->groupAttributes = $parentGroupAttributes;
-    }
-
-    /**
-     * Register a route with the application.
-     *
-     * @param  string  $uri
-     * @param  mixed  $action
-     *
-     * @return $this
-     */
-    public function get($uri, $action)
-    {
-        $this->addRoute('GET', $uri, $action);
-
-        return $this;
-    }
-
-    /**
-     * Register a route with the application.
-     *
-     * @param  string  $uri
-     * @param  mixed  $action
-     *
-     * @return $this
-     */
-    public function post($uri, $action)
-    {
-        $this->addRoute('POST', $uri, $action);
-
-        return $this;
-    }
-
-    /**
-     * Register a route with the application.
-     *
-     * @param  string  $uri
-     * @param  mixed  $action
-     *
-     * @return $this
-     */
-    public function put($uri, $action)
-    {
-        $this->addRoute('PUT', $uri, $action);
-
-        return $this;
-    }
-
-    /**
-     * Register a route with the application.
-     *
-     * @param  string  $uri
-     * @param  mixed  $action
-     *
-     * @return $this
-     */
-    public function patch($uri, $action)
-    {
-        $this->addRoute('PATCH', $uri, $action);
-
-        return $this;
-    }
-
-    /**
-     * Register a route with the application.
-     *
-     * @param  string  $uri
-     * @param  mixed  $action
-     *
-     * @return $this
-     */
-    public function delete($uri, $action)
-    {
-        $this->addRoute('DELETE', $uri, $action);
-
-        return $this;
-    }
-
-    /**
-     * Register a route with the application.
-     *
-     * @param  string  $uri
-     * @param  mixed  $action
-     *
-     * @return $this
-     */
-    public function options($uri, $action)
-    {
-        $this->addRoute('OPTIONS', $uri, $action);
-
-        return $this;
-    }
-
-    /**
-     * Add a route to the collection.
-     *
-     * @param  string  $method
-     * @param  string  $uri
-     * @param  mixed  $action
-     */
-    public function addRoute($method, $uri, $action)
-    {
-        $action = $this->parseAction($action);
-
-        if (isset($this->groupAttributes)) {
-            if (isset($this->groupAttributes['prefix'])) {
-                $uri = trim($this->groupAttributes['prefix'], '/').'/'.trim($uri, '/');
-            }
-
-            $action = $this->mergeGroupAttributes($action);
-        }
-
-        $uri = '/'.trim($uri, '/');
-
-        if (isset($action['as'])) {
-            $this->namedRoutes[$action['as']] = $uri;
-        }
-
-        $this->routes[$method.$uri] = ['method' => $method, 'uri' => $uri, 'action' => $action];
-    }
-
-    /**
-     * Parse the action into an array format.
-     *
-     * @param  mixed  $action
-     *
-     * @return array
-     */
-    protected function parseAction($action)
-    {
-        if (is_string($action)) {
-            return ['uses' => $action];
-        } elseif (! is_array($action)) {
-            return [$action];
-        }
-
-        return $action;
-    }
-
-    /**
-     * Merge the group attributes into the action.
-     *
-     * @param  array  $action
-     *
-     * @return array
-     */
-    protected function mergeGroupAttributes(array $action)
-    {
-        return $this->mergeNamespaceGroup(
-            $this->mergeMiddlewareGroup($action)
-        );
-    }
-
-    /**
-     * Merge the namespace group into the action.
-     *
-     * @param  array  $action
-     *
-     * @return array
-     */
-    protected function mergeNamespaceGroup(array $action)
-    {
-        if (isset($this->groupAttributes['namespace']) && isset($action['uses'])) {
-            $action['uses'] = $this->groupAttributes['namespace'].'\\'.$action['uses'];
-        }
-
-        return $action;
-    }
-
-    /**
-     * Merge the middleware group into the action.
-     *
-     * @param  array  $action
-     *
-     * @return array
-     */
-    protected function mergeMiddlewareGroup($action)
-    {
-        if (isset($this->groupAttributes['middleware'])) {
-            if (isset($action['middleware'])) {
-                $action['middleware'] = $this->groupAttributes['middleware'].'|'.$action['middleware'];
-            } else {
-                $action['middleware'] = $this->groupAttributes['middleware'];
-            }
-        }
-
-        return $action;
-    }
-
-    /**
-     * Add new middleware to the application.
-     *
-     * @param  array  $middleware
-     *
-     * @return $this
-     */
-    public function middleware(array $middleware)
-    {
-        $this->middleware = array_unique(array_merge($this->middleware, $middleware));
-
-        return $this;
-    }
-
-    /**
-     * Define the route middleware for the application.
-     *
-     * @param  array  $middleware
-     *
-     * @return $this
-     */
-    public function routeMiddleware(array $middleware)
-    {
-        $this->routeMiddleware = array_merge($this->routeMiddleware, $middleware);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function handle(SymfonyRequest $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
-    {
-        return $this->dispatch($request);
-    }
-
-    /**
-     * Run the application and send the response.
-     *
-     * @param  SymfonyRequest|null  $request
-     *
-     * @return void
-     */
-    public function run($request = null)
-    {
-        $response = $this->dispatch($request);
-
-        if ($response instanceof SymfonyResponse) {
-            $response->send();
-        } else {
-            echo (string) $response;
-        }
-
-        if (count($this->middleware) > 0) {
-            $this->callTerminableMiddleware($response);
-        }
-    }
-
-    /**
-     * Call the terminable middleware.
-     *
-     * @param  mixed  $response
-     *
-     * @return void
-     */
-    protected function callTerminableMiddleware($response)
-    {
-        $response = $this->prepareResponse($response);
-
-        foreach ($this->middleware as $middleware) {
-            $instance = $this->make($middleware);
-
-            if (method_exists($instance, 'terminate')) {
-                $instance->terminate($this->make('request'), $response);
-            }
-        }
-    }
-
-    /**
-     * Dispatch the incoming request.
-     *
-     * @param  SymfonyRequest|null  $request
-     *
-     * @return Response
-     */
-    public function dispatch($request = null)
-    {
-        if ($request) {
-            $this->instance('Illuminate\Http\Request', $request);
-            $this->ranServiceBinders['registerRequestBindings'] = true;
-
-            $method   = $request->getMethod();
-            $pathInfo = $request->getPathInfo();
-        } else {
-            $method   = $this->getMethod();
-            $pathInfo = $this->getPathInfo();
-        }
-
-        try {
-            return $this->sendThroughPipeline($this->middleware, function () use ($method, $pathInfo) {
-                if (isset($this->routes[$method.$pathInfo])) {
-                    return $this->handleFoundRoute([true, $this->routes[$method.$pathInfo]['action'], []]);
-                }
-
-                return $this->handleDispatcherResponse(
-                    $this->createDispatcher()->dispatch($method, $pathInfo)
-                );
-            });
-        } catch (Exception $e) {
-            return $this->sendExceptionToHandler($e);
-        } catch (Throwable $e) {
-            return $this->sendExceptionToHandler($e);
-        }
-    }
-
-    /**
-     * Create a FastRoute dispatcher instance for the application.
-     *
-     * @return Dispatcher
-     */
-    protected function createDispatcher()
-    {
-        return $this->dispatcher ?: \FastRoute\simpleDispatcher(function ($r) {
-            foreach ($this->routes as $route) {
-                $r->addRoute($route['method'], $route['uri'], $route['action']);
-            }
-        });
-    }
-
-    /**
-     * Set the FastRoute dispatcher instance.
-     *
-     * @param  \FastRoute\Dispatcher  $dispatcher
-     *
-     * @return void
-     */
-    public function setDispatcher(Dispatcher $dispatcher)
-    {
-        $this->dispatcher = $dispatcher;
-    }
-
-    /**
-     * Handle the response from the FastRoute dispatcher.
-     *
-     * @param  array  $routeInfo
-     *
-     * @return mixed
-     */
-    protected function handleDispatcherResponse($routeInfo)
-    {
-        switch ($routeInfo[0]) {
-            case Dispatcher::NOT_FOUND:
-                throw new NotFoundHttpException();
-
-            case Dispatcher::METHOD_NOT_ALLOWED:
-                throw new MethodNotAllowedHttpException($routeInfo[1]);
-
-            case Dispatcher::FOUND:
-                return $this->handleFoundRoute($routeInfo);
-        }
-    }
-
-    /**
-     * Handle a route found by the dispatcher.
-     *
-     * @param  array  $routeInfo
-     *
-     * @return mixed
-     */
-    protected function handleFoundRoute($routeInfo)
-    {
-        $this->currentRoute = $routeInfo;
-
-        $action = $routeInfo[1];
-
-        // Pipe through route middleware...
-        if (isset($action['middleware'])) {
-            $middleware = $this->gatherMiddlewareClassNames($action['middleware']);
-
-            return $this->prepareResponse($this->sendThroughPipeline($middleware, function () use ($routeInfo) {
-                return $this->callActionOnArrayBasedRoute($routeInfo);
-            }));
-        }
-
-        return $this->prepareResponse(
-            $this->callActionOnArrayBasedRoute($routeInfo)
-        );
-    }
-
-    /**
-     * Call the Closure on the array based route.
-     *
-     * @param  array  $routeInfo
-     *
-     * @return mixed
-     */
-    protected function callActionOnArrayBasedRoute($routeInfo)
-    {
-        $action = $routeInfo[1];
-
-        if (isset($action['uses'])) {
-            return $this->prepareResponse($this->callControllerAction($routeInfo));
-        }
-
-        foreach ($action as $value) {
-            if ($value instanceof Closure) {
-                $closure = $value->bindTo(new Routing\Closure());
-                break;
-            }
-        }
-
-        try {
-            return $this->prepareResponse($this->call($closure, $routeInfo[2]));
-        } catch (HttpResponseException $e) {
-            return $e->getResponse();
-        }
-    }
-
-    /**
-     * Call a controller based route.
-     *
-     * @param  array  $routeInfo
-     *
-     * @return mixed
-     */
-    protected function callControllerAction($routeInfo)
-    {
-        list($controller, $method) = explode('@', $routeInfo[1]['uses']);
-
-        if (! method_exists($instance = $this->make($controller), $method)) {
-            throw new NotFoundHttpException();
-        }
-
-        if ($instance instanceof Routing\Controller) {
-            return $this->callLumenController($instance, $method, $routeInfo);
-        } else {
-            return $this->callControllerCallable(
-                [$instance, $method], $routeInfo[2]
-            );
-        }
-    }
-
-    /**
-     * Send the request through a Lumen controller.
-     *
-     * @param  mixed  $instance
-     * @param  string  $method
-     * @param  array  $routeInfo
-     *
-     * @return mixed
-     */
-    protected function callLumenController($instance, $method, $routeInfo)
-    {
-        $middleware = $instance->getMiddlewareForMethod(
-            $method
-        );
-
-        if (count($middleware) > 0) {
-            return $this->callLumenControllerWithMiddleware(
-                $instance, $method, $routeInfo, $middleware
-            );
-        } else {
-            return $this->callControllerCallable(
-                [$instance, $method], $routeInfo[2]
-            );
-        }
-    }
-
-    /**
-     * Send the request through a set of controller middleware.
-     *
-     * @param  mixed  $instance
-     * @param  string  $method
-     * @param  array  $routeInfo
-     * @param  array  $middleware
-     *
-     * @return mixed
-     */
-    protected function callLumenControllerWithMiddleware($instance, $method, $routeInfo, $middleware)
-    {
-        $middleware = $this->gatherMiddlewareClassNames($middleware);
-
-        return $this->sendThroughPipeline($middleware, function () use ($instance, $method, $routeInfo) {
-            return $this->callControllerCallable(
-                [$instance, $method], $routeInfo[2]
-            );
-        });
-    }
-
-    /**
-     * Call the callable for a controller action with the given parameters.
-     *
-     * @param  array  $callable
-     * @param  array $parameters
-     *
-     * @return mixed
-     */
-    protected function callControllerCallable(array $callable, array $parameters)
-    {
-        try {
-            return $this->prepareResponse(
-                $this->call($callable, $parameters)
-            );
-        } catch (HttpResponseException $e) {
-            return $e->getResponse();
-        }
-    }
-
-    /**
-     * Gather the full class names for the middleware short-cut string.
-     *
-     * @param  string  $middleware
-     *
-     * @return array
-     */
-    protected function gatherMiddlewareClassNames($middleware)
-    {
-        $middleware = is_string($middleware) ? explode('|', $middleware) : (array) $middleware;
-
-        return array_map(function ($name) {
-            list($name, $parameters) = array_pad(explode(':', $name, 2), 2, null);
-
-            return array_get($this->routeMiddleware, $name, $name).($parameters ? ':'.$parameters : '');
-        }, $middleware);
-    }
-
-    /**
-     * Send the request through the pipeline with the given callback.
-     *
-     * @param  array  $middleware
-     * @param  \Closure  $then
-     *
-     * @return mixed
-     */
-    protected function sendThroughPipeline(array $middleware, Closure $then)
-    {
-        $shouldSkipMiddleware = $this->bound('middleware.disable') &&
-                                        $this->make('middleware.disable') === true;
-
-        if (count($middleware) > 0 && ! $shouldSkipMiddleware) {
-            return (new Pipeline($this))
-                ->send($this->make('request'))
-                ->through($middleware)
-                ->then($then);
-        }
-
-        return $then();
-    }
-
-    /**
-     * Prepare the response for sending.
-     *
-     * @param  mixed  $response
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function prepareResponse($response)
-    {
-        if (! $response instanceof SymfonyResponse) {
-            $response = new Response($response);
-        } elseif ($response instanceof BinaryFileResponse) {
-            $response = $response->prepare(Request::capture());
-        }
-
-        return $response;
-    }
-
-    /**
-     * Get the current HTTP request method.
-     *
-     * @return string
-     */
-    protected function getMethod()
-    {
-        if (isset($_POST['_method'])) {
-            return strtoupper($_POST['_method']);
-        } else {
-            return $_SERVER['REQUEST_METHOD'];
-        }
-    }
-
-    /**
-     * Get the current HTTP path info.
-     *
-     * @return string
-     */
-    protected function getPathInfo()
-    {
-        $query = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '';
-
-        return '/'.trim(str_replace('?'.$query, '', $_SERVER['REQUEST_URI']), '/');
-    }
-
-    /**
-     * Get the application namespace.
-     *
-     * @return string
-     *
-     * @throws \RuntimeException
-     */
-    public function getNamespace()
-    {
-        if (! is_null($this->namespace)) {
-            return $this->namespace;
-        }
-
-        $composer = json_decode(file_get_contents($this->basePath().'/composer.json'), true);
-
-        foreach ((array) data_get($composer, 'autoload.psr-4') as $namespace => $path) {
-            foreach ((array) $path as $pathChoice) {
-                if (realpath($this->path()) == realpath($this->basePath().'/'.$pathChoice)) {
-                    return $this->namespace = $namespace;
-                }
-            }
-        }
-
-        throw new RuntimeException('Unable to detect application namespace.');
     }
 
     /**
@@ -1210,83 +460,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function storagePath($path = null)
     {
-        if ($this->storagePath) {
-            return $this->storagePath.($path ? '/'.$path : $path);
-        }
-
         return $this->basePath().'/storage'.($path ? '/'.$path : $path);
-    }
-
-    /**
-     * Set a custom storage path for the application.
-     *
-     * @param  string  $path
-     *
-     * @return $this
-     */
-    public function useStoragePath($path)
-    {
-        $this->storagePath = $path;
-
-        $this['path.storage'] = $path;
-
-        return $this;
-    }
-
-    /**
-     * Get the database path for the application.
-     *
-     * @return string
-     */
-    public function databasePath()
-    {
-        return $this->basePath().'/database';
-    }
-
-    /**
-     * Set a custom configuration path for the application.
-     *
-     * @param  string  $path
-     *
-     * @return $this
-     */
-    public function useConfigPath($path)
-    {
-        $this->configPath = $path;
-
-        $this['path.config'] = $path;
-
-        return $this;
-    }
-
-    /**
-     * Get the resource path for the application.
-     *
-     * @param  string|null  $path
-     *
-     * @return string
-     */
-    public function resourcePath($path = null)
-    {
-        if ($this->resourcePath) {
-            return $this->resourcePath.($path ? '/'.$path : $path);
-        }
-
-        return $this->basePath().'/resources'.($path ? '/'.$path : $path);
-    }
-
-    /**
-     * Set a custom resource path for the application.
-     *
-     * @param  string  $path
-     *
-     * @return $this
-     */
-    public function useResourcePath($path)
-    {
-        $this->resourcePath = $path;
-
-        return $this;
     }
 
     /**
@@ -1308,14 +482,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     {
         $this->withFacades();
 
-        $this->make('cache');
-        $this->make('queue');
-
         $this->configure('database');
-
-        $this->register('Illuminate\Database\MigrationServiceProvider');
-        $this->register('Illuminate\Database\SeedServiceProvider');
-        $this->register('Illuminate\Queue\ConsoleServiceProvider');
     }
 
     /**
@@ -1338,63 +505,5 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     public function setRoutes(array $routes)
     {
         $this->routes = $routes;
-    }
-
-    /**
-     * Get the HTML from the Lumen welcome screen.
-     *
-     * @return string
-     */
-    public function welcome()
-    {
-        return "<!DOCTYPE html>
-            <html>
-            <head>
-                <title>Lumen</title>
-
-                <link href='//fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'>
-
-                <style>
-                    body {
-                        margin: 0;
-                        padding: 0;
-                        width: 100%;
-                        height: 100%;
-                        color: #B0BEC5;
-                        display: table;
-                        font-weight: 100;
-                        font-family: 'Lato';
-                    }
-
-                    .container {
-                        text-align: center;
-                        display: table-cell;
-                        vertical-align: middle;
-                    }
-
-                    .content {
-                        text-align: center;
-                        display: inline-block;
-                    }
-
-                    .title {
-                        font-size: 96px;
-                        margin-bottom: 40px;
-                    }
-
-                    .quote {
-                        font-size: 24px;
-                    }
-                </style>
-            </head>
-            <body>
-                <div class=\"container\">
-                    <div class=\"content\">
-                        <div class=\"title\">Lumen.</div>
-                    </div>
-                </div>
-            </body>
-            </html>
-        ";
     }
 }

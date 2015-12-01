@@ -1,14 +1,13 @@
-<?php namespace Laravel\Lumen\Foundation;
+<?php namespace Laravel\Lumen\Concerns;
 
+use Error;
+use Exception;
 use ErrorException;
-use PhpParser\Error;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-trait ErrorHandlings
+trait RegistersExceptionHandlers
 {
     /**
      * Set the error handling for the application.
@@ -30,12 +29,22 @@ trait ErrorHandlings
         });
 
         register_shutdown_function(function () {
-            if (! is_null($error = error_get_last()) && $this->isFatalError($error['type'])) {
-                $this->handleUncaughtException(new FatalErrorException(
-                    $error['message'], $error['type'], 0, $error['file'], $error['line']
-                ));
-            }
+            $this->handleShutdown();
         });
+    }
+
+    /**
+     * Handle the application shutdown routine.
+     *
+     * @return void
+     */
+    protected function handleShutdown()
+    {
+        if (! is_null($error = error_get_last()) && $this->isFatalError($error['type'])) {
+            $this->handleUncaughtException(new FatalErrorException(
+                $error['message'], $error['type'], 0, $error['file'], $error['line']
+            ));
+        }
     }
 
     /**
@@ -65,7 +74,7 @@ trait ErrorHandlings
      */
     protected function sendExceptionToHandler($e)
     {
-        $handler = $this->make('Illuminate\Contracts\Debug\ExceptionHandler');
+        $handler = $this->resolveExceptionHandler();
 
         if ($e instanceof Error) {
             $e = new FatalThrowableError($e);
@@ -85,7 +94,7 @@ trait ErrorHandlings
      */
     protected function handleUncaughtException($e)
     {
-        $handler = $this->make('Illuminate\Contracts\Debug\ExceptionHandler');
+        $handler = $this->resolveExceptionHandler();
 
         if ($e instanceof Error) {
             $e = new FatalThrowableError($e);
@@ -101,22 +110,12 @@ trait ErrorHandlings
     }
 
     /**
-     * Throw an HttpException with the given data.
+     * Get the exception handler from the container.
      *
-     * @param  int     $code
-     * @param  string  $message
-     * @param  array   $headers
-     *
-     * @return void
-     *
-     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+     * @return mixed
      */
-    public function abort($code, $message = '', array $headers = [])
+    protected function resolveExceptionHandler()
     {
-        if ($code == 404) {
-            throw new NotFoundHttpException($message);
-        }
-
-        throw new HttpException($code, $message, null, $headers);
+        return $this->make('Illuminate\Contracts\Debug\ExceptionHandler');
     }
 }

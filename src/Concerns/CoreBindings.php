@@ -1,11 +1,11 @@
-<?php namespace Laravel\Lumen\Foundation;
+<?php namespace Laravel\Lumen\Concerns;
 
 use Monolog\Logger;
 use Illuminate\Http\Request;
+use Illuminate\Support\Composer;
 use Orchestra\Config\FileLoader;
 use Orchestra\Config\Repository;
 use Monolog\Handler\StreamHandler;
-use Illuminate\Foundation\Composer;
 use Monolog\Formatter\LineFormatter;
 use Illuminate\Filesystem\Filesystem;
 use Laravel\Lumen\Routing\UrlGenerator;
@@ -30,17 +30,12 @@ trait CoreBindings
         'Orchestra\Authorization\Authorization'           => 'registerAuthorizationBindings',
         'Orchestra\Contracts\Authorization\Factory'       => 'registerAuthorizationBindings',
         'Orchestra\Contracts\Authorization\Authorization' => 'registerAuthorizationBindings',
-        'Illuminate\Contracts\Broadcasting\Broadcaster'   => 'registerBroadcastingBindings',
-        'Illuminate\Contracts\Bus\Dispatcher'             => 'registerBusBindings',
         'cache'                                           => 'registerCacheBindings',
         'Illuminate\Contracts\Cache\Factory'              => 'registerCacheBindings',
         'Illuminate\Contracts\Cache\Repository'           => 'registerCacheBindings',
         'Illuminate\Cache\CacheManager'                   => 'registerCacheBindings',
         'config'                                          => 'registerConfigBindings',
         'composer'                                        => 'registerComposerBindings',
-        'cookie'                                          => 'registerCookieBindings',
-        'Illuminate\Contracts\Cookie\Factory'             => 'registerCookieBindings',
-        'Illuminate\Contracts\Cookie\QueueingFactory'     => 'registerCookieBindings',
         'db'                                              => 'registerDatabaseBindings',
         'Illuminate\Database\Eloquent\Factory'            => 'registerDatabaseBindings',
         'encrypter'                                       => 'registerEncrypterBindings',
@@ -62,22 +57,12 @@ trait CoreBindings
         'orchestra.platform.memory'                       => 'registerMemoryBindings',
         'Orchestra\Memory\Provider'                       => 'registerMemoryBindings',
         'Orchestra\Contracts\Memory\Provider'             => 'registerMemoryBindings',
-        'queue'                                           => 'registerQueueBindings',
-        'queue.connection'                                => 'registerQueueBindings',
-        'Illuminate\Contracts\Queue\Factory'              => 'registerQueueBindings',
-        'Illuminate\Contracts\Queue\Queue'                => 'registerQueueBindings',
-        'redis'                                           => 'registerRedisBindings',
         'request'                                         => 'registerRequestBindings',
         'Illuminate\Http\Request'                         => 'registerRequestBindings',
         'session'                                         => 'registerSessionBindings',
         'session.store'                                   => 'registerSessionBindings',
         'Illuminate\Session\SessionManager'               => 'registerSessionBindings',
         'Illuminate\Session\Store'                        => 'registerSessionBindings',
-        'translator'                                      => 'registerTranslationBindings',
-        'url'                                             => 'registerUrlGeneratorBindings',
-        'validator'                                       => 'registerValidatorBindings',
-        'view'                                            => 'registerViewBindings',
-        'Illuminate\Contracts\View\Factory'               => 'registerViewBindings',
     ];
 
     /**
@@ -98,8 +83,6 @@ trait CoreBindings
             'Illuminate\Contracts\Config\Repository'          => 'config',
             'Illuminate\Container\Container'                  => 'app',
             'Illuminate\Contracts\Container\Container'        => 'app',
-            'Illuminate\Contracts\Cookie\Factory'             => 'cookie',
-            'Illuminate\Contracts\Cookie\QueueingFactory'     => 'cookie',
             'Illuminate\Contracts\Encryption\Encrypter'       => 'encrypter',
             'Illuminate\Contracts\Events\Dispatcher'          => 'events',
             'Illuminate\Contracts\Filesystem\Factory'         => 'filesystem',
@@ -113,14 +96,10 @@ trait CoreBindings
             'Orchestra\Contracts\Authorization\Authorization' => 'orchestra.platform.acl',
             'Orchestra\Memory\Provider'                       => 'orchestra.platform.memory',
             'Orchestra\Contracts\Memory\Provider'             => 'orchestra.platform.memory',
-            'Illuminate\Contracts\Queue\Factory'              => 'queue',
-            'Illuminate\Contracts\Queue\Queue'                => 'queue.connection',
             'Illuminate\Redis\Database'                       => 'redis',
-            'Illuminate\Contracts\Redis\Database'             => 'redis',
             'request'                                         => 'Illuminate\Http\Request',
             'Illuminate\Session\SessionManager'               => 'session',
             'Illuminate\Session\Store'                        => 'session.store',
-            'Illuminate\Contracts\View\Factory'               => 'view',
         ];
     }
 
@@ -171,36 +150,6 @@ trait CoreBindings
      *
      * @return void
      */
-    protected function registerBroadcastingBindings()
-    {
-        $this->singleton('Illuminate\Contracts\Broadcasting\Broadcaster', function () {
-            $this->configure('broadcasting');
-
-            $this->register('Illuminate\Broadcasting\BroadcastServiceProvider');
-
-            return $this->make('Illuminate\Contracts\Broadcasting\Broadcaster');
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerBusBindings()
-    {
-        $this->singleton('Illuminate\Contracts\Bus\Dispatcher', function () {
-            $this->register('Illuminate\Bus\BusServiceProvider');
-
-            return $this->make('Illuminate\Contracts\Bus\Dispatcher');
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
     protected function registerCacheBindings()
     {
         $this->singleton('cache', function () {
@@ -233,18 +182,6 @@ trait CoreBindings
     {
         $this->singleton('composer', function ($app) {
             return new Composer($app->make('files'), $this->basePath());
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerCookieBindings()
-    {
-        $this->singleton('cookie', function () {
-            return $this->loadComponent('session', 'Illuminate\Cookie\CookieServiceProvider', 'cookie');
         });
     }
 
@@ -395,34 +332,6 @@ trait CoreBindings
      *
      * @return void
      */
-    protected function registerQueueBindings()
-    {
-        $this->singleton('queue', function () {
-            return $this->loadComponent('queue', 'Illuminate\Queue\QueueServiceProvider', 'queue');
-        });
-
-        $this->singleton('queue.connection', function () {
-            return $this->loadComponent('queue', 'Illuminate\Queue\QueueServiceProvider', 'queue.connection');
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerRedisBindings()
-    {
-        $this->singleton('redis', function () {
-            return $this->loadComponent('database', 'Illuminate\Redis\RedisServiceProvider', 'redis');
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
     protected function registerRequestBindings()
     {
         $this->singleton('Illuminate\Http\Request', function () {
@@ -455,54 +364,10 @@ trait CoreBindings
      *
      * @return void
      */
-    protected function registerTranslationBindings()
-    {
-        $this->singleton('translator', function () {
-            $this->configure('app');
-
-            $this->instance('path.lang', $this->getLanguagePath());
-
-            $this->register('Orchestra\Translation\TranslationServiceProvider');
-
-            return $this->make('translator');
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
     protected function registerUrlGeneratorBindings()
     {
         $this->singleton('url', function () {
             return new UrlGenerator($this);
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerValidatorBindings()
-    {
-        $this->singleton('validator', function () {
-            $this->register('Illuminate\Validation\ValidationServiceProvider');
-
-            return $this->make('validator');
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerViewBindings()
-    {
-        $this->singleton('view', function () {
-            return $this->loadComponent('view', 'Orchestra\View\ViewServiceProvider');
         });
     }
 }

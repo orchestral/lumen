@@ -7,9 +7,12 @@ class LumenExampleTest extends LumenTestCase
      *
      * @return void
      */
-    public function testBasicExample()
+    public function testExample()
     {
-        $this->visit('/')
-             ->see('Lumen.');
+        $this->get('/');
+
+        $this->assertEquals(
+            $this->response->getContent(), $this->app->version()
+        );
     }
 }

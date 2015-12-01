@@ -2,17 +2,18 @@
 
 use Mockery;
 use PHPUnit_Framework_TestCase;
+use Illuminate\Support\Facades\Facade;
 
 abstract class TestCase extends PHPUnit_Framework_TestCase
 {
-    use ApplicationTrait, AssertionsTrait, CrawlerTrait;
+    use Concerns\MakesHttpRequests;
 
     /**
-     * The callbacks that should be run before the application is destroyed.
+     * The application instance.
      *
-     * @var array
+     * @var \Laravel\Lumen\Application
      */
-    protected $beforeApplicationDestroyedCallbacks = [];
+    protected $app;
 
     /**
      * The base URL to use while testing the application.
@@ -29,6 +30,20 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
      * @return \Symfony\Component\HttpKernel\HttpKernelInterface
      */
     abstract public function createApplication();
+
+    /**
+     * Refresh the application instance.
+     *
+     * @return void
+     */
+    protected function refreshApplication()
+    {
+        putenv('APP_ENV=testing');
+
+        $this->app = $this->createApplication();
+
+        Facade::clearResolvedInstances();
+    }
 
     /**
      * Setup the test environment.
@@ -54,24 +69,59 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
         }
 
         if ($this->app) {
-            foreach ($this->beforeApplicationDestroyedCallbacks as $callback) {
-                call_user_func($callback);
-            }
-
             $this->app->flush();
             $this->app = null;
         }
     }
 
     /**
-     * Register a callback to be run before the application is destroyed.
+     * Assert that a given where condition exists in the database.
      *
-     * @param  callable  $callback
+     * @param  string  $table
+     * @param  array  $data
      *
-     * @return void
+     * @return $this
      */
-    protected function beforeApplicationDestroyed(callable $callback)
+    protected function seeInDatabase($table, array $data)
     {
-        $this->beforeApplicationDestroyedCallbacks[] = $callback;
+        $count = $this->app->make('db')->table($table)->where($data)->count();
+
+        $this->assertGreaterThan(0, $count, sprintf(
+            'Unable to find row in database table [%s] that matched attributes [%s].', $table, json_encode($data)
+        ));
+
+        return $this;
+    }
+
+    /**
+     * Assert that a given where condition does not exist in the database.
+     *
+     * @param  string  $table
+     * @param  array  $data
+     *
+     * @return $this
+     */
+    protected function missingFromDatabase($table, array $data)
+    {
+        return $this->notSeeInDatabase($table, $data);
+    }
+
+    /**
+     * Assert that a given where condition does not exist in the database.
+     *
+     * @param  string  $table
+     * @param  array  $data
+     *
+     * @return $this
+     */
+    protected function notSeeInDatabase($table, array $data)
+    {
+        $count = $this->app->make('db')->table($table)->where($data)->count();
+
+        $this->assertEquals(0, $count, sprintf(
+            'Found unexpected records in database table [%s] that matched attributes [%s].', $table, json_encode($data)
+        ));
+
+        return $this;
     }
 }
