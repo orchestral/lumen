@@ -1,14 +1,16 @@
 <?php namespace Laravel\Lumen;
 
 use Closure;
+use Exception;
 use Illuminate\Support\Str;
 use Illuminate\Container\Container;
 use Illuminate\Support\ServiceProvider;
 use Orchestra\Foundation\Listeners\UserAccess;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
-class Application extends Container
+class Application extends Container implements ApplicationContract
 {
     use Concerns\CoreBindings,
         Concerns\RoutesRequests,
@@ -129,16 +131,6 @@ class Application extends Container
     }
 
     /**
-     * Determine if the application is currently down for maintenance.
-     *
-     * @return bool
-     */
-    public function isDownForMaintenance()
-    {
-        return false;
-    }
-
-    /**
      * Get or check the current application environment.
      *
      * @param  mixed
@@ -163,6 +155,47 @@ class Application extends Container
 
         return $env;
     }
+
+    /**
+     * Determine if the application is currently down for maintenance.
+     *
+     * @return bool
+     */
+    public function isDownForMaintenance()
+    {
+        return false;
+    }
+
+    /**
+     * Register all of the configured providers.
+     *
+     * @return void
+     */
+    public function registerConfiguredProviders()
+    {
+        //
+    }
+
+    /**
+     * Get the path to the cached "compiled.php" file.
+     *
+     * @return string
+     */
+    public function getCachedCompilePath()
+    {
+        throw new Exception(__FUNCTION__.' is not implemented by Lumen.');
+    }
+
+    /**
+     * Get the path to the cached services.json file.
+     *
+     * @return string
+     */
+    public function getCachedServicesPath()
+    {
+        throw new Exception(__FUNCTION__.' is not implemented by Lumen.');
+    }
+
 
     /**
      * Register a service provider with the application.
