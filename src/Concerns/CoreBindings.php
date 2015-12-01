@@ -59,6 +59,10 @@ trait CoreBindings
         'Orchestra\Contracts\Memory\Provider'             => 'registerMemoryBindings',
         'request'                                         => 'registerRequestBindings',
         'Illuminate\Http\Request'                         => 'registerRequestBindings',
+        'session'                                         => 'registerSessionBindings',
+        'session.store'                                   => 'registerSessionBindings',
+        'Illuminate\Session\SessionManager'               => 'registerSessionBindings',
+        'Illuminate\Session\Store'                        => 'registerSessionBindings',
     ];
 
     /**
@@ -73,6 +77,9 @@ trait CoreBindings
             'Illuminate\Contracts\Auth\Guard'                 => 'auth.driver',
             'Illuminate\Contracts\Auth\PasswordBroker'        => 'auth.password',
             'Illuminate\Auth\AuthManager'                     => 'auth',
+            'Illuminate\Contracts\Cache\Factory'              => 'cache',
+            'Illuminate\Cache\CacheManager'                   => 'cache',
+            'Illuminate\Contracts\Cache\Repository'           => 'cache.store',
             'Illuminate\Contracts\Config\Repository'          => 'config',
             'Illuminate\Container\Container'                  => 'app',
             'Illuminate\Contracts\Container\Container'        => 'app',
@@ -91,6 +98,8 @@ trait CoreBindings
             'Orchestra\Contracts\Memory\Provider'             => 'orchestra.platform.memory',
             'Illuminate\Redis\Database'                       => 'redis',
             'request'                                         => 'Illuminate\Http\Request',
+            'Illuminate\Session\SessionManager'               => 'session',
+            'Illuminate\Session\Store'                        => 'session.store',
         ];
     }
 
@@ -331,6 +340,22 @@ trait CoreBindings
             })->setRouteResolver(function () {
                 return $this->currentRoute;
             });
+        });
+    }
+
+    /**
+     * Register container bindings for the application.
+     *
+     * @return void
+     */
+    protected function registerSessionBindings()
+    {
+        $this->singleton('session', function () {
+            return $this->loadComponent('session', 'Illuminate\Session\SessionServiceProvider');
+        });
+
+        $this->singleton('session.store', function () {
+            return $this->loadComponent('session', 'Illuminate\Session\SessionServiceProvider', 'session.store');
         });
     }
 

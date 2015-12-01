@@ -205,8 +205,6 @@ class Application extends Container
         return $this->register($provider);
     }
 
-
-
     /**
      * Throw an HttpException with the given data.
      *
