@@ -4,10 +4,14 @@ use Closure;
 use Illuminate\Support\Str;
 use Illuminate\Container\Container;
 use Illuminate\Support\ServiceProvider;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Application extends Container
 {
-    use CoreBindings, Concerns\RoutesRequests, Concerns\RegistersExceptionHandlers, ErrorHandlings;
+    use Concerns\CoreBindings,
+        Concerns\RoutesRequests,
+        Concerns\RegistersExceptionHandlers;
 
     /**
      * Indicates if the application has "booted".
@@ -198,6 +202,28 @@ class Application extends Container
     public function registerDeferredProvider($provider, $service = null)
     {
         return $this->register($provider);
+    }
+
+
+
+    /**
+     * Throw an HttpException with the given data.
+     *
+     * @param  int     $code
+     * @param  string  $message
+     * @param  array   $headers
+     *
+     * @return void
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+     */
+    public function abort($code, $message = '', array $headers = [])
+    {
+        if ($code == 404) {
+            throw new NotFoundHttpException($message);
+        }
+
+        throw new HttpException($code, $message, null, $headers);
     }
 
     /**

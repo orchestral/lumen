@@ -1,4 +1,4 @@
-<?php namespace Laravel\Lumen\Foundation;
+<?php namespace Laravel\Lumen\Concerns;
 
 use Monolog\Logger;
 use Illuminate\Http\Request;
@@ -6,7 +6,6 @@ use Illuminate\Support\Composer;
 use Orchestra\Config\FileLoader;
 use Orchestra\Config\Repository;
 use Monolog\Handler\StreamHandler;
-use Illuminate\Foundation\Composer;
 use Monolog\Formatter\LineFormatter;
 use Illuminate\Filesystem\Filesystem;
 use Laravel\Lumen\Routing\UrlGenerator;
