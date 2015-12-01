@@ -1,10 +1,8 @@
 <?php
-
 namespace Laravel\Lumen\Testing\Concerns;
 
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use PHPUnit_Framework_Assert as PHPUnit;
 
 trait MakesHttpRequests
 {
@@ -29,6 +27,7 @@ trait MakesHttpRequests
      * @param  string  $uri
      * @param  array  $data
      * @param  array  $headers
+     *
      * @return $this
      */
     public function json($method, $uri, array $data = [], array $headers = [])
@@ -37,8 +36,8 @@ trait MakesHttpRequests
 
         $headers = array_merge([
             'CONTENT_LENGTH' => mb_strlen($content, '8bit'),
-            'CONTENT_TYPE' => 'application/json',
-            'Accept' => 'application/json',
+            'CONTENT_TYPE'   => 'application/json',
+            'Accept'         => 'application/json',
         ], $headers);
 
         $this->call(
@@ -53,6 +52,7 @@ trait MakesHttpRequests
      *
      * @param  string  $uri
      * @param  array  $headers
+     *
      * @return $this
      */
     public function get($uri, array $headers = [])
@@ -70,6 +70,7 @@ trait MakesHttpRequests
      * @param  string  $uri
      * @param  array  $data
      * @param  array  $headers
+     *
      * @return $this
      */
     public function post($uri, array $data = [], array $headers = [])
@@ -87,6 +88,7 @@ trait MakesHttpRequests
      * @param  string  $uri
      * @param  array  $data
      * @param  array  $headers
+     *
      * @return $this
      */
     public function put($uri, array $data = [], array $headers = [])
@@ -104,6 +106,7 @@ trait MakesHttpRequests
      * @param  string  $uri
      * @param  array  $data
      * @param  array  $headers
+     *
      * @return $this
      */
     public function patch($uri, array $data = [], array $headers = [])
@@ -121,6 +124,7 @@ trait MakesHttpRequests
      * @param  string  $uri
      * @param  array  $data
      * @param  array  $headers
+     *
      * @return $this
      */
     public function delete($uri, array $data = [], array $headers = [])
@@ -138,6 +142,7 @@ trait MakesHttpRequests
      * This method allows you to fully customize the entire Request object.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return $this
      */
     public function handle(Request $request)
@@ -153,6 +158,7 @@ trait MakesHttpRequests
      * Assert that the response contains JSON.
      *
      * @param  array|null  $data
+     *
      * @return $this
      */
     protected function shouldReturnJson(array $data = null)
@@ -164,6 +170,7 @@ trait MakesHttpRequests
      * Assert that the response contains JSON.
      *
      * @param  array|null  $data
+     *
      * @return $this|null
      */
     protected function receiveJson($data = null)
@@ -175,6 +182,7 @@ trait MakesHttpRequests
      * Assert that the response contains an exact JSON array.
      *
      * @param  array  $data
+     *
      * @return $this
      */
     public function seeJsonEquals(array $data)
@@ -193,6 +201,7 @@ trait MakesHttpRequests
      *
      * @param  array|null  $data
      * @param  bool  $negate
+     *
      * @return $this
      */
     public function seeJson(array $data = null, $negate = false)
@@ -212,6 +221,7 @@ trait MakesHttpRequests
      * Assert that the response doesn't contain JSON.
      *
      * @param  array|null  $data
+     *
      * @return $this
      */
     public function dontSeeJson(array $data = null)
@@ -224,6 +234,7 @@ trait MakesHttpRequests
      *
      * @param  array|null  $structure
      * @param  array|null  $responseData
+     *
      * @return $this
      */
     public function seeJsonStructure(array $structure = null, $responseData = null)
@@ -251,6 +262,7 @@ trait MakesHttpRequests
      *
      * @param  array  $data
      * @param  bool  $negate
+     *
      * @return $this
      */
     protected function seeJsonContains(array $data, $negate = false)
@@ -284,6 +296,7 @@ trait MakesHttpRequests
      *
      * @param  string  $key
      * @param  mixed  $value
+     *
      * @return string
      */
     protected function formatToExpectedJson($key, $value)
@@ -311,6 +324,7 @@ trait MakesHttpRequests
      * @param  array   $files
      * @param  array   $server
      * @param  string  $content
+     *
      * @return \Illuminate\Http\Response
      */
     public function call($method, $uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null)
@@ -331,6 +345,7 @@ trait MakesHttpRequests
      * Turn the given URI into a fully qualified URL.
      *
      * @param  string  $uri
+     *
      * @return string
      */
     protected function prepareUrlForRequest($uri)
@@ -350,6 +365,7 @@ trait MakesHttpRequests
      * Transform headers array to array of $_SERVER vars with HTTP_* format.
      *
      * @param  array  $headers
+     *
      * @return array
      */
     protected function transformHeadersToServerVars(array $headers)

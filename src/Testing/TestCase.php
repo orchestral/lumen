@@ -98,6 +98,7 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
      *
      * @param  string  $table
      * @param  array  $data
+     *
      * @return $this
      */
     protected function missingFromDatabase($table, array $data)
@@ -110,6 +111,7 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
      *
      * @param  string  $table
      * @param  array  $data
+     *
      * @return $this
      */
     protected function notSeeInDatabase($table, array $data)

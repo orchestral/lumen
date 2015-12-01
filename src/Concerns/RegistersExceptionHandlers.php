@@ -1,6 +1,4 @@
-<?php
-
-namespace Laravel\Lumen\Concerns;
+<?php namespace Laravel\Lumen\Concerns;
 
 use Error;
 use Exception;
@@ -53,6 +51,7 @@ trait RegistersExceptionHandlers
      * Determine if the error type is fatal.
      *
      * @param  int  $type
+     *
      * @return bool
      */
     protected function isFatalError($type)
@@ -70,6 +69,7 @@ trait RegistersExceptionHandlers
      * Send the exception to the handler and return the response.
      *
      * @param  \Throwable  $e
+     *
      * @return Response
      */
     protected function sendExceptionToHandler($e)
@@ -89,6 +89,7 @@ trait RegistersExceptionHandlers
      * Handle an uncaught exception instance.
      *
      * @param  \Throwable  $e
+     *
      * @return void
      */
     protected function handleUncaughtException($e)
@@ -102,7 +103,7 @@ trait RegistersExceptionHandlers
         $handler->report($e);
 
         if ($this->runningInConsole()) {
-            $handler->renderForConsole(new ConsoleOutput, $e);
+            $handler->renderForConsole(new ConsoleOutput(), $e);
         } else {
             $handler->render($this->make('request'), $e)->send();
         }

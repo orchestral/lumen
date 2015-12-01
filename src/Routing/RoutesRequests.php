@@ -1,6 +1,4 @@
-<?php
-
-namespace Laravel\Lumen\Routing;
+<?php namespace Laravel\Lumen\Routing;
 
 use Closure;
 use Exception;
@@ -57,6 +55,7 @@ trait RoutesRequests
      *
      * @param  string  $uri
      * @param  mixed  $action
+     *
      * @return $this
      */
     public function get($uri, $action)
@@ -71,6 +70,7 @@ trait RoutesRequests
      *
      * @param  string  $uri
      * @param  mixed  $action
+     *
      * @return $this
      */
     public function post($uri, $action)
@@ -85,6 +85,7 @@ trait RoutesRequests
      *
      * @param  string  $uri
      * @param  mixed  $action
+     *
      * @return $this
      */
     public function put($uri, $action)
@@ -99,6 +100,7 @@ trait RoutesRequests
      *
      * @param  string  $uri
      * @param  mixed  $action
+     *
      * @return $this
      */
     public function patch($uri, $action)
@@ -113,6 +115,7 @@ trait RoutesRequests
      *
      * @param  string  $uri
      * @param  mixed  $action
+     *
      * @return $this
      */
     public function delete($uri, $action)
@@ -127,6 +130,7 @@ trait RoutesRequests
      *
      * @param  string  $uri
      * @param  mixed  $action
+     *
      * @return $this
      */
     public function options($uri, $action)
@@ -160,6 +164,7 @@ trait RoutesRequests
      * Parse the action into an array format.
      *
      * @param  mixed  $action
+     *
      * @return array
      */
     protected function parseAction($action)
@@ -177,6 +182,7 @@ trait RoutesRequests
      * Add new middleware to the application.
      *
      * @param  array  $middleware
+     *
      * @return $this
      */
     public function middleware(array $middleware)
@@ -190,6 +196,7 @@ trait RoutesRequests
      * Define the route middleware for the application.
      *
      * @param  array  $middleware
+     *
      * @return $this
      */
     public function routeMiddleware(array $middleware)
@@ -211,6 +218,7 @@ trait RoutesRequests
      * Run the application and send the response.
      *
      * @param  SymfonyRequest|null  $request
+     *
      * @return void
      */
     public function run($request = null)
@@ -232,6 +240,7 @@ trait RoutesRequests
      * Call the terminable middleware.
      *
      * @param  mixed  $response
+     *
      * @return void
      */
     protected function callTerminableMiddleware($response)
@@ -251,6 +260,7 @@ trait RoutesRequests
      * Dispatch the incoming request.
      *
      * @param  SymfonyRequest|null  $request
+     *
      * @return Response
      */
     public function dispatch($request = null)
@@ -259,10 +269,10 @@ trait RoutesRequests
             $this->instance('Illuminate\Http\Request', $request);
             $this->ranServiceBinders['registerRequestBindings'] = true;
 
-            $method = $request->getMethod();
+            $method   = $request->getMethod();
             $pathInfo = $request->getPathInfo();
         } else {
-            $method = $this->getMethod();
+            $method   = $this->getMethod();
             $pathInfo = $this->getPathInfo();
         }
 
@@ -301,6 +311,7 @@ trait RoutesRequests
      * Set the FastRoute dispatcher instance.
      *
      * @param  \FastRoute\Dispatcher  $dispatcher
+     *
      * @return void
      */
     public function setDispatcher(Dispatcher $dispatcher)
@@ -312,13 +323,14 @@ trait RoutesRequests
      * Handle the response from the FastRoute dispatcher.
      *
      * @param  array  $routeInfo
+     *
      * @return mixed
      */
     protected function handleDispatcherResponse($routeInfo)
     {
         switch ($routeInfo[0]) {
             case Dispatcher::NOT_FOUND:
-                throw new NotFoundHttpException;
+                throw new NotFoundHttpException();
 
             case Dispatcher::METHOD_NOT_ALLOWED:
                 throw new MethodNotAllowedHttpException($routeInfo[1]);
@@ -332,6 +344,7 @@ trait RoutesRequests
      * Handle a route found by the dispatcher.
      *
      * @param  array  $routeInfo
+     *
      * @return mixed
      */
     protected function handleFoundRoute($routeInfo)
@@ -358,6 +371,7 @@ trait RoutesRequests
      * Call the Closure on the array based route.
      *
      * @param  array  $routeInfo
+     *
      * @return mixed
      */
     protected function callActionOnArrayBasedRoute($routeInfo)
@@ -382,6 +396,7 @@ trait RoutesRequests
      * Gather the full class names for the middleware short-cut string.
      *
      * @param  string  $middleware
+     *
      * @return array
      */
     protected function gatherMiddlewareClassNames($middleware)
@@ -400,6 +415,7 @@ trait RoutesRequests
      *
      * @param  array  $middleware
      * @param  \Closure  $then
+     *
      * @return mixed
      */
     protected function sendThroughPipeline(array $middleware, Closure $then)
@@ -421,6 +437,7 @@ trait RoutesRequests
      * Prepare the response for sending.
      *
      * @param  mixed  $response
+     *
      * @return Response
      */
     public function prepareResponse($response)

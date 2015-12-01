@@ -1,34 +1,9 @@
 <?php namespace Laravel\Lumen;
 
 use Closure;
-use Exception;
-use Throwable;
-use Monolog\Logger;
-use RuntimeException;
 use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Pipeline\Pipeline;
 use Illuminate\Container\Container;
-use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Lumen\Foundation\CoreBindings;
-use Laravel\Lumen\Foundation\ErrorHandlings;
-use Orchestra\Foundation\Listeners\UserAccess;
-use Illuminate\Http\Exception\HttpResponseException;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
-use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
-use Monolog\Handler\StreamHandler;
-use Illuminate\Container\Container;
-use Monolog\Formatter\LineFormatter;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Facades\Facade;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Config\Repository as ConfigRepository;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Application extends Container
 {
@@ -482,12 +457,7 @@ class Application extends Container
     {
         $this->withFacades();
 
-        $this->make('cache');
-        $this->make('queue');
-
         $this->configure('database');
-
-        $this->register('Illuminate\Queue\ConsoleServiceProvider');
     }
 
     /**
