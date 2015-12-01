@@ -4,6 +4,7 @@ use Closure;
 use Exception;
 use Illuminate\Support\Str;
 use Illuminate\Container\Container;
+use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 use Orchestra\Foundation\Listeners\UserAccess;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -195,7 +196,6 @@ class Application extends Container implements ApplicationContract
     {
         throw new Exception(__FUNCTION__.' is not implemented by Lumen.');
     }
-
 
     /**
      * Register a service provider with the application.
@@ -423,6 +423,35 @@ class Application extends Container implements ApplicationContract
         } elseif (file_exists($path = $this->basePath('lumen/config/').$name.'.php')) {
             return $path;
         }
+    }
+
+    /**
+     * Register the facades for the application.
+     *
+     * @return $this
+     */
+    public function withFacades()
+    {
+        Facade::setFacadeApplication($this);
+
+        if (! static::$aliasesRegistered) {
+            static::$aliasesRegistered = true;
+
+            class_alias('Illuminate\Support\Facades\App', 'App');
+            class_alias('Illuminate\Support\Facades\Auth', 'Auth');
+            class_alias('Illuminate\Support\Facades\DB', 'DB');
+            class_alias('Illuminate\Support\Facades\Cache', 'Cache');
+            class_alias('Illuminate\Support\Facades\Crypt', 'Crypt');
+            class_alias('Illuminate\Support\Facades\Event', 'Event');
+            class_alias('Illuminate\Support\Facades\Hash', 'Hash');
+            class_alias('Illuminate\Support\Facades\Log', 'Log');
+            class_alias('Illuminate\Support\Facades\Mail', 'Mail');
+            class_alias('Illuminate\Support\Facades\Request', 'Request');
+            class_alias('Illuminate\Support\Facades\Session', 'Session');
+            class_alias('Illuminate\Support\Facades\Storage', 'Storage');
+        }
+
+        return $this;
     }
 
     /**
