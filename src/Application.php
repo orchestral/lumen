@@ -7,8 +7,6 @@ use Illuminate\Container\Container;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 use Orchestra\Foundation\Listeners\UserAccess;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
 class Application extends Container implements ApplicationContract
@@ -236,26 +234,6 @@ class Application extends Container implements ApplicationContract
     public function registerDeferredProvider($provider, $service = null)
     {
         return $this->register($provider);
-    }
-
-    /**
-     * Throw an HttpException with the given data.
-     *
-     * @param  int     $code
-     * @param  string  $message
-     * @param  array   $headers
-     *
-     * @return void
-     *
-     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
-     */
-    public function abort($code, $message = '', array $headers = [])
-    {
-        if ($code == 404) {
-            throw new NotFoundHttpException($message);
-        }
-
-        throw new HttpException($code, $message, null, $headers);
     }
 
     /**
@@ -545,27 +523,5 @@ class Application extends Container implements ApplicationContract
         $this->withFacades();
 
         $this->configure('database');
-    }
-
-    /**
-     * Get the raw routes for the application.
-     *
-     * @return array
-     */
-    public function getRoutes()
-    {
-        return $this->routes;
-    }
-
-    /**
-     * Set the cached routes.
-     *
-     * @param  array  $routes
-     *
-     * @return void
-     */
-    public function setRoutes(array $routes)
-    {
-        $this->routes = $routes;
     }
 }

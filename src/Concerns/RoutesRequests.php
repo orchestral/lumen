@@ -7,6 +7,7 @@ use FastRoute\Dispatcher;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Pipeline\Pipeline;
+use Laravel\Lumen\Routing\Closure as RoutingClosure;
 use Illuminate\Http\Exception\HttpResponseException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -405,7 +406,7 @@ trait RoutesRequests
 
         foreach ($action as $value) {
             if ($value instanceof Closure) {
-                $closure = $value;
+                $closure = $value->bindTo(new RoutingClosure());
                 break;
             }
         }
