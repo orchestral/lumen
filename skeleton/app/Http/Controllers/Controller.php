@@ -2,7 +2,7 @@
 
 use Laravel\Lumen\Routing\Controller as BaseController;
 
-abstract class Controller extends BaseController
+class Controller extends BaseController
 {
     //
 }
