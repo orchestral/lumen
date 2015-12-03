@@ -4,11 +4,33 @@ use Error;
 use Exception;
 use ErrorException;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 trait RegistersExceptionHandlers
 {
+    /**
+     * Throw an HttpException with the given data.
+     *
+     * @param  int     $code
+     * @param  string  $message
+     * @param  array   $headers
+     *
+     * @return void
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+     */
+    public function abort($code, $message = '', array $headers = [])
+    {
+        if ($code == 404) {
+            throw new NotFoundHttpException($message);
+        }
+
+        throw new HttpException($code, $message, null, $headers);
+    }
+
     /**
      * Set the error handling for the application.
      *
@@ -116,6 +138,10 @@ trait RegistersExceptionHandlers
      */
     protected function resolveExceptionHandler()
     {
-        return $this->make('Illuminate\Contracts\Debug\ExceptionHandler');
+        if ($this->bound('Illuminate\Contracts\Debug\ExceptionHandler')) {
+            return $this->make('Illuminate\Contracts\Debug\ExceptionHandler');
+        } else {
+            return $this->make('Laravel\Lumen\Exceptions\Handler');
+        }
     }
 }

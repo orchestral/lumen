@@ -1,14 +1,15 @@
 <?php namespace Laravel\Lumen;
 
 use Closure;
+use Exception;
 use Illuminate\Support\Str;
 use Illuminate\Container\Container;
+use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 use Orchestra\Foundation\Listeners\UserAccess;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
-class Application extends Container
+class Application extends Container implements ApplicationContract
 {
     use Concerns\CoreBindings,
         Concerns\RoutesRequests,
@@ -125,17 +126,7 @@ class Application extends Container
      */
     public function version()
     {
-        return 'Lumen (6.0.0-dev) (Laravel Components 5.2.*)';
-    }
-
-    /**
-     * Determine if the application is currently down for maintenance.
-     *
-     * @return bool
-     */
-    public function isDownForMaintenance()
-    {
-        return false;
+        return 'Lumen (5.2.0-dev) (Laravel Components 5.2.*)';
     }
 
     /**
@@ -162,6 +153,46 @@ class Application extends Container
         }
 
         return $env;
+    }
+
+    /**
+     * Determine if the application is currently down for maintenance.
+     *
+     * @return bool
+     */
+    public function isDownForMaintenance()
+    {
+        return false;
+    }
+
+    /**
+     * Register all of the configured providers.
+     *
+     * @return void
+     */
+    public function registerConfiguredProviders()
+    {
+        //
+    }
+
+    /**
+     * Get the path to the cached "compiled.php" file.
+     *
+     * @return string
+     */
+    public function getCachedCompilePath()
+    {
+        throw new Exception(__FUNCTION__.' is not implemented by Lumen.');
+    }
+
+    /**
+     * Get the path to the cached services.json file.
+     *
+     * @return string
+     */
+    public function getCachedServicesPath()
+    {
+        throw new Exception(__FUNCTION__.' is not implemented by Lumen.');
     }
 
     /**
@@ -203,26 +234,6 @@ class Application extends Container
     public function registerDeferredProvider($provider, $service = null)
     {
         return $this->register($provider);
-    }
-
-    /**
-     * Throw an HttpException with the given data.
-     *
-     * @param  int     $code
-     * @param  string  $message
-     * @param  array   $headers
-     *
-     * @return void
-     *
-     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
-     */
-    public function abort($code, $message = '', array $headers = [])
-    {
-        if ($code == 404) {
-            throw new NotFoundHttpException($message);
-        }
-
-        throw new HttpException($code, $message, null, $headers);
     }
 
     /**
@@ -393,6 +404,35 @@ class Application extends Container
     }
 
     /**
+     * Register the facades for the application.
+     *
+     * @return $this
+     */
+    public function withFacades()
+    {
+        Facade::setFacadeApplication($this);
+
+        if (! static::$aliasesRegistered) {
+            static::$aliasesRegistered = true;
+
+            class_alias('Illuminate\Support\Facades\App', 'App');
+            class_alias('Illuminate\Support\Facades\Auth', 'Auth');
+            class_alias('Illuminate\Support\Facades\DB', 'DB');
+            class_alias('Illuminate\Support\Facades\Cache', 'Cache');
+            class_alias('Illuminate\Support\Facades\Crypt', 'Crypt');
+            class_alias('Illuminate\Support\Facades\Event', 'Event');
+            class_alias('Illuminate\Support\Facades\Hash', 'Hash');
+            class_alias('Illuminate\Support\Facades\Log', 'Log');
+            class_alias('Illuminate\Support\Facades\Mail', 'Mail');
+            class_alias('Illuminate\Support\Facades\Request', 'Request');
+            class_alias('Illuminate\Support\Facades\Session', 'Session');
+            class_alias('Illuminate\Support\Facades\Storage', 'Storage');
+        }
+
+        return $this;
+    }
+
+    /**
      * Bootstrap Orchestra Platform Foundation.
      *
      * @return $this
@@ -483,27 +523,5 @@ class Application extends Container
         $this->withFacades();
 
         $this->configure('database');
-    }
-
-    /**
-     * Get the raw routes for the application.
-     *
-     * @return array
-     */
-    public function getRoutes()
-    {
-        return $this->routes;
-    }
-
-    /**
-     * Set the cached routes.
-     *
-     * @param  array  $routes
-     *
-     * @return void
-     */
-    public function setRoutes(array $routes)
-    {
-        $this->routes = $routes;
     }
 }
