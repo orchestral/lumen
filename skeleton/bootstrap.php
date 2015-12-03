@@ -93,7 +93,9 @@ $app->singleton(
 
 $app->boot();
 
-require __DIR__.'/routes.php';
+$app->group(['namespace' => 'App\Lumen\Http\Controllers'], function ($app) {
+    require __DIR__.'/routes.php';
+});
 
 // require __DIR__.'/api.php';
 
