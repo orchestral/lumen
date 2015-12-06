@@ -500,7 +500,7 @@ class Application extends Container implements ApplicationContract
      */
     public function databasePath()
     {
-        return $this->basePath().'/database';
+        return $this->basePath().'/resources/database';
     }
 
     /**
@@ -535,8 +535,5 @@ class Application extends Container implements ApplicationContract
         $this->withFacades();
 
         $this->configure('database');
-
-        $this->register('Illuminate\Database\MigrationServiceProvider');
-        $this->register('Illuminate\Queue\ConsoleServiceProvider');
     }
 }

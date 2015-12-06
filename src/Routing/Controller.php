@@ -1,6 +1,4 @@
-<?php
-
-namespace Laravel\Lumen\Routing;
+<?php namespace Laravel\Lumen\Routing;
 
 class Controller
 {
@@ -18,6 +16,7 @@ class Controller
      *
      * @param  string  $middleware
      * @param  array  $options
+     *
      * @return void
      */
     public function middleware($middleware, array $options = [])
@@ -29,6 +28,7 @@ class Controller
      * Get the middleware for a given method.
      *
      * @param  string  $method
+     *
      * @return array
      */
     public function getMiddlewareForMethod($method)

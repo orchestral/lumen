@@ -413,6 +413,7 @@ trait CoreBindings
     {
         $this->singleton('validator', function () {
             $this->register('Illuminate\Validation\ValidationServiceProvider');
+
             return $this->make('validator');
         });
     }
@@ -421,6 +422,7 @@ trait CoreBindings
      * Define a callback to be used to configure Monolog.
      *
      * @param  callable  $callback
+     *
      * @return $this
      */
     public function configureMonologUsing(callable $callback)
