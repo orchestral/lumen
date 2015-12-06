@@ -69,6 +69,13 @@ trait CoreBindings
     ];
 
     /**
+     * A custom callback used to configure Monolog.
+     *
+     * @var callable|null
+     */
+    protected $monologConfigurator;
+
+    /**
      * Register the core container aliases.
      *
      * @return void
@@ -286,7 +293,11 @@ trait CoreBindings
     protected function registerLogBindings()
     {
         $this->singleton('Psr\Log\LoggerInterface', function () {
-            return new Logger('lumen', [$this->getMonologHandler()]);
+            if ($this->monologConfigurator) {
+                return call_user_func($this->monologConfigurator, new Logger('lumen'));
+            } else {
+                return new Logger('lumen', [$this->getMonologHandler()]);
+            }
         });
     }
 
@@ -338,6 +349,22 @@ trait CoreBindings
      *
      * @return void
      */
+    protected function registerQueueBindings()
+    {
+        $this->singleton('queue', function () {
+            return $this->loadComponent('queue', 'Illuminate\Queue\QueueServiceProvider', 'queue');
+        });
+
+        $this->singleton('queue.connection', function () {
+            return $this->loadComponent('queue', 'Illuminate\Queue\QueueServiceProvider', 'queue.connection');
+        });
+    }
+
+    /**
+     * Register container bindings for the application.
+     *
+     * @return void
+     */
     protected function registerRequestBindings()
     {
         $this->singleton('Illuminate\Http\Request', function () {
@@ -375,5 +402,31 @@ trait CoreBindings
         $this->singleton('url', function () {
             return new UrlGenerator($this);
         });
+    }
+
+    /**
+     * Register container bindings for the application.
+     *
+     * @return void
+     */
+    protected function registerValidatorBindings()
+    {
+        $this->singleton('validator', function () {
+            $this->register('Illuminate\Validation\ValidationServiceProvider');
+            return $this->make('validator');
+        });
+    }
+
+    /**
+     * Define a callback to be used to configure Monolog.
+     *
+     * @param  callable  $callback
+     * @return $this
+     */
+    public function configureMonologUsing(callable $callback)
+    {
+        $this->monologConfigurator = $callback;
+
+        return $this;
     }
 }
