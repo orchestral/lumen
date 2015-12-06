@@ -424,9 +424,11 @@ class Application extends Container implements ApplicationContract
             class_alias('Illuminate\Support\Facades\Hash', 'Hash');
             class_alias('Illuminate\Support\Facades\Log', 'Log');
             class_alias('Illuminate\Support\Facades\Mail', 'Mail');
+            class_alias('Illuminate\Support\Facades\Queue', 'Queue');
             class_alias('Illuminate\Support\Facades\Request', 'Request');
             class_alias('Illuminate\Support\Facades\Session', 'Session');
             class_alias('Illuminate\Support\Facades\Storage', 'Storage');
+            class_alias('Illuminate\Support\Facades\Validator', 'Validator');
         }
 
         return $this;
@@ -492,6 +494,16 @@ class Application extends Container implements ApplicationContract
     }
 
     /**
+     * Get the database path for the application.
+     *
+     * @return string
+     */
+    public function databasePath()
+    {
+        return $this->basePath().'/database';
+    }
+
+    /**
      * Get the storage path for the application.
      *
      * @param  string|null  $path
@@ -523,5 +535,8 @@ class Application extends Container implements ApplicationContract
         $this->withFacades();
 
         $this->configure('database');
+
+        $this->register('Illuminate\Database\MigrationServiceProvider');
+        $this->register('Illuminate\Queue\ConsoleServiceProvider');
     }
 }
