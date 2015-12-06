@@ -366,6 +366,7 @@ class LumenTestController
     {
         //
     }
+
     public function show($id)
     {
         return $id;
@@ -378,6 +379,7 @@ class LumenTestControllerWithMiddleware extends Laravel\Lumen\Routing\Controller
     {
         $this->middleware('test');
     }
+
     public function show($id)
     {
         return $id;
