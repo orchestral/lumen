@@ -209,8 +209,8 @@ trait CoreBindings
             return $this->loadComponent(
                 'database', [
                     'Illuminate\Database\DatabaseServiceProvider',
-                    'Illuminate\Pagination\PaginationServiceProvider', ],
-                'db'
+                    'Illuminate\Pagination\PaginationServiceProvider',
+                ], 'db'
             );
         });
     }
