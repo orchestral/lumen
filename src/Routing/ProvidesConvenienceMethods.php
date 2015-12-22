@@ -1,6 +1,4 @@
-<?php
-
-namespace Laravel\Lumen\Routing;
+<?php namespace Laravel\Lumen\Routing;
 
 use Closure as BaseClosure;
 use Illuminate\Http\Request;
@@ -28,6 +26,7 @@ trait ProvidesConvenienceMethods
      * Set the response builder callback.
      *
      * @param  \Closure  $callback
+     *
      * @return void
      */
     public static function buildResponseUsing(BaseClosure $callback)
@@ -39,6 +38,7 @@ trait ProvidesConvenienceMethods
      * Set the error formatter callback.
      *
      * @param  \Closure  $callback
+     *
      * @return void
      */
     public static function formatErrorsUsing(BaseClosure $callback)
@@ -53,6 +53,7 @@ trait ProvidesConvenienceMethods
      * @param  array  $rules
      * @param  array  $messages
      * @param  array  $customAttributes
+     *
      * @return void
      */
     public function validate(Request $request, array $rules, array $messages = [], array $customAttributes = [])
@@ -69,6 +70,7 @@ trait ProvidesConvenienceMethods
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Contracts\Validation\Validator  $validator
+     *
      * @return void
      */
     protected function throwValidationException(Request $request, $validator)
@@ -106,6 +108,7 @@ trait ProvidesConvenienceMethods
      * Dispatch a job to its appropriate handler.
      *
      * @param  mixed  $job
+     *
      * @return mixed
      */
     public function dispatch($job)

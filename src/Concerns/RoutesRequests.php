@@ -73,6 +73,7 @@ trait RoutesRequests
      *
      * @param  array  $attributes
      * @param  \Closure  $callback
+     *
      * @return void
      */
     public function group(array $attributes, Closure $callback)
@@ -226,6 +227,7 @@ trait RoutesRequests
      * Merge the group attributes into the action.
      *
      * @param  array  $action
+     *
      * @return array
      */
     protected function mergeGroupAttributes(array $action)
@@ -239,6 +241,7 @@ trait RoutesRequests
      * Merge the namespace group into the action.
      *
      * @param  array  $action
+     *
      * @return array
      */
     protected function mergeNamespaceGroup(array $action)
@@ -254,6 +257,7 @@ trait RoutesRequests
      * Merge the middleware group into the action.
      *
      * @param  array  $action
+     *
      * @return array
      */
     protected function mergeMiddlewareGroup($action)
@@ -507,6 +511,7 @@ trait RoutesRequests
      * Call a controller based route.
      *
      * @param  array  $routeInfo
+     *
      * @return mixed
      */
     protected function callControllerAction($routeInfo)
@@ -514,7 +519,7 @@ trait RoutesRequests
         list($controller, $method) = explode('@', $routeInfo[1]['uses']);
 
         if (! method_exists($instance = $this->make($controller), $method)) {
-            throw new NotFoundHttpException;
+            throw new NotFoundHttpException();
         }
 
         if ($instance instanceof LumenController) {
@@ -532,6 +537,7 @@ trait RoutesRequests
      * @param  mixed  $instance
      * @param  string  $method
      * @param  array  $routeInfo
+     *
      * @return mixed
      */
     protected function callLumenController($instance, $method, $routeInfo)
@@ -556,6 +562,7 @@ trait RoutesRequests
      * @param  string  $method
      * @param  array  $routeInfo
      * @param  array  $middleware
+     *
      * @return mixed
      */
     protected function callLumenControllerWithMiddleware($instance, $method, $routeInfo, $middleware)
@@ -572,6 +579,7 @@ trait RoutesRequests
      *
      * @param  callable  $callable
      * @param  array  $parameters
+     *
      * @return \Illuminate\Http\Response
      */
     protected function callControllerCallable(callable $callable, array $parameters = [])

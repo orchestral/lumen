@@ -421,6 +421,7 @@ class Application extends Container implements ApplicationContract
             class_alias('Illuminate\Support\Facades\Cache', 'Cache');
             class_alias('Illuminate\Support\Facades\Crypt', 'Crypt');
             class_alias('Illuminate\Support\Facades\Event', 'Event');
+            class_alias('Illuminate\Support\Facades\Gate', 'Gate');
             class_alias('Illuminate\Support\Facades\Hash', 'Hash');
             class_alias('Illuminate\Support\Facades\Log', 'Log');
             class_alias('Illuminate\Support\Facades\Mail', 'Mail');
@@ -500,7 +501,7 @@ class Application extends Container implements ApplicationContract
      */
     public function databasePath()
     {
-        return $this->basePath().'/database';
+        return $this->basePath().'/resources/database';
     }
 
     /**
@@ -535,8 +536,5 @@ class Application extends Container implements ApplicationContract
         $this->withFacades();
 
         $this->configure('database');
-
-        $this->register('Illuminate\Database\MigrationServiceProvider');
-        $this->register('Illuminate\Queue\ConsoleServiceProvider');
     }
 }

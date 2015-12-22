@@ -5,6 +5,13 @@ title: Lumen Change Log
 
 ## Version 3.1 {#v3-1}
 
+### v3.1.6 {#v3-1-6}
+
+* Simplify `composer.json` dependencies.
+* Refactor code to match upcoming 3.2 releases.
+* Fix welcome page alignment. ([tom-wilson](https://github.com/tom-wilson))
+* Add `Laravel\Lumen\Http\ResponseFactory` basic unit tests. ([jmatosp](https://github.com/jmatosp))
+
 ### v3.1.5 {#v3-1-5}
 
 * Add `Laravel\Lumen\Application::withFoundation()` to boot basic Orchestra Platform support.

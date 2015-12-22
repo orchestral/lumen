@@ -21,8 +21,7 @@ trait CoreBindings
         'auth'                                            => 'registerAuthBindings',
         'auth.driver'                                     => 'registerAuthBindings',
         'Illuminate\Contracts\Auth\Guard'                 => 'registerAuthBindings',
-        'auth.password'                                   => 'registerAuthBindings',
-        'Illuminate\Contracts\Auth\PasswordBroker'        => 'registerAuthBindings',
+        'Illuminate\Contracts\Auth\Access\Gate'           => 'registerAuthBindings',
         'Illuminate\Auth\AuthManager'                     => 'registerAuthBindings',
         'orchestra.acl'                                   => 'registerAuthorizationBindings',
         'orchestra.platform.acl'                          => 'registerAuthorizationBindings',
@@ -30,6 +29,7 @@ trait CoreBindings
         'Orchestra\Authorization\Authorization'           => 'registerAuthorizationBindings',
         'Orchestra\Contracts\Authorization\Factory'       => 'registerAuthorizationBindings',
         'Orchestra\Contracts\Authorization\Authorization' => 'registerAuthorizationBindings',
+        'Illuminate\Contracts\Bus\Dispatcher'             => 'registerBusBindings',
         'cache'                                           => 'registerCacheBindings',
         'Illuminate\Contracts\Cache\Factory'              => 'registerCacheBindings',
         'Illuminate\Contracts\Cache\Repository'           => 'registerCacheBindings',
@@ -84,6 +84,7 @@ trait CoreBindings
     {
         $this->aliases = [
             'Illuminate\Contracts\Foundation\Application'     => 'app',
+            'Illuminate\Contracts\Auth\Factory'               => 'auth',
             'Illuminate\Contracts\Auth\Guard'                 => 'auth.driver',
             'Illuminate\Contracts\Auth\PasswordBroker'        => 'auth.password',
             'Illuminate\Auth\AuthManager'                     => 'auth',
@@ -131,8 +132,8 @@ trait CoreBindings
             return $this->loadComponent('auth', 'Orchestra\Auth\AuthServiceProvider', 'auth.driver');
         });
 
-        $this->singleton('auth.password', function () {
-            return $this->loadComponent('auth', 'Orchestra\Auth\Passwords\PasswordResetServiceProvider', 'auth.password');
+        $this->singleton('Illuminate\Contracts\Auth\Access\Gate', function () {
+            return $this->loadComponent('auth', 'Orchestra\Auth\AuthServiceProvider', 'Illuminate\Contracts\Auth\Access\Gate');
         });
     }
 
@@ -155,6 +156,20 @@ trait CoreBindings
             $acl->attach($this->make('orchestra.platform.memory'));
 
             return $acl;
+        });
+    }
+
+    /**
+     * Register container bindings for the application.
+     *
+     * @return void
+     */
+    protected function registerBusBindings()
+    {
+        $this->singleton('Illuminate\Contracts\Bus\Dispatcher', function () {
+            $this->register('Illuminate\Bus\BusServiceProvider');
+
+            return $this->make('Illuminate\Contracts\Bus\Dispatcher');
         });
     }
 
@@ -209,8 +224,8 @@ trait CoreBindings
             return $this->loadComponent(
                 'database', [
                     'Illuminate\Database\DatabaseServiceProvider',
-                    'Illuminate\Pagination\PaginationServiceProvider', ],
-                'db'
+                    'Illuminate\Pagination\PaginationServiceProvider',
+                ], 'db'
             );
         });
     }
@@ -413,6 +428,7 @@ trait CoreBindings
     {
         $this->singleton('validator', function () {
             $this->register('Illuminate\Validation\ValidationServiceProvider');
+
             return $this->make('validator');
         });
     }
@@ -421,6 +437,7 @@ trait CoreBindings
      * Define a callback to be used to configure Monolog.
      *
      * @param  callable  $callback
+     *
      * @return $this
      */
     public function configureMonologUsing(callable $callback)
