@@ -29,6 +29,7 @@ trait CoreBindings
         'Orchestra\Authorization\Authorization'           => 'registerAuthorizationBindings',
         'Orchestra\Contracts\Authorization\Factory'       => 'registerAuthorizationBindings',
         'Orchestra\Contracts\Authorization\Authorization' => 'registerAuthorizationBindings',
+        'Illuminate\Contracts\Broadcasting\Broadcaster' => 'registerBroadcastingBindings',
         'Illuminate\Contracts\Bus\Dispatcher'             => 'registerBusBindings',
         'cache'                                           => 'registerCacheBindings',
         'Illuminate\Contracts\Cache\Factory'              => 'registerCacheBindings',
@@ -156,6 +157,22 @@ trait CoreBindings
             $acl->attach($this->make('orchestra.platform.memory'));
 
             return $acl;
+        });
+    }
+
+    /**
+     * Register container bindings for the application.
+     *
+     * @return void
+     */
+    protected function registerBroadcastingBindings()
+    {
+        $this->singleton('Illuminate\Contracts\Broadcasting\Broadcaster', function () {
+            $this->configure('broadcasting');
+
+            $this->register('Illuminate\Broadcasting\BroadcastServiceProvider');
+
+            return $this->make('Illuminate\Contracts\Broadcasting\Broadcaster');
         });
     }
 
