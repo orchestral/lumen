@@ -29,7 +29,7 @@ trait CoreBindings
         'Orchestra\Authorization\Authorization'           => 'registerAuthorizationBindings',
         'Orchestra\Contracts\Authorization\Factory'       => 'registerAuthorizationBindings',
         'Orchestra\Contracts\Authorization\Authorization' => 'registerAuthorizationBindings',
-        'Illuminate\Contracts\Broadcasting\Broadcaster' => 'registerBroadcastingBindings',
+        'Illuminate\Contracts\Broadcasting\Broadcaster'   => 'registerBroadcastingBindings',
         'Illuminate\Contracts\Bus\Dispatcher'             => 'registerBusBindings',
         'cache'                                           => 'registerCacheBindings',
         'Illuminate\Contracts\Cache\Factory'              => 'registerCacheBindings',
