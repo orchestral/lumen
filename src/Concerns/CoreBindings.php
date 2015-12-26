@@ -61,6 +61,7 @@ trait CoreBindings
         'queue.connection'                                => 'registerQueueBindings',
         'Illuminate\Contracts\Queue\Factory'              => 'registerQueueBindings',
         'Illuminate\Contracts\Queue\Queue'                => 'registerQueueBindings',
+        'redis'                                           => 'registerRedisBindings',
         'request'                                         => 'registerRequestBindings',
         'Illuminate\Http\Request'                         => 'registerRequestBindings',
         'session'                                         => 'registerSessionBindings',
@@ -112,6 +113,7 @@ trait CoreBindings
             'Illuminate\Contracts\Queue\Factory'              => 'queue',
             'Illuminate\Contracts\Queue\Queue'                => 'queue.connection',
             'Illuminate\Redis\Database'                       => 'redis',
+            'Illuminate\Contracts\Redis\Database'             => 'redis',
             'request'                                         => 'Illuminate\Http\Request',
             'Illuminate\Session\SessionManager'               => 'session',
             'Illuminate\Session\Store'                        => 'session.store',
@@ -389,6 +391,18 @@ trait CoreBindings
 
         $this->singleton('queue.connection', function () {
             return $this->loadComponent('queue', 'Illuminate\Queue\QueueServiceProvider', 'queue.connection');
+        });
+    }
+
+    /**
+     * Register container bindings for the application.
+     *
+     * @return void
+     */
+    protected function registerRedisBindings()
+    {
+        $this->singleton('redis', function () {
+            return $this->loadComponent('database', 'Illuminate\Redis\RedisServiceProvider', 'redis');
         });
     }
 
