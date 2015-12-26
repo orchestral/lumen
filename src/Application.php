@@ -451,7 +451,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      *
      * @return mixed
      */
-    protected function loadComponent($config, $providers, $return = null)
+    public function loadComponent($config, $providers, $return = null)
     {
         $this->configure($config);
 
