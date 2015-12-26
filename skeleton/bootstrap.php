@@ -1,10 +1,8 @@
 <?php
 
-use Dotenv\Dotenv;
-
 require_once __DIR__.'/../vendor/autoload.php';
 
-(new Dotenv(__DIR__.'/../'))->load();
+(new Dotenv\Dotenv(__DIR__.'/../'))->load();
 
 /*
 |--------------------------------------------------------------------------
