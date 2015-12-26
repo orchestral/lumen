@@ -213,7 +213,7 @@ trait CoreBindings
      */
     protected function registerConfigBindings()
     {
-        $loader = new FileLoader(new Filesystem(), $this->configPath ?: $this->resourcePath('config'));
+        $loader = new FileLoader(new Filesystem(), $this->resourcePath('config'));
 
         $this->instance('config', $config = new Repository($loader, $this->environment()));
     }
