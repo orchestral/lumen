@@ -29,6 +29,7 @@ trait CoreBindings
         'Orchestra\Authorization\Authorization'           => 'registerAuthorizationBindings',
         'Orchestra\Contracts\Authorization\Factory'       => 'registerAuthorizationBindings',
         'Orchestra\Contracts\Authorization\Authorization' => 'registerAuthorizationBindings',
+        'Illuminate\Contracts\Broadcasting\Broadcaster'   => 'registerBroadcastingBindings',
         'Illuminate\Contracts\Bus\Dispatcher'             => 'registerBusBindings',
         'cache'                                           => 'registerCacheBindings',
         'Illuminate\Contracts\Cache\Factory'              => 'registerCacheBindings',
@@ -60,6 +61,7 @@ trait CoreBindings
         'queue.connection'                                => 'registerQueueBindings',
         'Illuminate\Contracts\Queue\Factory'              => 'registerQueueBindings',
         'Illuminate\Contracts\Queue\Queue'                => 'registerQueueBindings',
+        'redis'                                           => 'registerRedisBindings',
         'request'                                         => 'registerRequestBindings',
         'Illuminate\Http\Request'                         => 'registerRequestBindings',
         'session'                                         => 'registerSessionBindings',
@@ -111,6 +113,7 @@ trait CoreBindings
             'Illuminate\Contracts\Queue\Factory'              => 'queue',
             'Illuminate\Contracts\Queue\Queue'                => 'queue.connection',
             'Illuminate\Redis\Database'                       => 'redis',
+            'Illuminate\Contracts\Redis\Database'             => 'redis',
             'request'                                         => 'Illuminate\Http\Request',
             'Illuminate\Session\SessionManager'               => 'session',
             'Illuminate\Session\Store'                        => 'session.store',
@@ -164,6 +167,22 @@ trait CoreBindings
      *
      * @return void
      */
+    protected function registerBroadcastingBindings()
+    {
+        $this->singleton('Illuminate\Contracts\Broadcasting\Broadcaster', function () {
+            $this->configure('broadcasting');
+
+            $this->register('Illuminate\Broadcasting\BroadcastServiceProvider');
+
+            return $this->make('Illuminate\Contracts\Broadcasting\Broadcaster');
+        });
+    }
+
+    /**
+     * Register container bindings for the application.
+     *
+     * @return void
+     */
     protected function registerBusBindings()
     {
         $this->singleton('Illuminate\Contracts\Bus\Dispatcher', function () {
@@ -196,7 +215,7 @@ trait CoreBindings
      */
     protected function registerConfigBindings()
     {
-        $loader = new FileLoader(new Filesystem(), $this->configPath ?: $this->resourcePath('config'));
+        $loader = new FileLoader(new Filesystem(), $this->resourcePath('config'));
 
         $this->instance('config', $config = new Repository($loader, $this->environment()));
     }
@@ -372,6 +391,18 @@ trait CoreBindings
 
         $this->singleton('queue.connection', function () {
             return $this->loadComponent('queue', 'Illuminate\Queue\QueueServiceProvider', 'queue.connection');
+        });
+    }
+
+    /**
+     * Register container bindings for the application.
+     *
+     * @return void
+     */
+    protected function registerRedisBindings()
+    {
+        $this->singleton('redis', function () {
+            return $this->loadComponent('database', 'Illuminate\Redis\RedisServiceProvider', 'redis');
         });
     }
 

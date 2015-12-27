@@ -58,6 +58,13 @@ class Application extends Container implements ApplicationContract
     protected $basePath;
 
     /**
+     * The resource path of the application installation.
+     *
+     * @var string
+     */
+    protected $resourcePath;
+
+    /**
      * All of the loaded configuration files.
      *
      * @var array
@@ -352,7 +359,7 @@ class Application extends Container implements ApplicationContract
      *
      * @return mixed
      */
-    protected function loadComponent($config, $providers, $return = null)
+    public function loadComponent($config, $providers, $return = null)
     {
         $this->configure($config);
 
@@ -501,7 +508,23 @@ class Application extends Container implements ApplicationContract
      */
     public function databasePath()
     {
-        return $this->basePath().'/resources/database';
+        return $this->resourcePath('database');
+    }
+
+    /**
+     * Get the resource path for the application.
+      *
+      * @param  string|null  $path
+      *
+      * @return string
+      */
+    public function resourcePath($path = null)
+    {
+        if ($this->resourcePath) {
+            return $this->resourcePath.($path ? '/'.$path : $path);
+        }
+
+        return $this->basePath('resources'.($path ? '/'.$path : $path));
     }
 
     /**
