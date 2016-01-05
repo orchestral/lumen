@@ -1,5 +1,7 @@
 <?php
 
+use Laravel\Lumen\Testing\DatabaseTransactions;
+
 class LumenExampleTest extends LumenTestCase
 {
     /**
