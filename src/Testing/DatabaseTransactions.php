@@ -1,6 +1,4 @@
-<?php
-
-namespace Laravel\Lumen\Testing;
+<?php namespace Laravel\Lumen\Testing;
 
 trait DatabaseTransactions
 {

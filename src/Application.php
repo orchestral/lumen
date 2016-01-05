@@ -513,11 +513,11 @@ class Application extends Container implements ApplicationContract
 
     /**
      * Get the resource path for the application.
-      *
-      * @param  string|null  $path
-      *
-      * @return string
-      */
+     *
+     * @param  string|null  $path
+     *
+     * @return string
+     */
     public function resourcePath($path = null)
     {
         if ($this->resourcePath) {
