@@ -133,7 +133,7 @@ class Application extends Container implements ApplicationContract
      */
     public function version()
     {
-        return 'Lumen (5.2.0-dev) (Laravel Components 5.2.*)';
+        return 'Lumen (5.2.0) (Laravel Components 5.2.*)';
     }
 
     /**
@@ -513,11 +513,11 @@ class Application extends Container implements ApplicationContract
 
     /**
      * Get the resource path for the application.
-      *
-      * @param  string|null  $path
-      *
-      * @return string
-      */
+     *
+     * @param  string|null  $path
+     *
+     * @return string
+     */
     public function resourcePath($path = null)
     {
         if ($this->resourcePath) {

@@ -2,7 +2,11 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-(new Dotenv\Dotenv(__DIR__.'/../'))->load();
+try {
+    (new Dotenv\Dotenv(__DIR__.'/../'))->load();
+} catch (Dotenv\Exception\InvalidPathException $e) {
+    //
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +26,14 @@ $app = new Laravel\Lumen\Application(
 // $app->withFacades();
 // $app->withFoundation();
 // $app->withEloquent();
+
+// $app->singleton('cookie', function ($app) {
+//     return $app->loadComponent('session', Illuminate\Cookie\CookieServiceProvider::class, 'cookie');
+// });
+
+// $app->singleton('url', function ($app) {
+//     return new Laravel\Lumen\Routing\UrlGenerator($app);
+// });
 
 /*
 |--------------------------------------------------------------------------
@@ -60,7 +72,8 @@ $app->singleton(
 // ]);
 
 // $app->routeMiddleware([
-
+//     'auth' => App\Http\Middleware\Authenticate::class,
+//     'jwt.refresh' => Tymon\JWTAuth\Middleware\RefreshToken::class,
 // ]);
 
 /*
@@ -74,8 +87,10 @@ $app->singleton(
 |
 */
 
+// $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 // $app->register(Dingo\Api\Provider\LumenServiceProvider::class);
 // $app->register(App\Providers\AppServiceProvider::class);
+// $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
 /*
