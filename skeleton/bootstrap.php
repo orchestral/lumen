@@ -2,7 +2,11 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-(new Dotenv\Dotenv(__DIR__.'/../'))->load();
+try {
+    (new Dotenv\Dotenv(__DIR__.'/../'))->load();
+} catch (Dotenv\Exception\InvalidPathException $e) {
+    //
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -68,6 +72,7 @@ $app->singleton(
 // ]);
 
 // $app->routeMiddleware([
+//     'auth' => App\Http\Middleware\Authenticate::class,
 //     'jwt.refresh' => Tymon\JWTAuth\Middleware\RefreshToken::class,
 // ]);
 

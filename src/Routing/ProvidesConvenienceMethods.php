@@ -110,6 +110,7 @@ trait ProvidesConvenienceMethods
      *
      * @param  mixed  $ability
      * @param  mixed|array  $arguments
+     *
      * @return \Illuminate\Auth\Access\Response
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
@@ -127,6 +128,7 @@ trait ProvidesConvenienceMethods
      * @param  \Illuminate\Contracts\Auth\Authenticatable|mixed  $user
      * @param  mixed  $ability
      * @param  mixed|array  $arguments
+     *
      * @return \Illuminate\Auth\Access\Response
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
@@ -143,6 +145,7 @@ trait ProvidesConvenienceMethods
      *
      * @param  mixed  $ability
      * @param  mixed|array  $arguments
+     *
      * @return array
      */
     protected function parseAbilityAndArguments($ability, $arguments)

@@ -1,6 +1,4 @@
-<?php
-
-namespace Laravel\Lumen\Routing;
+<?php namespace Laravel\Lumen\Routing;
 
 use Throwable;
 use Exception;
@@ -43,6 +41,7 @@ class Pipeline extends BasePipeline
      * Get the initial slice to begin the stack call.
      *
      * @param  \Closure  $destination
+     *
      * @return \Closure
      */
     protected function getInitialSlice(BaseClosure $destination)
@@ -62,6 +61,7 @@ class Pipeline extends BasePipeline
      * Handle the given exception.
      *
      * @param  \Exception  $e
+     *
      * @return mixed
      */
     protected function handleException($passable, Exception $e)
