@@ -23,6 +23,10 @@ $app = new Laravel\Lumen\Application(
 // $app->withFoundation();
 // $app->withEloquent();
 
+// $app->singleton('cookie', function ($app) {
+//     return $app->loadComponent('session', Illuminate\Cookie\CookieServiceProvider::class, 'cookie');
+// });
+
 // $app->singleton('url', function ($app) {
 //     return new Laravel\Lumen\Routing\UrlGenerator($app);
 // });
@@ -78,9 +82,10 @@ $app->singleton(
 |
 */
 
-// $app->register(App\Providers\AuthServiceProvider::class);
+// $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 // $app->register(Dingo\Api\Provider\LumenServiceProvider::class);
 // $app->register(App\Providers\AppServiceProvider::class);
+// $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
 /*
