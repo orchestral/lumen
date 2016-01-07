@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\Validator;
 use Illuminate\Contracts\Auth\Access\Gate;
-use Illuminate\Http\Exception\HttpResponseException;
+use Illuminate\Validation\ValidationException;
 
 trait ProvidesConvenienceMethods
 {
@@ -76,7 +76,7 @@ trait ProvidesConvenienceMethods
      */
     protected function throwValidationException(Request $request, $validator)
     {
-        throw new HttpResponseException($this->buildFailedValidationResponse(
+        throw new ValidationException($validator, $this->buildFailedValidationResponse(
             $request, $this->formatValidationErrors($validator)
         ));
     }
