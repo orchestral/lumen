@@ -1,9 +1,11 @@
 <?php namespace App\Lumen\Exceptions;
 
 use Exception;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -15,6 +17,8 @@ class Handler extends ExceptionHandler
     protected $dontReport = [
         AuthorizationException::class,
         HttpException::class,
+        ModelNotFoundException::class,
+        ValidationException::class,
     ];
 
     /**
