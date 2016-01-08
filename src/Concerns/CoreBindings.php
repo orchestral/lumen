@@ -37,6 +37,9 @@ trait CoreBindings
         'Illuminate\Cache\CacheManager'                   => 'registerCacheBindings',
         'config'                                          => 'registerConfigBindings',
         'composer'                                        => 'registerComposerBindings',
+        'cookie'                                          => 'registerCookieBindings',
+        'Illuminate\Contracts\Cookie\Factory'             => 'registerCookieBindings',
+        'Illuminate\Contracts\Cookie\QueueingFactory'     => 'registerCookieBindings',
         'db'                                              => 'registerDatabaseBindings',
         'Illuminate\Database\Eloquent\Factory'            => 'registerDatabaseBindings',
         'encrypter'                                       => 'registerEncrypterBindings',
@@ -99,6 +102,8 @@ trait CoreBindings
             'Illuminate\Cache\CacheManager'                   => 'cache',
             'Illuminate\Contracts\Cache\Repository'           => 'cache.store',
             'Illuminate\Contracts\Config\Repository'          => 'config',
+            'Illuminate\Contracts\Cookie\Factory'             => 'cookie',
+            'Illuminate\Contracts\Cookie\QueueingFactory'     => 'cookie',
             'Illuminate\Container\Container'                  => 'app',
             'Illuminate\Contracts\Container\Container'        => 'app',
             'Laravel\Lumen\Application'                       => 'app',
@@ -224,6 +229,18 @@ trait CoreBindings
         $loader = new FileLoader(new Filesystem(), $this->resourcePath('config'));
 
         $this->instance('config', $config = new Repository($loader, $this->environment()));
+    }
+
+    /**
+     * Register container bindings for the application.
+     *
+     * @return void
+     */
+    protected function registerCookieBindings()
+    {
+        $this->singleton('cookie', function () {
+            return $this->loadComponent('session', 'Illuminate\Cookie\CookieServiceProvider', 'cookie');
+        });
     }
 
     /**
