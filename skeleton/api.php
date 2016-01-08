@@ -13,6 +13,11 @@ $api = app(Dingo\Api\Routing\Router::class);
 |
 */
 
-$api->version('v1', function ($api) {
-    //
+$api->version(['v1'], ['namespace' => 'App\Lumen\Http\Controllers'], function ($api) {
+    $api->post('auth', 'AuthController@authenticate');
+    $api->get('auth/refresh', 'AuthController@refresh');
+
+    $api->group(['middleware' => ['api.auth']], function ($api) {
+        $api->delete('auth', 'AuthController@deauthenticate');
+    });
 });
