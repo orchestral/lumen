@@ -1,6 +1,7 @@
 <?php namespace App\Lumen\Providers;
 
-use App\User;
+use Exception;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 
@@ -29,9 +30,15 @@ class AuthServiceProvider extends ServiceProvider
         // the User instance via an API token or any other method necessary.
 
         Auth::viaRequest('api', function ($request) {
-            if ($request->input('api_token')) {
-                return User::where('api_token', $request->input('api_token'))->first();
+            try {
+                if (! $user = JWTAuth::parseToken()->authenticate()) {
+                    return;
+                }
+            } catch (Exception $e) {
+                return;
             }
+
+            return $user;
         });
     }
 }
