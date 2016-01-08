@@ -37,6 +37,9 @@ trait CoreBindings
         'Illuminate\Cache\CacheManager'                   => 'registerCacheBindings',
         'config'                                          => 'registerConfigBindings',
         'composer'                                        => 'registerComposerBindings',
+        'cookie'                                          => 'registerCookieBindings',
+        'Illuminate\Contracts\Cookie\Factory'             => 'registerCookieBindings',
+        'Illuminate\Contracts\Cookie\QueueingFactory'     => 'registerCookieBindings',
         'db'                                              => 'registerDatabaseBindings',
         'Illuminate\Database\Eloquent\Factory'            => 'registerDatabaseBindings',
         'encrypter'                                       => 'registerEncrypterBindings',
@@ -68,6 +71,11 @@ trait CoreBindings
         'session.store'                                   => 'registerSessionBindings',
         'Illuminate\Session\SessionManager'               => 'registerSessionBindings',
         'Illuminate\Session\Store'                        => 'registerSessionBindings',
+        'translator'                                      => 'registerTranslationBindings',
+        'url'                                             => 'registerUrlGeneratorBindings',
+        'validator'                                       => 'registerValidatorBindings',
+        'view'                                            => 'registerViewBindings',
+        'Illuminate\Contracts\View\Factory'               => 'registerViewBindings',
     ];
 
     /**
@@ -94,6 +102,8 @@ trait CoreBindings
             'Illuminate\Cache\CacheManager'                   => 'cache',
             'Illuminate\Contracts\Cache\Repository'           => 'cache.store',
             'Illuminate\Contracts\Config\Repository'          => 'config',
+            'Illuminate\Contracts\Cookie\Factory'             => 'cookie',
+            'Illuminate\Contracts\Cookie\QueueingFactory'     => 'cookie',
             'Illuminate\Container\Container'                  => 'app',
             'Illuminate\Contracts\Container\Container'        => 'app',
             'Laravel\Lumen\Application'                       => 'app',
@@ -117,6 +127,7 @@ trait CoreBindings
             'request'                                         => 'Illuminate\Http\Request',
             'Illuminate\Session\SessionManager'               => 'session',
             'Illuminate\Session\Store'                        => 'session.store',
+            'Illuminate\Contracts\View\Factory'               => 'view',
         ];
     }
 
@@ -218,6 +229,18 @@ trait CoreBindings
         $loader = new FileLoader(new Filesystem(), $this->resourcePath('config'));
 
         $this->instance('config', $config = new Repository($loader, $this->environment()));
+    }
+
+    /**
+     * Register container bindings for the application.
+     *
+     * @return void
+     */
+    protected function registerCookieBindings()
+    {
+        $this->singleton('cookie', function () {
+            return $this->loadComponent('session', 'Illuminate\Cookie\CookieServiceProvider', 'cookie');
+        });
     }
 
     /**
@@ -443,6 +466,24 @@ trait CoreBindings
      *
      * @return void
      */
+    protected function registerTranslationBindings()
+    {
+        $this->singleton('translator', function () {
+            $this->configure('app');
+
+            $this->instance('path.lang', $this->getLanguagePath());
+
+            $this->register('Illuminate\Translation\TranslationServiceProvider');
+
+            return $this->make('translator');
+        });
+    }
+
+    /**
+     * Register container bindings for the application.
+     *
+     * @return void
+     */
     protected function registerUrlGeneratorBindings()
     {
         $this->singleton('url', function () {
@@ -461,6 +502,18 @@ trait CoreBindings
             $this->register('Illuminate\Validation\ValidationServiceProvider');
 
             return $this->make('validator');
+        });
+    }
+
+    /**
+     * Register container bindings for the application.
+     *
+     * @return void
+     */
+    protected function registerViewBindings()
+    {
+        $this->singleton('view', function () {
+            return $this->loadComponent('view', 'Illuminate\View\ViewServiceProvider');
         });
     }
 

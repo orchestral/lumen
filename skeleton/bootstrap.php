@@ -27,14 +27,6 @@ $app = new Laravel\Lumen\Application(
 // $app->withFoundation();
 // $app->withEloquent();
 
-// $app->singleton('cookie', function ($app) {
-//     return $app->loadComponent('session', Illuminate\Cookie\CookieServiceProvider::class, 'cookie');
-// });
-
-// $app->singleton('url', function ($app) {
-//     return new Laravel\Lumen\Routing\UrlGenerator($app);
-// });
-
 /*
 |--------------------------------------------------------------------------
 | Register Container Bindings

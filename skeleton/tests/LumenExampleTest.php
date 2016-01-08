@@ -4,6 +4,8 @@ use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class LumenExampleTest extends LumenTestCase
 {
+    use DatabaseTransactions;
+
     /**
      * A basic test example.
      *
