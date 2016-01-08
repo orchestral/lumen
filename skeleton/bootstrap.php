@@ -64,7 +64,7 @@ $app->singleton(
 // ]);
 
 // $app->routeMiddleware([
-
+//     'jwt.refresh' => Tymon\JWTAuth\Middleware\RefreshToken::class,
 // ]);
 
 /*
@@ -78,6 +78,7 @@ $app->singleton(
 |
 */
 
+// $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 // $app->register(Dingo\Api\Provider\LumenServiceProvider::class);
 // $app->register(App\Lumen\Providers\AppServiceProvider::class);
 // $app->register(App\Lumen\Providers\EventServiceProvider::class);
