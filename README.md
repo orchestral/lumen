@@ -9,5 +9,4 @@ This repository contains the core code of the Orchestra Lumen. If you want to bu
 [![Total Downloads](https://img.shields.io/packagist/dt/orchestra/lumen.svg?style=flat-square)](https://packagist.org/packages/orchestra/lumen)
 [![MIT License](https://img.shields.io/packagist/l/orchestra/lumen.svg?style=flat-square)](https://packagist.org/packages/orchestra/lumen)
 [![Build Status](https://img.shields.io/travis/orchestral/lumen/3.1.svg?style=flat-square)](https://travis-ci.org/orchestral/lumen)
-[![Coverage Status](https://img.shields.io/coveralls/orchestral/lumen/3.1.svg?style=flat-square)](https://coveralls.io/r/orchestral/lumen?branch=3.1)
 [![Scrutinizer Quality Score](https://img.shields.io/scrutinizer/g/orchestral/lumen/3.1.svg?style=flat-square)](https://scrutinizer-ci.com/g/orchestral/lumen/)
