@@ -5,6 +5,12 @@ title: Lumen Change Log
 
 ## Version 3.1 {#v3-1}
 
+### v3.1.7 {#v3-1-7}
+
+* Allow middleware specification to use `|` as separator, or passing an array.
+* Convert `Laravel\Lumen\Application::loadComponent()` visibility to `public`.
+* Include example of JWT Auth integration.
+
 ### v3.1.6 {#v3-1-6}
 
 * Simplify `composer.json` dependencies.
