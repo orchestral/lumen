@@ -3,6 +3,17 @@ title: Lumen Change Log
 
 ---
 
+## Version 3.2 {#v3-2}
+
+### v3.2.0 {#v3-2-0}
+
+* Update support for Lumen Framework v5.2.x.
+* Convert `Laravel\Lumen\Application::loadComponent()` visibility to `public`.
+* Add `Laravel\Lumen\Application::withFoundation()` to boot basic Orchestra Platform support.
+* Allow method chaining on `withFacades()`, `withEloquent()` and `withFoundation()`.
+* Improves integration with `tymon/jwt-auth`.
+* Add `symfony/polyfill-php56` to add support `hash_equals()` on < PHP 5.6.
+
 ## Version 3.1 {#v3-1}
 
 ### v3.1.7 {#v3-1-7}
@@ -15,8 +26,8 @@ title: Lumen Change Log
 
 * Simplify `composer.json` dependencies.
 * Refactor code to match upcoming 3.2 releases.
-* Fix welcome page alignment. ([tom-wilson](https://github.com/tom-wilson))
-* Add `Laravel\Lumen\Http\ResponseFactory` basic unit tests. ([jmatosp](https://github.com/jmatosp))
+* Fix welcome page alignment. ([@tom-wilson](https://github.com/tom-wilson))
+* Add `Laravel\Lumen\Http\ResponseFactory` basic unit tests. ([@jmatosp](https://github.com/jmatosp))
 
 ### v3.1.5 {#v3-1-5}
 
