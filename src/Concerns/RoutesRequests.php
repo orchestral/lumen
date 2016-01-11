@@ -570,7 +570,7 @@ trait RoutesRequests
         $middleware = $this->gatherMiddlewareClassNames($middleware);
 
         return $this->sendThroughPipeline($middleware, function () use ($instance, $method, $routeInfo) {
-            return $this->callControllerCallable([$instance, $method], $parameters);
+            return $this->callControllerCallable([$instance, $method], $routeInfo[2]);
         });
     }
 
@@ -676,5 +676,15 @@ trait RoutesRequests
         $query = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '';
 
         return '/'.trim(str_replace('?'.$query, '', $_SERVER['REQUEST_URI']), '/');
+    }
+
+    /**
+     * Get the raw routes for the application.
+     *
+     * @return array
+     */
+    public function getRoutes()
+    {
+        return $this->routes;
     }
 }

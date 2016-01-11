@@ -17,7 +17,7 @@ $api->version(['v1'], ['namespace' => 'App\Lumen\Http\Controllers'], function ($
     $api->post('auth', 'AuthController@authenticate');
     $api->get('auth/refresh', 'AuthController@refresh');
 
-    $api->group(['middleware' => ['api.auth']], function ($api) {
+    $api->group(['middleware' => ['auth:jwt']], function ($api) {
         $api->delete('auth', 'AuthController@deauthenticate');
     });
 });

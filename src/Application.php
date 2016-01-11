@@ -476,7 +476,7 @@ class Application extends Container implements ApplicationContract
      */
     public function path()
     {
-        return $this->basePath.DIRECTORY_SEPARATOR.'app';
+        return $this->basePath.DIRECTORY_SEPARATOR.'lumen'.DIRECTORY_SEPARATOR.'app';
     }
 
     /**
@@ -512,6 +512,18 @@ class Application extends Container implements ApplicationContract
     }
 
     /**
+     * Get the path to the lumen directory.
+     *
+     * @param  string|null  $path
+     *
+     * @return string
+     */
+    public function lumenPath($path = null)
+    {
+        return $this->basePath('lumen'.($path ? '/'.$path : $path));
+    }
+
+    /**
      * Get the resource path for the application.
      *
      * @param  string|null  $path
@@ -536,7 +548,7 @@ class Application extends Container implements ApplicationContract
      */
     public function storagePath($path = null)
     {
-        return $this->basePath().'/storage'.($path ? '/'.$path : $path);
+        return $this->basePath('storage'.($path ? '/'.$path : $path));
     }
 
     /**
