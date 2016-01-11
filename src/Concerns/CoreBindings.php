@@ -236,10 +236,10 @@ trait CoreBindings
      *
      * @return void
      */
-    protected function registerCookieBindings()
+    protected function registerComposerBindings()
     {
-        $this->singleton('cookie', function () {
-            return $this->loadComponent('session', 'Illuminate\Cookie\CookieServiceProvider', 'cookie');
+        $this->singleton('composer', function ($app) {
+            return new Composer($app->make('files'), $this->basePath());
         });
     }
 
@@ -248,10 +248,10 @@ trait CoreBindings
      *
      * @return void
      */
-    protected function registerComposerBindings()
+    protected function registerCookieBindings()
     {
-        $this->singleton('composer', function ($app) {
-            return new Composer($app->make('files'), $this->basePath());
+        $this->singleton('cookie', function () {
+            return $this->loadComponent('session', 'Illuminate\Cookie\CookieServiceProvider', 'cookie');
         });
     }
 
@@ -473,7 +473,7 @@ trait CoreBindings
 
             $this->instance('path.lang', $this->getLanguagePath());
 
-            $this->register('Illuminate\Translation\TranslationServiceProvider');
+            $this->register('Orchestra\Translation\TranslationServiceProvider');
 
             return $this->make('translator');
         });
@@ -513,7 +513,7 @@ trait CoreBindings
     protected function registerViewBindings()
     {
         $this->singleton('view', function () {
-            return $this->loadComponent('view', 'Illuminate\View\ViewServiceProvider');
+            return $this->loadComponent('view', 'Orchestra\View\ViewServiceProvider');
         });
     }
 
