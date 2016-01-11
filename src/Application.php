@@ -169,7 +169,7 @@ class Application extends Container implements ApplicationContract
      */
     public function isDownForMaintenance()
     {
-        return false;
+        return file_exists($this->storagePath('framework/down'));
     }
 
     /**
