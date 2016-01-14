@@ -5,6 +5,11 @@ title: Lumen Change Log
 
 ## Version 3.2 {#v3-2}
 
+### v3.2.1 {#v3-2-1}
+
+* Register binding for `cache.store`. ([@dschniepp](https://github.com/dschniepp))
+* Fixes missing import of `\Exception` in `Laravel\Lumen\Testing\TestCase`. ([@dschniepp](https://github.com/dschniepp))
+
 ### v3.2.0 {#v3-2-0}
 
 * Update support for Lumen Framework v5.2.x.
