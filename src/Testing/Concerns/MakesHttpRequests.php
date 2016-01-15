@@ -403,6 +403,7 @@ trait MakesHttpRequests
      * Assert that the client response has a given code.
      *
      * @param  int  $code
+     *
      * @return void
      */
     public function assertResponseStatus($code)
@@ -416,6 +417,7 @@ trait MakesHttpRequests
      * Asserts that the status code of the response matches the given code.
      *
      * @param  int  $status
+     *
      * @return $this
      */
     protected function seeStatusCode($status)

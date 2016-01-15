@@ -3,14 +3,36 @@ title: Lumen Change Log
 
 ---
 
+## Version 3.2 {#v3-2}
+
+### v3.2.1 {#v3-2-1}
+
+* Register binding for `cache.store`. ([@dschniepp](https://github.com/dschniepp))
+* Fixes missing import of `\Exception` in `Laravel\Lumen\Testing\TestCase`. ([@dschniepp](https://github.com/dschniepp))
+
+### v3.2.0 {#v3-2-0}
+
+* Update support for Lumen Framework v5.2.x.
+* Convert `Laravel\Lumen\Application::loadComponent()` visibility to `public`.
+* Add `Laravel\Lumen\Application::withFoundation()` to boot basic Orchestra Platform support.
+* Allow method chaining on `withFacades()`, `withEloquent()` and `withFoundation()`.
+* Improves integration with `tymon/jwt-auth`.
+* Add `symfony/polyfill-php56` to add support `hash_equals()` on < PHP 5.6.
+
 ## Version 3.1 {#v3-1}
+
+### v3.1.7 {#v3-1-7}
+
+* Allow middleware specification to use `|` as separator, or passing an array.
+* Convert `Laravel\Lumen\Application::loadComponent()` visibility to `public`.
+* Include example of JWT Auth integration.
 
 ### v3.1.6 {#v3-1-6}
 
 * Simplify `composer.json` dependencies.
 * Refactor code to match upcoming 3.2 releases.
-* Fix welcome page alignment. ([tom-wilson](https://github.com/tom-wilson))
-* Add `Laravel\Lumen\Http\ResponseFactory` basic unit tests. ([jmatosp](https://github.com/jmatosp))
+* Fix welcome page alignment. ([@tom-wilson](https://github.com/tom-wilson))
+* Add `Laravel\Lumen\Http\ResponseFactory` basic unit tests. ([@jmatosp](https://github.com/jmatosp))
 
 ### v3.1.5 {#v3-1-5}
 
