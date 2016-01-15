@@ -6,12 +6,12 @@ use Illuminate\Support\Str;
 use Illuminate\Container\Container;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
-use Orchestra\Foundation\Listeners\UserAccess;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
 class Application extends Container implements ApplicationContract
 {
     use Concerns\CoreBindings,
+        Concerns\FoundationSupports,
         Concerns\RoutesRequests,
         Concerns\RegistersExceptionHandlers;
 
@@ -443,21 +443,6 @@ class Application extends Container implements ApplicationContract
     }
 
     /**
-     * Bootstrap Orchestra Platform Foundation.
-     *
-     * @return $this
-     */
-    public function withFoundation()
-    {
-        $this->make('events')->listen('orchestra.auth: roles', UserAccess::class);
-
-        $this->registerMemoryBindings();
-        $this->registerAuthorizationBindings();
-
-        return $this;
-    }
-
-    /**
      * Load the Eloquent library for the application.
      *
      * @return $this
@@ -509,18 +494,6 @@ class Application extends Container implements ApplicationContract
     public function databasePath()
     {
         return $this->resourcePath('database');
-    }
-
-    /**
-     * Get the path to the lumen directory.
-     *
-     * @param  string|null  $path
-     *
-     * @return string
-     */
-    public function lumenPath($path = null)
-    {
-        return $this->basePath('lumen'.($path ? '/'.$path : $path));
     }
 
     /**
