@@ -11,7 +11,8 @@ This repository contains the core code of the Orchestra Lumen. If you want to bu
 [![Build Status](https://img.shields.io/travis/orchestral/lumen/3.1.svg?style=flat-square)](https://travis-ci.org/orchestral/lumen)
 [![Scrutinizer Quality Score](https://img.shields.io/scrutinizer/g/orchestral/lumen/3.1.svg?style=flat-square)](https://scrutinizer-ci.com/g/orchestral/lumen/)
 
-* [Installation]
+* [Installation](#installation)
+* [API Routing](#api-routing)
 
 ### Installation
 
@@ -43,5 +44,30 @@ You can also choose to add new path to autoload to detect `lumen/app` using PSR-
             "tests/TestCase.php"
         ]
     },
+
+    "prefer-stable": true,
+    "minimum-stability": "dev"
 }
 ```
+
+> It is recommended for you to set `"prefer-stable": true` and `"minimum-stability": "dev"` as both `dingo/api` and `tymon/jwt-auth` doesn't have a stable release for latest Lumen yet.
+
+### API Routing
+
+Install `dingo/api` via the command line:
+
+    composer require "dingo/api=~1.0"
+
+Next, enable the following service provider from `lumen/bootstrap.php`:
+
+```php
+$app->register(Dingo\Api\Provider\LumenServiceProvider::class);
+```
+
+Finally, you can use `lumen/api.php` to register available routes for your API. To do this first you need to require the file from `lumen/bootstrap.php`:
+
+```php
+require __DIR__.'/api.php';
+```
+
+
