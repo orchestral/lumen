@@ -12,7 +12,6 @@ use Illuminate\Pipeline\Pipeline;
 use Illuminate\Container\Container;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
-use Orchestra\Foundation\Listeners\UserAccess;
 use Illuminate\Http\Exception\HttpResponseException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -314,26 +313,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     public function registerDeferredProvider($provider, $service = null)
     {
         return $this->register($provider);
-    }
-
-    /**
-     * Throw an HttpException with the given data.
-     *
-     * @param  int     $code
-     * @param  string  $message
-     * @param  array   $headers
-     *
-     * @return void
-     *
-     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
-     */
-    public function abort($code, $message = '', array $headers = [])
-    {
-        if ($code == 404) {
-            throw new NotFoundHttpException($message);
-        }
-
-        throw new HttpException($code, $message, null, $headers);
     }
 
     /**
