@@ -25,6 +25,7 @@ use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 class Application extends Container implements ApplicationContract, HttpKernelInterface
 {
     use Concerns\CoreBindings,
+        Concerns\FoundationSupports,
         Concerns\RegistersExceptionHandlers;
 
     /**
@@ -532,21 +533,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
             class_alias('Illuminate\Support\Facades\Storage', 'Storage');
             class_alias('Illuminate\Support\Facades\Validator', 'Validator');
         }
-
-        return $this;
-    }
-
-    /**
-     * Bootstrap Orchestra Platform Foundation.
-     *
-     * @return $this
-     */
-    public function withFoundation()
-    {
-        $this->make('events')->listen('orchestra.auth: roles', UserAccess::class);
-
-        $this->registerMemoryBindings();
-        $this->registerAuthorizationBindings();
 
         return $this;
     }
