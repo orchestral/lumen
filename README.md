@@ -13,8 +13,9 @@ This repository contains the core code of the Orchestra Lumen. If you want to bu
 
 * [Installation](#installation)
 * [API Routing](#api-routing)
+* [JWT Authentication](#jwt-authentication)
 
-### Installation
+## Installation
 
 First, install the Lumenate installer and make sure that the global Composer `bin` directory is within your system's `$PATH`:
 
@@ -52,7 +53,7 @@ You can also choose to add new path to autoload to detect `lumen/app` using PSR-
 
 > It is recommended for you to set `"prefer-stable": true` and `"minimum-stability": "dev"` as both `dingo/api` and `tymon/jwt-auth` doesn't have a stable release for latest Lumen yet.
 
-### API Routing
+## API Routing
 
 Install `dingo/api` via the command line:
 
@@ -70,4 +71,36 @@ Finally, you can use `lumen/api.php` to register available routes for your API. 
 require __DIR__.'/api.php';
 ```
 
+## JWT Authentication
 
+Install `tymon/jwt-auth` via the command line:
+
+    composer require "tymon/jwt-auth=~0.6"
+
+Next, enable the following service providers from `lumen/bootstrap.php`:
+
+```php
+$app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
+
+// ...
+
+$app->register(App\Lumen\Providers\AuthServiceProvider::class);
+```
+
+Next, we need to create a secret key for JWT:
+
+    php lumen/artisan jwt:secret
+
+This would add `JWT_SECRET` value to your main `.env` file.
+
+Finally you can extends the default `App\User` model to support `Tymon\JWTAuth\Contracts\JWTSubject`:
+
+```php
+<?php namespace App;
+
+use App\Lumen\User as Eloquent;
+
+class User extends Eloquent
+{
+    //
+}
