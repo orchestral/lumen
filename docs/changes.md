@@ -5,6 +5,14 @@ title: Lumen Change Log
 
 ## Version 3.2 {#v3-2}
 
+### v3.2.2 {#v3-2-2}
+
+* Return an Illuminate response from the exception handler. ([@matthew-james](https://github.com/matthew-james))
+* Fixes auth guard driver from `api` to `jwt`.
+* Move Orchestra Platform integration to `Laravel\Lumen\Concerns\FoundationSupports` trait.
+* Add default `App\Lumen\User` model for JWT integration.
+* Add `dingo/api` and `tymon/jwt-auth` config by default.
+
 ### v3.2.1 {#v3-2-1}
 
 * Register binding for `cache.store`. ([@dschniepp](https://github.com/dschniepp))
