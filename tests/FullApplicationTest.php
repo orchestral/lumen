@@ -380,7 +380,7 @@ class FullApplicationTest extends PHPUnit_Framework_TestCase
         $app = new Application;
 
         $app->get('/', function (Illuminate\Http\Request $request) {
-            return redirect('home');
+            return \api\redirect('home');
         });
 
         $response = $app->handle(Request::create('/', 'GET'));
@@ -397,7 +397,7 @@ class FullApplicationTest extends PHPUnit_Framework_TestCase
         }]);
 
         $app->get('/', function (Illuminate\Http\Request $request) {
-            return redirect()->route('login');
+            return \api\redirect()->route('login');
         });
 
         $response = $app->handle(Request::create('/', 'GET'));
