@@ -374,6 +374,36 @@ class FullApplicationTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(422, $response->getStatusCode());
     }
+
+    public function testRedirectResponse()
+    {
+        $app = new Application;
+
+        $app->get('/', function (Illuminate\Http\Request $request) {
+            return \api\redirect('home');
+        });
+
+        $response = $app->handle(Request::create('/', 'GET'));
+
+        $this->assertEquals(302, $response->getStatusCode());
+    }
+
+    public function testRedirectToNamedRoute()
+    {
+        $app = new Application;
+
+        $app->get('login', ['as' => 'login', function (Illuminate\Http\Request $request) {
+            return 'login';
+        }]);
+
+        $app->get('/', function (Illuminate\Http\Request $request) {
+            return \api\redirect()->route('login');
+        });
+
+        $response = $app->handle(Request::create('/', 'GET'));
+
+        $this->assertEquals(302, $response->getStatusCode());
+    }
 }
 
 class LumenTestService

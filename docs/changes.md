@@ -5,9 +5,14 @@ title: Lumen Change Log
 
 ## Version 3.2 {#v3-2}
 
+### v3.2.3 {#v3-2-3}
+
+* Add support for PSR-7 requests and responses. ([@matthew-james](https://github.com/matthew-james))
+* Add `Laravel\Lumen\Routing\UrlGenerator` bindings. ([@matthew-james](https://github.com/matthew-james))
+
 ### v3.2.2 {#v3-2-2}
 
-* Return an Illuminate response from the exception handler. ([@matthew-james](https://github.com/matthew-james))
+* Return an `Illuminate\Http\Response` from the exception handler. ([@matthew-james](https://github.com/matthew-james))
 * Fixes auth guard driver from `api` to `jwt`.
 * Move Orchestra Platform integration to `Laravel\Lumen\Concerns\FoundationSupports` trait.
 * Add default `App\Lumen\User` model for JWT integration.
