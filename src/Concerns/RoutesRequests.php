@@ -199,6 +199,10 @@ trait RoutesRequests
                 $uri = trim($this->groupAttributes['prefix'], '/').'/'.trim($uri, '/');
             }
 
+            if (isset($this->groupAttributes['suffix'])) {
+                $uri = trim($uri, '/').rtrim($this->groupAttributes['suffix'], '/');
+            }
+
             $action = $this->mergeGroupAttributes($action);
         }
 
