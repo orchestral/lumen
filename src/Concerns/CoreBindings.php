@@ -8,6 +8,7 @@ use Orchestra\Config\Repository;
 use Monolog\Handler\StreamHandler;
 use Monolog\Formatter\LineFormatter;
 use Illuminate\Filesystem\Filesystem;
+use Laravel\Lumen\Http\ResponseFactory;
 use Laravel\Lumen\Routing\UrlGenerator;
 use Zend\Diactoros\Response as PsrResponse;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
@@ -71,6 +72,7 @@ trait CoreBindings
         'request'                                         => 'registerRequestBindings',
         'Psr\Http\Message\ServerRequestInterface'         => 'registerPsrRequestBindings',
         'Psr\Http\Message\ResponseInterface'              => 'registerPsrResponseBindings',
+        'Illuminate\Contracts\Routing\ResponseFactory'    => 'registerResponseFactoryBindings',
         'Illuminate\Http\Request'                         => 'registerRequestBindings',
         'session'                                         => 'registerSessionBindings',
         'session.store'                                   => 'registerSessionBindings',
@@ -468,6 +470,18 @@ trait CoreBindings
     {
         $this->singleton('Illuminate\Http\Request', function () {
             return $this->prepareRequest(Request::capture());
+        });
+    }
+
+    /**
+     * Register container bindings for the application.
+     *
+     * @return void
+     */
+    protected function registerResponseFactoryBindings()
+    {
+        $this->singleton('Illuminate\Contracts\Routing\ResponseFactory', function ($app) {
+            return new ResponseFactory();
         });
     }
 
