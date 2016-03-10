@@ -33,7 +33,7 @@
     },
     "suggest": {
         "dingo/api": "Better API routing support (~1.0)",
-        "tymon/jwt-auth": "Allows to use JWT-Auth support (~0.6)"
+        "tymon/jwt-auth": "Allows to use JWT-Auth support (~0.6|~1.0)"
     },
     "extra": {
         "branch-alias": {
