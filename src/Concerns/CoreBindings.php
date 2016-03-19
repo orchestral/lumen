@@ -114,6 +114,8 @@ trait CoreBindings
             'Illuminate\Container\Container'                  => 'app',
             'Illuminate\Contracts\Container\Container'        => 'app',
             'Laravel\Lumen\Application'                       => 'app',
+            'Illuminate\Database\ConnectionResolverInterface' => 'db',
+            'Illuminate\Database\DatabaseManager'             => 'db',
             'Illuminate\Contracts\Encryption\Encrypter'       => 'encrypter',
             'Illuminate\Contracts\Events\Dispatcher'          => 'events',
             'Illuminate\Contracts\Filesystem\Factory'         => 'filesystem',
