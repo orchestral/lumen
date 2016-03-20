@@ -75,7 +75,7 @@ require __DIR__.'/api.php';
 
 Install `tymon/jwt-auth` via the command line:
 
-    composer require "tymon/jwt-auth=~0.6"
+    composer require "tymon/jwt-auth=~1.0"
 
 Next, enable the following service providers from `lumen/bootstrap.php`:
 
