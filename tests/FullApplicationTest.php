@@ -434,6 +434,28 @@ class FullApplicationTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(302, $response->getStatusCode());
     }
+
+    public function testRequestUser()
+    {
+        $app = new Application();
+
+        $app['config']->set([
+            'auth.defaults.guard' => 'api',
+            'auth.guards.api.driver' => 'api',
+        ]);
+
+        $app['auth']->viaRequest('api', function () {
+            return new \Illuminate\Auth\GenericUser(['id' => 1234]);
+        });
+
+        $app->get('/', function (Illuminate\Http\Request $request) {
+            return $request->user()->getAuthIdentifier();
+        });
+
+        $response = $app->handle(Request::create('/', 'GET'));
+
+        $this->assertSame('1234', $response->getContent());
+    }
 }
 
 class LumenTestService

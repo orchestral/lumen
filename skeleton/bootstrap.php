@@ -65,7 +65,7 @@ $app->singleton(
 
 // $app->routeMiddleware([
 //     'auth' => App\Lumen\Http\Middleware\Authenticate::class,
-//     'jwt.refresh' => Tymon\JWTAuth\Middleware\RefreshToken::class,
+//     'throttle' => Laravel\Lumen\Http\Middleware\ThrottleRequests::class,
 // ]);
 
 /*

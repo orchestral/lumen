@@ -1,4 +1,5 @@
 <?php
+
 namespace Laravel\Lumen\Testing\Concerns;
 
 use Illuminate\Support\Str;

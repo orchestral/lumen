@@ -1,4 +1,6 @@
-<?php namespace api;
+<?php
+
+namespace api;
 
 use Laravel\Lumen\Http\Redirector;
 use Laravel\Lumen\Http\ResponseFactory;

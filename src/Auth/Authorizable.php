@@ -1,4 +1,6 @@
-<?php namespace Laravel\Lumen\Auth;
+<?php
+
+namespace Laravel\Lumen\Auth;
 
 use Illuminate\Contracts\Auth\Access\Gate;
 

@@ -1,4 +1,6 @@
-<?php namespace Laravel\Lumen\Exceptions;
+<?php
+
+namespace Laravel\Lumen\Exceptions;
 
 use Exception;
 use Illuminate\Http\Response;

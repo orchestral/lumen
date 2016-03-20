@@ -1,4 +1,6 @@
-<?php namespace Laravel\Lumen;
+<?php
+
+namespace Laravel\Lumen;
 
 use Closure;
 use Exception;
@@ -436,6 +438,7 @@ class Application extends Container implements ApplicationContract
             class_alias('Illuminate\Support\Facades\Request', 'Request');
             class_alias('Illuminate\Support\Facades\Session', 'Session');
             class_alias('Illuminate\Support\Facades\Storage', 'Storage');
+            class_alias('Illuminate\Support\Facades\URL', 'URL');
             class_alias('Illuminate\Support\Facades\Validator', 'Validator');
         }
 

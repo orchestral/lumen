@@ -1,4 +1,6 @@
-<?php namespace Laravel\Lumen\Concerns;
+<?php
+
+namespace Laravel\Lumen\Concerns;
 
 use Orchestra\Foundation\Listeners\UserAccess;
 

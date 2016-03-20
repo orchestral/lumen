@@ -1,4 +1,6 @@
-<?php namespace App\Lumen\Http\Middleware;
+<?php
+
+namespace App\Lumen\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Factory as Auth;

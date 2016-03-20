@@ -1,4 +1,6 @@
-<?php namespace Laravel\Lumen\Console;
+<?php
+
+namespace Laravel\Lumen\Console;
 
 use Exception;
 use Throwable;

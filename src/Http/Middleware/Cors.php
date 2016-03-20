@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Lumen\Http\Middleware;
+namespace Laravel\Lumen\Http\Middleware;
 
 use Closure;
 
