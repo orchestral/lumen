@@ -1,4 +1,6 @@
-<?php namespace App\Lumen;
+<?php
+
+namespace App\Lumen;
 
 use Orchestra\Model\User as Eloquent;
 use Tymon\JWTAuth\Contracts\JWTSubject;

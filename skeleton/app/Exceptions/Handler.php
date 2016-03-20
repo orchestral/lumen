@@ -1,4 +1,6 @@
-<?php namespace App\Lumen\Exceptions;
+<?php
+
+namespace App\Lumen\Exceptions;
 
 use Exception;
 use Illuminate\Validation\ValidationException;

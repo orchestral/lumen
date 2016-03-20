@@ -1,4 +1,6 @@
-<?php namespace Laravel\Lumen\Console\Commands;
+<?php
+
+namespace Laravel\Lumen\Console\Commands;
 
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;

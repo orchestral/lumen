@@ -1,4 +1,6 @@
-<?php namespace Laravel\Lumen;
+<?php
+
+namespace Laravel\Lumen;
 
 use Closure;
 use Exception;

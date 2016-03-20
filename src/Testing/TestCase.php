@@ -1,4 +1,6 @@
-<?php namespace Laravel\Lumen\Testing;
+<?php
+
+namespace Laravel\Lumen\Testing;
 
 use Mockery;
 use Exception;

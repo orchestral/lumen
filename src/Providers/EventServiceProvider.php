@@ -1,4 +1,6 @@
-<?php namespace Laravel\Lumen\Providers;
+<?php
+
+namespace Laravel\Lumen\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Events\Dispatcher;

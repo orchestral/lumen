@@ -1,4 +1,6 @@
-<?php namespace Laravel\Lumen\Auth\Providers;
+<?php
+
+namespace Laravel\Lumen\Auth\Providers;
 
 use Dingo\Api\Routing\Route;
 use Illuminate\Http\Request;

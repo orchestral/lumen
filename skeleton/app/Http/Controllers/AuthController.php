@@ -1,4 +1,6 @@
-<?php namespace App\Lumen\Http\Controllers;
+<?php
+
+namespace App\Lumen\Http\Controllers;
 
 use Tymon\JWTAuth\JWTAuth;
 use Illuminate\Http\Request;

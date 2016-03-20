@@ -1,4 +1,6 @@
-<?php namespace App\Lumen\Console;
+<?php
+
+namespace App\Lumen\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;

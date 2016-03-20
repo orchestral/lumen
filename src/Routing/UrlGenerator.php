@@ -1,4 +1,6 @@
-<?php namespace Laravel\Lumen\Routing;
+<?php
+
+namespace Laravel\Lumen\Routing;
 
 use Laravel\Lumen\Application;
 use Illuminate\Contracts\Routing\UrlRoutable;
