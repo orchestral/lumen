@@ -1,4 +1,4 @@
-<?php namespace App\Lumen\Http\Middleware;
+<?php namespace Laravel\Lumen\Http\Middleware;
 
 use RuntimeException;
 use Illuminate\Routing\Middleware\ThrottleRequests as Throttle;

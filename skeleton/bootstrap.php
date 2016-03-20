@@ -65,7 +65,7 @@ $app->singleton(
 
 // $app->routeMiddleware([
 //     'auth' => App\Lumen\Http\Middleware\Authenticate::class,
-//     'throttle' => App\Lumen\Http\Middleware\ThrottleRequests::class,
+//     'throttle' => Laravel\Lumen\Http\Middleware\ThrottleRequests::class,
 // ]);
 
 /*
