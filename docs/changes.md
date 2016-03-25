@@ -5,6 +5,15 @@ title: Lumen Change Log
 
 ## Version 3.2 {#v3-2}
 
+### v3.2.4 {#v3-2-4}
+
+* Add `Laravel\Lumen\Application::withFacadeAliases()` method.
+* Add `Laravel\Lumen\Auth\Providers\JWT` class for JWT authentication for dingo/api.
+* Add `Laravel\Lumen\Concerns\CoreBindings::registerResponseFactoryBindings()` method.
+* Add `Laravel\Lumen\Http\Middleware\Cors` middleware.
+* Add `Laravel\Lumen\Http\Middleware\ThrottleRequests` middleware.
+* Add support for route group suffix.
+
 ### v3.2.3 {#v3-2-3}
 
 * Add support for PSR-7 requests and responses. ([@matthew-james](https://github.com/matthew-james))
