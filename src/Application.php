@@ -421,6 +421,16 @@ class Application extends Container implements ApplicationContract
     {
         Facade::setFacadeApplication($this);
 
+        return $this;
+    }
+
+    /**
+     * Register the facade aliases for the application.
+     *
+     * @return $this
+     */
+    public function withFacadeAliases()
+    {
         if (! static::$aliasesRegistered) {
             static::$aliasesRegistered = true;
 
