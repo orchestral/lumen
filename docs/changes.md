@@ -5,6 +5,13 @@ title: Lumen Change Log
 
 ## Version 3.1 {#v3-1}
 
+### v3.1.8 {#v3-1-8}
+
+* Add default `App\Lumen\User` model.
+* Improves `lumen/bootstrap.php`.
+* Add default `api.php` and `jwt.php` config.
+* Add `Laravel\Lumen\Concerns\FoundationSupports` trait.
+
 ### v3.1.7 {#v3-1-7}
 
 * Allow middleware specification to use `|` as separator, or passing an array.
