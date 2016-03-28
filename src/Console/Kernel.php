@@ -28,13 +28,11 @@ class Kernel implements KernelContract
     protected $artisan;
 
     /**
-     * The Artisan commands provided by your application.
+     * The Artisan commands provided by the application.
      *
      * @var array
      */
-    protected $commands = [
-        //
-    ];
+    protected $commands = [];
 
     /**
      * Create a new console kernel instance.
