@@ -8,7 +8,7 @@ use Orchestra\Auth\AuthManager;
 use Dingo\Api\Auth\Provider\Authorization;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
-class ApiToken extends Authorization
+class Guard extends Authorization
 {
     /**
      * Illuminate authentication manager.
@@ -16,6 +16,13 @@ class ApiToken extends Authorization
      * @var \Orchestra\Auth\AuthManager
      */
     protected $auth;
+
+    /**
+     * The guard driver name.
+     *
+     * @var string
+     */
+    protected $guard = 'api';
 
     /**
      * Create a new basic provider instance.
@@ -37,7 +44,7 @@ class ApiToken extends Authorization
      */
     public function authenticate(Request $request, Route $route)
     {
-        if (! $user = $this->auth->guard('api')->user()) {
+        if (! $user = $this->auth->guard($this->guard)->user()) {
             throw new UnauthorizedHttpException('ApiToken', 'Unable to authenticate with invalid API key and token.');
         }
 
