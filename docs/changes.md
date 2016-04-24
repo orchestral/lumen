@@ -5,6 +5,13 @@ title: Lumen Change Log
 
 ## Version 3.2 {#v3-2}
 
+### v3.2.5 {#v3-2-5}
+
+* Allow middleware to replace route info. ([@sw-double](https://github.com/sw-double))
+* Add `bindAuthForApiToken()` and `bindAuthForJwtToken()` method under `App\Lumen\Providers\AuthServiceProvider`.
+* Add `Laravel\Lumen\Auth\Providers\Guard` class for Illuminate Auth authentication for dingo/api.
+* `Laravel\Lumen\Concerns\RoutesRequests::addRoute()` now accepts multiple methods. ([@m1](https://github.com/m1))
+
 ### v3.2.4 {#v3-2-4}
 
 * Add `Laravel\Lumen\Application::withFacadeAliases()` method.

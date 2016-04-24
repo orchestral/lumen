@@ -35,7 +35,7 @@ class Guard extends Authorization
     }
 
     /**
-     * Authenticate request with a JWT.
+     * Authenticate request with a Illuminate Guard.
      *
      * @param \Illuminate\Http\Request $request
      * @param \Dingo\Api\Routing\Route $route
