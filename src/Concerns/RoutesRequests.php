@@ -188,9 +188,10 @@ trait RoutesRequests
     /**
      * Add a route to the collection.
      *
-     * @param  string  $method
+     * @param  array|string  $method
      * @param  string  $uri
      * @param  mixed  $action
+     * @return void
      */
     public function addRoute($method, $uri, $action)
     {
@@ -214,7 +215,13 @@ trait RoutesRequests
             $this->namedRoutes[$action['as']] = $uri;
         }
 
-        $this->routes[$method.$uri] = ['method' => $method, 'uri' => $uri, 'action' => $action];
+        if (is_array($method)) {
+            foreach ($method as $verb) {
+                $this->routes[$verb.$uri] = ['method' => $verb, 'uri' => $uri, 'action' => $action];
+            }
+        } else {
+            $this->routes[$method.$uri] = ['method' => $method, 'uri' => $uri, 'action' => $action];
+        }
     }
 
     /**
