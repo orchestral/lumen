@@ -411,6 +411,13 @@ class FullApplicationTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($app->environment(['production']));
     }
 
+    public function testRunningUnitTestsDetection()
+    {
+        $app = new Application;
+
+        $this->assertEquals(false, $app->runningUnitTests());
+    }
+
     public function testValidationHelpers()
     {
         $app = new Application;
