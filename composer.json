@@ -25,7 +25,7 @@
         "php": ">=5.6.4",
         "laravel/framework": "~5.3.0",
         "orchestra/foundation": "~3.3.0",
-        "nikic/fast-route": "0.8.*"
+        "nikic/fast-route": "~1.0"
     },
     "require-dev": {
         "mockery/mockery": "^0.9.1",
