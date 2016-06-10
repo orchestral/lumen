@@ -99,7 +99,7 @@ class FullApplicationTest extends PHPUnit_Framework_TestCase
     {
         $app = new Application;
         $app->get('/foo-bar/{baz}', function ($baz = 'default-value') {
-          return api\response($baz);
+            return api\response($baz);
         });
 
         $response = $app->handle(Request::create('/foo-bar/something', 'GET'));
@@ -177,6 +177,97 @@ class FullApplicationTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('Middleware - bar - boom', $response->getContent());
+    }
+
+    public function testGroupRouteMiddleware()
+    {
+        $app = new Application;
+
+        $app->routeMiddleware(['foo' => 'LumenTestMiddleware', 'bar' => 'LumenTestMiddleware']);
+
+        $app->group(['middleware' => 'foo'], function ($app) {
+            $app->get('/', function () {
+                return 'Hello World';
+            });
+            $app->group([], function () {
+            });
+            $app->get('/fooBar', function () {
+                return 'Hello World';
+            });
+        });
+
+        $app->group(['middleware' => ['foo']], function ($app) {
+            $app->get('/fooFoo', function () {
+                return 'Hello World';
+            });
+        });
+
+        $app->group(['middleware' => 'bar|foo'], function ($app) {
+            $app->get('/fooFooBar', function () {
+                return 'Hello World';
+            });
+        });
+
+        $app->get('/foo', function () {
+            return 'Hello World';
+        });
+
+        $response = $app->handle(Request::create('/', 'GET'));
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('Middleware', $response->getContent());
+
+        $response = $app->handle(Request::create('/foo', 'GET'));
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('Hello World', $response->getContent());
+
+        $response = $app->handle(Request::create('/fooFoo', 'GET'));
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('Middleware', $response->getContent());
+
+        $response = $app->handle(Request::create('/fooFooBar', 'GET'));
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('Middleware', $response->getContent());
+
+        $response = $app->handle(Request::create('/fooBar', 'GET'));
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('Middleware', $response->getContent());
+    }
+
+    public function testGroupRouteNestedMiddleware()
+    {
+        $app = new Application;
+
+        $app->routeMiddleware(['passing' => 'LumenTestPlainMiddleware', 'bar' => 'LumenTestMiddleware']);
+
+        $app->group(['middleware' => 'passing'], function ($app) {
+            $app->get('/foo', ['middleware' => 'bar', function () {
+                return 'Hello World';
+            }]);
+        });
+
+        $app->group(['middleware' => ['passing']], function ($app) {
+            $app->get('/bar', ['middleware' => ['bar'], function () {
+                return 'Hello World';
+            }]);
+        });
+
+        $app->group(['middleware' => ['passing']], function ($app) {
+            $app->get('/fooBar', ['middleware' => 'passing|bar', function () {
+                return 'Hello World';
+            }]);
+        });
+
+        $response = $app->handle(Request::create('/foo', 'GET'));
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('Middleware', $response->getContent());
+
+        $response = $app->handle(Request::create('/bar', 'GET'));
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('Middleware', $response->getContent());
+
+        $response = $app->handle(Request::create('/fooBar', 'GET'));
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('Middleware', $response->getContent());
     }
 
     public function testWithMiddlewareDisabled()
@@ -481,6 +572,15 @@ class FullApplicationTest extends PHPUnit_Framework_TestCase
         $response = $app->handle(Request::create('/', 'GET'));
 
         $this->assertSame('1234', $response->getContent());
+    }
+
+    public function testCanResolveValidationFactoryFromContract()
+    {
+        $app = new Application();
+
+        $validator = $app['Illuminate\Contracts\Validation\Factory'];
+
+        $this->assertInstanceOf('Illuminate\Contracts\Validation\Factory', $validator);
     }
 }
 

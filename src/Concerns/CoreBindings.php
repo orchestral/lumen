@@ -83,6 +83,7 @@ trait CoreBindings
         'translator'                                      => 'registerTranslationBindings',
         'url'                                             => 'registerUrlGeneratorBindings',
         'validator'                                       => 'registerValidatorBindings',
+        'Illuminate\Contracts\Validation\Factory'         => 'registerValidatorBindings',
         'view'                                            => 'registerViewBindings',
         'Illuminate\Contracts\View\Factory'               => 'registerViewBindings',
     ];
@@ -139,6 +140,7 @@ trait CoreBindings
             'Illuminate\Session\SessionManager'               => 'session',
             'Illuminate\Session\Store'                        => 'session.store',
             'Laravel\Lumen\Routing\UrlGenerator'              => 'url',
+            'Illuminate\Contracts\Validation\Factory' => 'validator',
             'Illuminate\Contracts\View\Factory'               => 'view',
         ];
     }
