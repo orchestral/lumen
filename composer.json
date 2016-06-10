@@ -32,7 +32,7 @@
     "require-dev": {
         "mockery/mockery": "^0.9.1",
         "dingo/api": "~1.0",
-        "tymon/jwt-auth": "~0.6"
+        "tymon/jwt-auth": "~1.0"
     },
     "suggest": {
         "dingo/api": "Better API routing support (~1.0)",
