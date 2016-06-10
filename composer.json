@@ -28,8 +28,8 @@
         "nikic/fast-route": "0.7.*"
     },
     "require-dev": {
-        "mockery/mockery": "^0.9.1",
-        "phpunit/phpunit": "~4.0|~5.0"
+        "mockery/mockery": "^0.9.4",
+        "phpunit/phpunit": "~4.8|~5.0"
     },
     "suggest": {
         "dingo/api": "Better API routing support (~1.0)",
