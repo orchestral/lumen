@@ -50,6 +50,10 @@ title: Lumen Change Log
 
 ## Version 3.1 {#v3-1}
 
+### v3.1.9 {#v3-1-9}
+
+* Improved the exception handler. [@GrahamCampbell](https://github.com/GrahamCampbell)
+
 ### v3.1.8 {#v3-1-8}
 
 * Add default `App\Lumen\User` model.
