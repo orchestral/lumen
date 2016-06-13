@@ -5,6 +5,11 @@ title: Lumen Change Log
 
 ## Version 3.2 {#v3-2}
 
+### v3.2.6 {#v3-2-6}
+
+* Improved the exception handler. ([@GrahamCampbell](https://github.com/GrahamCampbell))
+* Add `Laravel\Lumen\Application::runningUnitTests()`.
+
 ### v3.2.5 {#v3-2-5}
 
 * Allow middleware to replace route info. ([@sw-double](https://github.com/sw-double))
@@ -52,7 +57,7 @@ title: Lumen Change Log
 
 ### v3.1.9 {#v3-1-9}
 
-* Improved the exception handler. [@GrahamCampbell](https://github.com/GrahamCampbell)
+* Improved the exception handler. ([@GrahamCampbell](https://github.com/GrahamCampbell))
 
 ### v3.1.8 {#v3-1-8}
 
