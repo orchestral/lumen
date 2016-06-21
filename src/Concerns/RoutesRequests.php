@@ -191,6 +191,7 @@ trait RoutesRequests
      * @param  array|string  $method
      * @param  string  $uri
      * @param  mixed  $action
+     *
      * @return void
      */
     public function addRoute($method, $uri, $action)

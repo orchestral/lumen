@@ -225,10 +225,12 @@ class Application extends Container implements ApplicationContract
 
         $this->loadedProviders[$providerName] = true;
 
-        $provider->register();
+        if (method_exists($provider, 'register')) {
+            $provider->register();
+        }
 
         if (method_exists($provider, 'boot')) {
-            $this->call([$provider, 'boot']);
+            return $this->call([$provider, 'boot']);
         }
     }
 
@@ -415,11 +417,17 @@ class Application extends Container implements ApplicationContract
     /**
      * Register the facades for the application.
      *
-     * @return $this
+     * @param  bool  $aliases
+     *
+     * @return void
      */
-    public function withFacades()
+    public function withFacades($aliases = true)
     {
         Facade::setFacadeApplication($this);
+
+        if ($aliases) {
+            $this->withAliases();
+        }
 
         return $this;
     }
@@ -428,8 +436,20 @@ class Application extends Container implements ApplicationContract
      * Register the facade aliases for the application.
      *
      * @return $this
+     *
+     * @deprecated v3.3.0
      */
     public function withFacadeAliases()
+    {
+        $this->withAliases();
+    }
+
+    /**
+     * Register the aliases for the application.
+     *
+     * @return void
+     */
+    public function withAliases()
     {
         if (! static::$aliasesRegistered) {
             static::$aliasesRegistered = true;
@@ -560,11 +580,13 @@ class Application extends Container implements ApplicationContract
     /**
      * Prepare the application to execute a console command.
      *
+     * @param  bool  $aliases
+     *
      * @return void
      */
-    public function prepareForConsoleCommand()
+    public function prepareForConsoleCommand($aliases = true)
     {
-        $this->withFacades();
+        $this->withFacades($aliases);
 
         $this->configure('database');
     }

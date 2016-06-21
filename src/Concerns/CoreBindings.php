@@ -140,7 +140,7 @@ trait CoreBindings
             'Illuminate\Session\SessionManager'               => 'session',
             'Illuminate\Session\Store'                        => 'session.store',
             'Laravel\Lumen\Routing\UrlGenerator'              => 'url',
-            'Illuminate\Contracts\Validation\Factory' => 'validator',
+            'Illuminate\Contracts\Validation\Factory'         => 'validator',
             'Illuminate\Contracts\View\Factory'               => 'view',
         ];
     }
