@@ -493,6 +493,18 @@ class FullApplicationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Middleware', $response->getContent());
     }
 
+    public function testBasicInvokableActionDispatching()
+    {
+        $app = new Application;
+
+        $app->get('/action/{id}', 'LumenTestAction');
+
+        $response = $app->handle(Request::create('/action/199', 'GET'));
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('199', $response->getContent());
+    }
+
     public function testEnvironmentDetection()
     {
         $app = new Application;
@@ -645,5 +657,13 @@ class LumenTestParameterizedMiddleware
     public function handle($request, $next, $parameter1, $parameter2)
     {
         return api\response("Middleware - $parameter1 - $parameter2");
+    }
+}
+
+class LumenTestAction
+{
+    public function __invoke($id)
+    {
+        return $id;
     }
 }
