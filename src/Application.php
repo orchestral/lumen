@@ -418,15 +418,16 @@ class Application extends Container implements ApplicationContract
      * Register the facades for the application.
      *
      * @param  bool  $aliases
+     * @param  array $custom
      *
      * @return void
      */
-    public function withFacades($aliases = true)
+    public function withFacades($aliases = true, $custom = [])
     {
         Facade::setFacadeApplication($this);
 
         if ($aliases) {
-            $this->withAliases();
+            $this->withAliases($custom);
         }
 
         return $this;
@@ -447,29 +448,36 @@ class Application extends Container implements ApplicationContract
     /**
      * Register the aliases for the application.
      *
+     * @param array $custom
      * @return void
      */
-    public function withAliases()
+    public function withAliases($custom = [])
     {
+        $defaults = [
+            'Illuminate\Support\Facades\Auth' => 'Auth',
+            'Illuminate\Support\Facades\Cache' => 'Cache',
+            'Illuminate\Support\Facades\DB' => 'DB',
+            'Illuminate\Support\Facades\Crypt' => 'Crypt',
+            'Illuminate\Support\Facades\Event' => 'Event',
+            'Illuminate\Support\Facades\Gate' => 'Gate',
+            'Illuminate\Support\Facades\Hash' => 'Hash',
+            'Illuminate\Support\Facades\Log' => 'Log',
+            'Illuminate\Support\Facades\Queue' => 'Queue',
+            'Illuminate\Support\Facades\Schema' => 'Schema',
+            'Illuminate\Support\Facades\Session' => 'Session',
+            'Illuminate\Support\Facades\Storage' => 'Storage',
+            'Illuminate\Support\Facades\URL' => 'URL',
+            'Illuminate\Support\Facades\Validator' => 'Validator',
+        ];
+
         if (! static::$aliasesRegistered) {
             static::$aliasesRegistered = true;
 
-            class_alias('Illuminate\Support\Facades\App', 'App');
-            class_alias('Illuminate\Support\Facades\Auth', 'Auth');
-            class_alias('Illuminate\Support\Facades\DB', 'DB');
-            class_alias('Illuminate\Support\Facades\Cache', 'Cache');
-            class_alias('Illuminate\Support\Facades\Crypt', 'Crypt');
-            class_alias('Illuminate\Support\Facades\Event', 'Event');
-            class_alias('Illuminate\Support\Facades\Gate', 'Gate');
-            class_alias('Illuminate\Support\Facades\Hash', 'Hash');
-            class_alias('Illuminate\Support\Facades\Log', 'Log');
-            class_alias('Illuminate\Support\Facades\Mail', 'Mail');
-            class_alias('Illuminate\Support\Facades\Queue', 'Queue');
-            class_alias('Illuminate\Support\Facades\Request', 'Request');
-            class_alias('Illuminate\Support\Facades\Session', 'Session');
-            class_alias('Illuminate\Support\Facades\Storage', 'Storage');
-            class_alias('Illuminate\Support\Facades\URL', 'URL');
-            class_alias('Illuminate\Support\Facades\Validator', 'Validator');
+            $merged = array_merge($defaults, $custom);
+
+            foreach ($merged as $original => $alias) {
+                class_alias($original, $alias);
+            }
         }
 
         return $this;
