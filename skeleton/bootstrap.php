@@ -99,10 +99,10 @@ $app->singleton(
 
 $app->boot();
 
-$app->group(['namespace' => 'App\Lumen\Http\Controllers'], function ($app) {
-    require __DIR__.'/routes.php';
+$app->get('/', function () use ($app) {
+    return $app->version();
 });
 
-// require __DIR__.'/api.php';
+// require base_path('routes/api.php');
 
 return $app;
