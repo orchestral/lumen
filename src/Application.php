@@ -449,24 +449,25 @@ class Application extends Container implements ApplicationContract
      * Register the aliases for the application.
      *
      * @param array $custom
+     *
      * @return void
      */
     public function withAliases($custom = [])
     {
         $defaults = [
-            'Illuminate\Support\Facades\Auth' => 'Auth',
-            'Illuminate\Support\Facades\Cache' => 'Cache',
-            'Illuminate\Support\Facades\DB' => 'DB',
-            'Illuminate\Support\Facades\Crypt' => 'Crypt',
-            'Illuminate\Support\Facades\Event' => 'Event',
-            'Illuminate\Support\Facades\Gate' => 'Gate',
-            'Illuminate\Support\Facades\Hash' => 'Hash',
-            'Illuminate\Support\Facades\Log' => 'Log',
-            'Illuminate\Support\Facades\Queue' => 'Queue',
-            'Illuminate\Support\Facades\Schema' => 'Schema',
-            'Illuminate\Support\Facades\Session' => 'Session',
-            'Illuminate\Support\Facades\Storage' => 'Storage',
-            'Illuminate\Support\Facades\URL' => 'URL',
+            'Illuminate\Support\Facades\Auth'      => 'Auth',
+            'Illuminate\Support\Facades\Cache'     => 'Cache',
+            'Illuminate\Support\Facades\DB'        => 'DB',
+            'Illuminate\Support\Facades\Crypt'     => 'Crypt',
+            'Illuminate\Support\Facades\Event'     => 'Event',
+            'Illuminate\Support\Facades\Gate'      => 'Gate',
+            'Illuminate\Support\Facades\Hash'      => 'Hash',
+            'Illuminate\Support\Facades\Log'       => 'Log',
+            'Illuminate\Support\Facades\Queue'     => 'Queue',
+            'Illuminate\Support\Facades\Schema'    => 'Schema',
+            'Illuminate\Support\Facades\Session'   => 'Session',
+            'Illuminate\Support\Facades\Storage'   => 'Storage',
+            'Illuminate\Support\Facades\URL'       => 'URL',
             'Illuminate\Support\Facades\Validator' => 'Validator',
         ];
 
