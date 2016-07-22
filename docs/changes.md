@@ -5,6 +5,10 @@ title: Lumen Change Log
 
 ## Version 3.2 {#v3-2}
 
+### v3.2.7 {#v3-2-7}
+
+* Add support for installation via `lumen.json`.
+
 ### v3.2.6 {#v3-2-6}
 
 * Improved the exception handler. ([@GrahamCampbell](https://github.com/GrahamCampbell))

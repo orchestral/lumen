@@ -35,13 +35,12 @@ You can also choose to add new path to autoload to detect `lumen/app` using PSR-
 {
     "autoload": {
         "psr-4": {
-            "App\\Lumen\\": "lumen/app/",
             "App\\": "app/",
         }
     },
     "autoload-dev": {
         "classmap": [
-            "lumen/tests/LumenTestCase.php",
+            "tests/LumenTestCase.php",
             "tests/TestCase.php"
         ]
     },
