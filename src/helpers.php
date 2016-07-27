@@ -37,7 +37,7 @@ if (! function_exists('api\response')) {
      * @param  int     $status
      * @param  array   $headers
      *
-     * @return \Symfony\Component\HttpFoundation\Response|\Laravel\Lumen\Http\ResponseFactory
+     * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
      */
     function response($content = '', $status = 200, array $headers = [])
     {
