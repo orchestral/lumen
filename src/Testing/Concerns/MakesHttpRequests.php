@@ -452,7 +452,7 @@ trait MakesHttpRequests
 
         if (! is_null($value)) {
             $this->assertEquals(
-                $value, $headers->get($headerName),
+                $headers->get($headerName), $value,
                 "Header [{$headerName}] was found, but value [{$headers->get($headerName)}] does not match [{$value}]."
             );
         }
