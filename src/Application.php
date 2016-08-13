@@ -449,7 +449,7 @@ class Application extends Container implements ApplicationContract
     /**
      * Register the aliases for the application.
      *
-     * @param array $custom
+     * @param  array  $custom
      *
      * @return void
      */
