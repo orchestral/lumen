@@ -5,6 +5,12 @@ title: Lumen Change Log
 
 ## Version 3.2 {#v3-2}
 
+### v3.2.8 {#v3-2-8}
+
+* Add `Laravel\Lumen\Application::getNamespace()`. ([@mlantz](https://github.com/mlantz))
+* Fixes unit testing Jobs using mock object always fails. ([@christian452](https://github.com/christian452))
+* Add support for handling transformer and serializer using `Laravel\Lumen\Routing\Helpers` trait.
+
 ### v3.2.7 {#v3-2-7}
 
 * Add support for installation via `lumen.json`.
