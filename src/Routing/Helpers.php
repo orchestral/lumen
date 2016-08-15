@@ -13,12 +13,17 @@ trait Helpers
      *
      * @param  \Illuminate\Database\Eloquent\Model|\Illuminate\Support\Collection  $instance
      * @param  string  $name
+     * @param  string|null  $serializer
      *
      * @return mixed
      */
-    protected function transform($instance, $name)
+    protected function transform($instance, $transformer, $serializer = null)
     {
-        return $this->serializeWith($this->transformWith($instance, $name), $name);
+        if (is_null($serializer)) {
+            $serializer = $transformer;
+        }
+
+        return $this->serializeWith($this->transformWith($instance, $transformer), $serializer);
     }
 
     /**
@@ -56,10 +61,6 @@ trait Helpers
 
         if (class_exists($serializer)) {
             return call_user_func(app($serializer), $instance);
-        }
-
-        if ($name !== 'Serializer') {
-            return $this->serializeWith($instance, 'Serializer');
         }
 
         return $instance;
