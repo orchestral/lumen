@@ -36,8 +36,7 @@ trait Helpers
      */
     protected function transformWith($instance, $name)
     {
-        $version = $this->getVersionNamespace();
-        $transformer = "{$this->namespace}\\Transformers\\{$version}\\{$name}";
+        $transformer = $this->getVersionedResourceClassName($name);
 
         if (class_exists($transformer)) {
             return $instance->transform(app($transformer));
@@ -56,14 +55,28 @@ trait Helpers
      */
     protected function serializeWith($instance, $name)
     {
-        $version = $this->getVersionNamespace();
-        $serializer = "{$this->namespace}\\Serializers\\{$version}\\{$name}";
+        $serializer = $this->getVersionedResourceClassName($name);
 
         if (class_exists($serializer)) {
             return call_user_func(app($serializer), $instance);
         }
 
         return $instance;
+    }
+
+    /**
+     * Get versioned resource class name.
+     *
+     * @param  string  $name
+     *
+     * @return string
+     */
+    protected function getVersionedResourceClassName($name)
+    {
+        $class   = str_replace('.', '\\', $name);
+        $version = $this->getVersionNamespace();
+
+        return sprintf('%s\%s\%s', $this->namespace, $version, $class);
     }
 
     /**
