@@ -13,18 +13,51 @@ trait Helpers
      *
      * @param  \Illuminate\Database\Eloquent\Model|\Illuminate\Support\Collection  $instance
      * @param  string  $name
+     * @param  string|null  $serializer
      *
      * @return mixed
      */
-    protected function transform($instance, $name)
+    protected function transform($instance, $transformer, $serializer = null)
     {
-        $version     = $this->getVersionNamespace();
+        if (is_null($serializer)) {
+            $serializer = $transformer;
+        }
+
+        return $this->serializeWith($this->transformWith($instance, $transformer), $serializer);
+    }
+
+    /**
+     * Transform the instance.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model|\Illuminate\Support\Collection  $instance
+     * @param  string  $name
+     *
+     * @return mixed
+     */
+    protected function transformWith($instance, $name)
+    {
+        $version = $this->getVersionNamespace();
         $transformer = "{$this->namespace}\\Transformers\\{$version}\\{$name}";
-        $serializer  = "{$this->namespace}\\Serializers\\{$version}\\{$name}";
 
         if (class_exists($transformer)) {
-            $instance = $instance->transform(app($transformer));
+            return $instance->transform(app($transformer));
         }
+
+        return $instance;
+    }
+
+    /**
+     * Transform the instance.
+     *
+     * @param  mixed  $instance
+     * @param  string  $name
+     *
+     * @return mixed
+     */
+    protected function serializeWith($instance, $name)
+    {
+        $version = $this->getVersionNamespace();
+        $serializer = "{$this->namespace}\\Serializers\\{$version}\\{$name}";
 
         if (class_exists($serializer)) {
             return call_user_func(app($serializer), $instance);
