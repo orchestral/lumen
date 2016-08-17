@@ -64,7 +64,7 @@ trait Helpers
             return call_user_func(app($serializer), $instance);
         }
 
-        return $instance instanceof Arrayable ? $collection->toArray() : $collection;
+        return $instance instanceof Arrayable ? $instance->toArray() : $instance;
     }
 
     /**
