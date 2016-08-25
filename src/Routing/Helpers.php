@@ -84,21 +84,6 @@ trait Helpers
     }
 
     /**
-     * Get versioned resource class name.
-     *
-     * @param  string  $name
-     *
-     * @return string
-     */
-    protected function getVersionedResourceClassName($name)
-    {
-        $class   = str_replace('.', '\\', $name);
-        $version = $this->getVersionNamespace();
-
-        return sprintf('%s\%s\%s', $this->namespace, $version, $class);
-    }
-
-    /**
      * Get the version namespace.
      *
      * @return string
