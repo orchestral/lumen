@@ -2,6 +2,7 @@
 
 namespace Laravel\Lumen\Routing;
 
+use Illuminate\Contracts\Support\Arrayable;
 use Dingo\Api\Routing\Helpers as BaseHelpers;
 
 trait Helpers
@@ -15,7 +16,7 @@ trait Helpers
      * @param  string  $name
      * @param  string|null  $serializer
      *
-     * @return mixed
+     * @return array
      */
     protected function transform($instance, $transformer, $serializer = null)
     {
@@ -23,7 +24,9 @@ trait Helpers
             $serializer = $transformer;
         }
 
-        return $this->serializeWith($this->transformWith($instance, $transformer), $serializer);
+        return $this->serializeWith(
+            $this->transformWith($instance, $transformer), $serializer
+        );
     }
 
     /**
@@ -36,7 +39,7 @@ trait Helpers
      */
     protected function transformWith($instance, $name)
     {
-        $transformer = $this->getVersionedResourceClassName($name);
+        $transformer = $this->getVersionedResourceClassName('Transformers', $name);
 
         if (class_exists($transformer)) {
             return $instance->transform(app($transformer));
@@ -46,22 +49,38 @@ trait Helpers
     }
 
     /**
-     * Transform the instance.
+     * Serialize the instance.
      *
      * @param  mixed  $instance
      * @param  string  $name
      *
-     * @return mixed
+     * @return array
      */
     protected function serializeWith($instance, $name)
     {
-        $serializer = $this->getVersionedResourceClassName($name);
+        $serializer = $this->getVersionedResourceClassName('Serializers', $name);
 
         if (class_exists($serializer)) {
             return call_user_func(app($serializer), $instance);
         }
 
-        return $instance;
+        return $instance instanceof Arrayable ? $instance->toArray() : $instance;
+    }
+
+    /**
+     * Get versioned resource class name.
+     *
+     * @param  string  $group
+     * @param  string  $name
+     *
+     * @return string
+     */
+    protected function getVersionedResourceClassName($group, $name)
+    {
+        $class   = str_replace('.', '\\', $name);
+        $version = $this->getVersionNamespace();
+
+        return sprintf('%s\%s\%s\%s', $this->namespace, $group, $version, $class);
     }
 
     /**
