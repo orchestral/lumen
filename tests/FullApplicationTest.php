@@ -287,6 +287,39 @@ class FullApplicationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Hello World', $response->getContent());
     }
 
+    public function testTerminableGlobalMiddleware()
+    {
+        $app = new Application;
+
+        $app->middleware(['LumenTestTerminateMiddleware']);
+
+        $app->get('/', function () {
+            return response('Hello World');
+        });
+
+        $response = $app->handle(Request::create('/', 'GET'));
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('TERMINATED', $response->getContent());
+    }
+
+    public function testTerminateWithMiddlewareDisabled()
+    {
+        $app = new Application;
+
+        $app->middleware(['LumenTestTerminateMiddleware']);
+        $app->instance('middleware.disable', true);
+
+        $app->get('/', function () {
+            return response('Hello World');
+        });
+
+        $response = $app->handle(Request::create('/', 'GET'));
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('Hello World', $response->getContent());
+    }
+
     public function testNotFoundResponse()
     {
         $app = new Application;
@@ -493,6 +526,18 @@ class FullApplicationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Middleware', $response->getContent());
     }
 
+    public function testBasicInvokableActionDispatching()
+    {
+        $app = new Application;
+
+        $app->get('/action/{id}', 'LumenTestAction');
+
+        $response = $app->handle(Request::create('/action/199', 'GET'));
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('199', $response->getContent());
+    }
+
     public function testEnvironmentDetection()
     {
         $app = new Application;
@@ -500,6 +545,13 @@ class FullApplicationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('production', $app->environment());
         $this->assertTrue($app->environment('production'));
         $this->assertTrue($app->environment(['production']));
+    }
+
+    public function testNamespaceDetection()
+    {
+        $app = new Application;
+        $this->setExpectedException('RuntimeException');
+        $app->getNamespace();
     }
 
     public function testRunningUnitTestsDetection()
@@ -582,6 +634,19 @@ class FullApplicationTest extends PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Illuminate\Contracts\Validation\Factory', $validator);
     }
+
+    public function testCanMergeUserProvidedFacadesWithDefaultOnes()
+    {
+        $app = new Application();
+
+        $aliases = [
+            UserFacade::class => 'Foo',
+        ];
+
+        $app->withFacades(true, $aliases);
+
+        $this->assertTrue(class_exists('Foo'));
+    }
 }
 
 class LumenTestService
@@ -645,5 +710,30 @@ class LumenTestParameterizedMiddleware
     public function handle($request, $next, $parameter1, $parameter2)
     {
         return api\response("Middleware - $parameter1 - $parameter2");
+    }
+}
+
+class LumenTestAction
+{
+    public function __invoke($id)
+    {
+        return $id;
+    }
+}
+
+class UserFacade
+{
+}
+
+class LumenTestTerminateMiddleware
+{
+    public function handle($request, $next)
+    {
+        return $next($request);
+    }
+
+    public function terminate($request, Illuminate\Http\Response $response)
+    {
+        $response->setContent('TERMINATED');
     }
 }

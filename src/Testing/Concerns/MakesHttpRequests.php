@@ -441,6 +441,7 @@ trait MakesHttpRequests
      *
      * @param  string  $headerName
      * @param  mixed  $value
+     *
      * @return $this
      */
     protected function seeHeader($headerName, $value = null)

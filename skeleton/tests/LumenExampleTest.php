@@ -9,7 +9,7 @@ class LumenExampleTest extends LumenTestCase
     /**
      * A basic test example.
      *
-     * @return void
+     * @test
      */
     public function testExample()
     {

@@ -1,0 +1,10 @@
+{
+  "app": "app/Lumen",
+  "config": "lumen/config",
+  "public": "lumen/public",
+  "tests": "tests",
+  "artisan": "lumen/artisan",
+  "api.php": "routes/api.php",
+  "bootstrap.php": "lumen/bootstrap.php",
+  "server.php": "lumen/server.php"
+}
