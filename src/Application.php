@@ -136,7 +136,17 @@ class Application extends Container implements ApplicationContract
      */
     public function version()
     {
-        return 'Lumen (5.3.0-dev) (Laravel Components 5.3.*)';
+        return 'Lumen (5.3.0) (Laravel Components 5.3.*)';
+    }
+
+    /**
+     * Determine if the application is currently down for maintenance.
+     *
+     * @return bool
+     */
+    public function isDownForMaintenance()
+    {
+        return file_exists($this->storagePath('framework/down'));
     }
 
     /**
@@ -163,16 +173,6 @@ class Application extends Container implements ApplicationContract
         }
 
         return $env;
-    }
-
-    /**
-     * Determine if the application is currently down for maintenance.
-     *
-     * @return bool
-     */
-    public function isDownForMaintenance()
-    {
-        return file_exists($this->storagePath('framework/down'));
     }
 
     /**
