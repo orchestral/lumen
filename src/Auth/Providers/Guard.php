@@ -13,7 +13,7 @@ class Guard extends Authorization
     /**
      * Illuminate authentication manager.
      *
-     * @var \Orchestra\Auth\AuthManager
+     * @var \Illuminate\Contracts\Auth\Guard
      */
     protected $auth;
 
@@ -31,7 +31,7 @@ class Guard extends Authorization
      */
     public function __construct(AuthManager $auth)
     {
-        $this->auth = $auth;
+        $this->auth = $auth->guard($this->guard);
     }
 
     /**
@@ -44,7 +44,7 @@ class Guard extends Authorization
      */
     public function authenticate(Request $request, Route $route)
     {
-        if (! $user = $this->auth->guard($this->guard)->user()) {
+        if (! $user = $this->auth->user()) {
             throw new UnauthorizedHttpException('ApiToken', 'Unable to authenticate with invalid API key and token.');
         }
 
