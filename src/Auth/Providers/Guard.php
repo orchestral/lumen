@@ -45,7 +45,10 @@ class Guard extends Authorization
     public function authenticate(Request $request, Route $route)
     {
         if (! $user = $this->auth->user()) {
-            throw new UnauthorizedHttpException('ApiToken', 'Unable to authenticate with invalid API key and token.');
+            throw new UnauthorizedHttpException(
+                get_class($this),
+                'Unable to authenticate with invalid API key and token.'
+            );
         }
 
         return $user;
