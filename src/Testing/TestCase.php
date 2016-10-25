@@ -255,6 +255,28 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Mock the job dispatcher so all jobs are silenced and collected.
+     *
+     * @return $this
+     */
+    protected function withoutJobs()
+    {
+        unset($this->app->availableBindings['Illuminate\Contracts\Bus\Dispatcher']);
+
+        $mock = Mockery::mock('Illuminate\Bus\Dispatcher[dispatch]', [$this->app]);
+
+        $mock->shouldReceive('dispatch')->andReturnUsing(function ($dispatched) {
+            $this->dispatchedJobs[] = $dispatched;
+        });
+
+        $this->app->instance(
+            'Illuminate\Contracts\Bus\Dispatcher', $mock
+        );
+
+        return $this;
+    }
+
+    /**
      * Set the currently logged in user for the application.
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user

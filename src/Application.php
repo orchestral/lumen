@@ -136,7 +136,7 @@ class Application extends Container implements ApplicationContract
      */
     public function version()
     {
-        return 'Lumen (5.3.0) (Laravel Components 5.3.*)';
+        return 'Lumen (5.3.1) (Laravel Components 5.3.*)';
     }
 
     /**
@@ -249,6 +249,27 @@ class Application extends Container implements ApplicationContract
     }
 
     /**
+     * Resolve the given type from the container.
+     *
+     * @param  string  $abstract
+     * @param  array   $parameters
+     * @return mixed
+     */
+    public function make($abstract, array $parameters = [])
+    {
+        $abstract = $this->getAlias($this->normalize($abstract));
+
+        if (array_key_exists($abstract, $this->availableBindings) &&
+            ! array_key_exists($this->availableBindings[$abstract], $this->ranServiceBinders)) {
+            $this->{$method = $this->availableBindings[$abstract]}();
+
+            $this->ranServiceBinders[$method] = true;
+        }
+
+        return parent::make($abstract, $parameters);
+    }
+
+    /**
      * Boot the application's service providers.
      *
      * @return void
@@ -323,26 +344,6 @@ class Application extends Container implements ApplicationContract
         foreach ($callbacks as $callback) {
             call_user_func($callback, $this);
         }
-    }
-
-    /**
-     * Resolve the given type from the container.
-     *
-     * @param  string  $abstract
-     * @param  array   $parameters
-     *
-     * @return mixed
-     */
-    public function make($abstract, array $parameters = [])
-    {
-        if (array_key_exists($abstract, $this->availableBindings) &&
-            ! array_key_exists($this->availableBindings[$abstract], $this->ranServiceBinders)) {
-            $this->{$method = $this->availableBindings[$abstract]}();
-
-            $this->ranServiceBinders[$method] = true;
-        }
-
-        return parent::make($abstract, $parameters);
     }
 
     /**
