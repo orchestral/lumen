@@ -99,6 +99,7 @@ trait RoutesRequests
      * Update the group stack with the given attributes.
      *
      * @param  array  $attributes
+     *
      * @return void
      */
     protected function updateGroupStack(array $attributes)
@@ -115,6 +116,7 @@ trait RoutesRequests
      *
      * @param  array  $new
      * @param  array  $old
+     *
      * @return array
      */
     public function mergeGroup($new, $old)
@@ -142,6 +144,7 @@ trait RoutesRequests
      * Merge the given group attributes with the last added group.
      *
      * @param  array $new
+     *
      * @return array
      */
     protected function mergeWithLastGroup($new)
@@ -154,6 +157,7 @@ trait RoutesRequests
      *
      * @param  array  $new
      * @param  array  $old
+     *
      * @return string|null
      */
     protected static function formatUsesPrefix($new, $old)
@@ -172,6 +176,7 @@ trait RoutesRequests
      *
      * @param  array  $new
      * @param  array  $old
+     *
      * @return string|null
      */
     protected static function formatGroupPrefix($new, $old)
@@ -358,13 +363,14 @@ trait RoutesRequests
      *
      * @param  array  $action
      * @param  array  $attributes The group attributes
+     *
      * @return array
      */
     protected function mergeGroupAttributes(array $action, array $attributes)
     {
-        $namespace = isset($attributes['namespace']) ? $attributes['namespace'] : null;
+        $namespace  = isset($attributes['namespace']) ? $attributes['namespace'] : null;
         $middleware = isset($attributes['middleware']) ? $attributes['middleware'] : null;
-        $as = isset($attributes['as']) ? $attributes['as'] : null;
+        $as         = isset($attributes['as']) ? $attributes['as'] : null;
 
         return $this->mergeNamespaceGroup(
             $this->mergeMiddlewareGroup(
@@ -379,6 +385,7 @@ trait RoutesRequests
      *
      * @param  array  $action
      * @param  string $namespace
+     *
      * @return array
      */
     protected function mergeNamespaceGroup(array $action, $namespace = null)
@@ -395,6 +402,7 @@ trait RoutesRequests
      *
      * @param  array  $action
      * @param  array  $middleware
+     *
      * @return array
      */
     protected function mergeMiddlewareGroup(array $action, $middleware = null)
@@ -415,6 +423,7 @@ trait RoutesRequests
      *
      * @param  array $action
      * @param  string $as
+     *
      * @return array
      */
     protected function mergeAsGroup(array $action, $as = null)
