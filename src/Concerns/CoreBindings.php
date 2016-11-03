@@ -579,8 +579,8 @@ trait CoreBindings
      */
     protected function prepareRequest(Request $request)
     {
-        $request->setUserResolver(function () {
-            return $this->make('auth')->user();
+        $request->setUserResolver(function ($guard = null) {
+            return $this->make('auth')->guard($guard)->user();
         })->setRouteResolver(function () {
             return $this->currentRoute;
         });
