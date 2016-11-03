@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Container\Container;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Contracts\Foundation\Application as ApplicationContract;
+use Orchestra\Contracts\Foundation\Application as ApplicationContract;
 
 class Application extends Container implements ApplicationContract
 {
@@ -191,6 +191,16 @@ class Application extends Container implements ApplicationContract
      * @return string
      */
     public function getCachedCompilePath()
+    {
+        throw new Exception(__FUNCTION__.' is not implemented by Lumen.');
+    }
+
+    /**
+     * Get the path to the cached extension.json file.
+     *
+     * @return string
+     */
+    public function getCachedExtensionServicesPath()
     {
         throw new Exception(__FUNCTION__.' is not implemented by Lumen.');
     }
