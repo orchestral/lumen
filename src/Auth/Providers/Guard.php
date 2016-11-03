@@ -4,7 +4,7 @@ namespace Laravel\Lumen\Auth\Providers;
 
 use Dingo\Api\Routing\Route;
 use Illuminate\Http\Request;
-use Orchestra\Auth\AuthManager;
+use Illuminate\Auth\AuthManager;
 use Dingo\Api\Auth\Provider\Authorization;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
@@ -13,7 +13,7 @@ class Guard extends Authorization
     /**
      * Illuminate authentication manager.
      *
-     * @var \Orchestra\Auth\AuthManager
+     * @var \Illuminate\Contracts\Auth\Guard
      */
     protected $auth;
 
@@ -31,7 +31,7 @@ class Guard extends Authorization
      */
     public function __construct(AuthManager $auth)
     {
-        $this->auth = $auth;
+        $this->auth = $auth->guard($this->guard);
     }
 
     /**
@@ -44,8 +44,11 @@ class Guard extends Authorization
      */
     public function authenticate(Request $request, Route $route)
     {
-        if (! $user = $this->auth->guard($this->guard)->user()) {
-            throw new UnauthorizedHttpException('ApiToken', 'Unable to authenticate with invalid API key and token.');
+        if (! $user = $this->auth->user()) {
+            throw new UnauthorizedHttpException(
+                get_class($this),
+                'Unable to authenticate with invalid API key and token.'
+            );
         }
 
         return $user;

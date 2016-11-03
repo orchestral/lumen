@@ -3,6 +3,7 @@
 namespace App\Lumen\Http\Middleware;
 
 use Closure;
+use Symfony\Component\HttpFoundation\Response;
 
 class Cors
 {
@@ -16,8 +17,19 @@ class Cors
      */
     public function handle($request, Closure $next)
     {
-        return $next($request)
-                ->header('Access-Control-Allow-Origin', '*')
-                ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        return $this->setResponseHeaders($next($request));
+    }
+
+    /**
+     * Set response header.
+     *
+     * @param \Symfony\Component\HttpFoundation\Response $response
+     */
+    protected function setResponseHeaders(Response $response)
+    {
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+
+        return $response;
     }
 }

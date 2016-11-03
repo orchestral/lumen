@@ -28,6 +28,7 @@ trait CoreBindings
         'Illuminate\Contracts\Auth\Guard'                 => 'registerAuthBindings',
         'Illuminate\Contracts\Auth\Access\Gate'           => 'registerAuthBindings',
         'Illuminate\Auth\AuthManager'                     => 'registerAuthBindings',
+        'Orchestra\Auth\AuthManager'                      => 'registerAuthBindings',
         'orchestra.acl'                                   => 'registerAuthorizationBindings',
         'orchestra.platform.acl'                          => 'registerAuthorizationBindings',
         'Orchestra\Authorization\Factory'                 => 'registerAuthorizationBindings',
@@ -47,6 +48,7 @@ trait CoreBindings
         'Illuminate\Contracts\Cookie\Factory'             => 'registerCookieBindings',
         'Illuminate\Contracts\Cookie\QueueingFactory'     => 'registerCookieBindings',
         'db'                                              => 'registerDatabaseBindings',
+        'Illuminate\Database\Connection'                  => 'registerDatabaseBindings',
         'Illuminate\Database\Eloquent\Factory'            => 'registerDatabaseBindings',
         'encrypter'                                       => 'registerEncrypterBindings',
         'Illuminate\Contracts\Encryption\Encrypter'       => 'registerEncrypterBindings',
@@ -82,6 +84,8 @@ trait CoreBindings
         'Illuminate\Session\Store'                        => 'registerSessionBindings',
         'translator'                                      => 'registerTranslationBindings',
         'url'                                             => 'registerUrlGeneratorBindings',
+        'Illuminate\Contracts\Routing\UrlGenerator'       => 'registerUrlGeneratorBindings',
+        'Laravel\Lumen\Routing\UrlGenerator'              => 'registerUrlGeneratorBindings',
         'validator'                                       => 'registerValidatorBindings',
         'Illuminate\Contracts\Validation\Factory'         => 'registerValidatorBindings',
         'view'                                            => 'registerViewBindings',
@@ -108,6 +112,7 @@ trait CoreBindings
             'Illuminate\Contracts\Auth\Guard'                 => 'auth.driver',
             'Illuminate\Contracts\Auth\PasswordBroker'        => 'auth.password',
             'Illuminate\Auth\AuthManager'                     => 'auth',
+            'Orchestra\Auth\AuthManager'                      => 'auth',
             'Illuminate\Contracts\Cache\Factory'              => 'cache',
             'Illuminate\Cache\CacheManager'                   => 'cache',
             'Illuminate\Contracts\Cache\Repository'           => 'cache.store',
@@ -119,6 +124,7 @@ trait CoreBindings
             'Laravel\Lumen\Application'                       => 'app',
             'Illuminate\Database\ConnectionResolverInterface' => 'db',
             'Illuminate\Database\DatabaseManager'             => 'db',
+            'Illuminate\Database\Connection'                  => 'db.connection',
             'Illuminate\Contracts\Encryption\Encrypter'       => 'encrypter',
             'Illuminate\Contracts\Events\Dispatcher'          => 'events',
             'Illuminate\Contracts\Filesystem\Factory'         => 'filesystem',
@@ -139,6 +145,7 @@ trait CoreBindings
             'request'                                         => 'Illuminate\Http\Request',
             'Illuminate\Session\SessionManager'               => 'session',
             'Illuminate\Session\Store'                        => 'session.store',
+            'Illuminate\Contracts\Routing\UrlGenerator'       => 'url',
             'Laravel\Lumen\Routing\UrlGenerator'              => 'url',
             'Illuminate\Contracts\Validation\Factory'         => 'validator',
             'Illuminate\Contracts\View\Factory'               => 'view',
@@ -572,8 +579,8 @@ trait CoreBindings
      */
     protected function prepareRequest(Request $request)
     {
-        $request->setUserResolver(function () {
-            return $this->make('auth')->user();
+        $request->setUserResolver(function ($guard = null) {
+            return $this->make('auth')->guard($guard)->user();
         })->setRouteResolver(function () {
             return $this->currentRoute;
         });

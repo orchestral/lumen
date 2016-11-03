@@ -5,6 +5,12 @@ title: Lumen Change Log
 
 ## Version 3.2 {#v3-2}
 
+### v3.2.9 {#v3-2-9}
+
+* Separate `Laravel\Lumen\Routing\Helpers::transform()` to `transformWith()` and `serializeWith()`.
+* Fixes the calling of terminate methods on middleware defined with
+parameters, and also will now call terminate middleware in tests. ([@cnanney](https://github.com/cnanney))
+
 ### v3.2.8 {#v3-2-8}
 
 * Add `Laravel\Lumen\Application::getNamespace()`. ([@mlantz](https://github.com/mlantz))

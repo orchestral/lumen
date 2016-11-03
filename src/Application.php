@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Container\Container;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Contracts\Foundation\Application as ApplicationContract;
+use Orchestra\Contracts\Foundation\Application as ApplicationContract;
 
 class Application extends Container implements ApplicationContract
 {
@@ -136,7 +136,7 @@ class Application extends Container implements ApplicationContract
      */
     public function version()
     {
-        return 'Lumen (5.3.0) (Laravel Components 5.3.*)';
+        return 'Lumen (5.3.1) (Laravel Components 5.3.*)';
     }
 
     /**
@@ -196,6 +196,16 @@ class Application extends Container implements ApplicationContract
     }
 
     /**
+     * Get the path to the cached extension.json file.
+     *
+     * @return string
+     */
+    public function getCachedExtensionServicesPath()
+    {
+        throw new Exception(__FUNCTION__.' is not implemented by Lumen.');
+    }
+
+    /**
      * Get the path to the cached services.json file.
      *
      * @return string
@@ -246,6 +256,28 @@ class Application extends Container implements ApplicationContract
     public function registerDeferredProvider($provider, $service = null)
     {
         return $this->register($provider);
+    }
+
+    /**
+     * Resolve the given type from the container.
+     *
+     * @param  string  $abstract
+     * @param  array   $parameters
+     *
+     * @return mixed
+     */
+    public function make($abstract, array $parameters = [])
+    {
+        $abstract = $this->getAlias($this->normalize($abstract));
+
+        if (array_key_exists($abstract, $this->availableBindings) &&
+            ! array_key_exists($this->availableBindings[$abstract], $this->ranServiceBinders)) {
+            $this->{$method = $this->availableBindings[$abstract]}();
+
+            $this->ranServiceBinders[$method] = true;
+        }
+
+        return parent::make($abstract, $parameters);
     }
 
     /**
@@ -323,26 +355,6 @@ class Application extends Container implements ApplicationContract
         foreach ($callbacks as $callback) {
             call_user_func($callback, $this);
         }
-    }
-
-    /**
-     * Resolve the given type from the container.
-     *
-     * @param  string  $abstract
-     * @param  array   $parameters
-     *
-     * @return mixed
-     */
-    public function make($abstract, array $parameters = [])
-    {
-        if (array_key_exists($abstract, $this->availableBindings) &&
-            ! array_key_exists($this->availableBindings[$abstract], $this->ranServiceBinders)) {
-            $this->{$method = $this->availableBindings[$abstract]}();
-
-            $this->ranServiceBinders[$method] = true;
-        }
-
-        return parent::make($abstract, $parameters);
     }
 
     /**
