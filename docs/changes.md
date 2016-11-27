@@ -3,6 +3,14 @@ title: Lumen Change Log
 
 ---
 
+## Version 3.3 {#v3-3}
+
+### v3.3.0 {#v3-3-0}
+
+* Update support for Lumen Framework v5.3.x.
+* `App\Lumen\Http\Middleware\Cors` should handle `Symfony\Component\HttpFoundation\Response`.
+* Deprecate `Laravel\Lumen\Application::withFacadeAliases()`.
+
 ## Version 3.2 {#v3-2}
 
 ### v3.2.9 {#v3-2-9}
