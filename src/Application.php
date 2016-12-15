@@ -202,7 +202,7 @@ class Application extends Container implements ApplicationContract
      */
     public function getCachedExtensionServicesPath()
     {
-        throw new Exception(__FUNCTION__.' is not implemented by Lumen.');
+        return $this->basePath().'/bootstrap/cache/extension.php';
     }
 
     /**
