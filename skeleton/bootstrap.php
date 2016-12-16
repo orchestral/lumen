@@ -80,6 +80,7 @@ $app->singleton(
 |
 */
 
+$app->register(Laravel\Lumen\Foundation\FoundationServiceProvider::class);
 // $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 // $app->register(Dingo\Api\Provider\LumenServiceProvider::class);
 // $app->register(App\Lumen\Providers\AppServiceProvider::class);
