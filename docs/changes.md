@@ -5,6 +5,10 @@ title: Lumen Change Log
 
 ## Version 3.3 {#v3-3}
 
+### v3.3.2 {#v3-3-2}
+
+* Fixes invalid class name.
+
 ### v3.3.1 {#v3-3-1}
 
 * Add support for `Laravel\Lumen\Application::getCachedExtensionServicesPath()`.
