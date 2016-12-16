@@ -3,7 +3,6 @@
 namespace Laravel\Lumen\Routing;
 
 use Orchestra\Routing\VersionedHelpers;
-use Illuminate\Contracts\Support\Arrayable;
 use Dingo\Api\Routing\Helpers as BaseHelpers;
 
 trait Helpers
