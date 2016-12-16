@@ -255,7 +255,7 @@ class UrlGenerator
      *
      * @return bool
      */
-    protected function isValidUrl($path)
+    public function isValidUrl($path)
     {
         if (starts_with($path, ['#', '//', 'mailto:', 'tel:', 'http://', 'https://'])) {
             return true;

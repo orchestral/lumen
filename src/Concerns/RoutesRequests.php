@@ -11,16 +11,16 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Laravel\Lumen\Routing\Pipeline;
-use Laravel\Lumen\Routing\Closure as RoutingClosure;
 use Illuminate\Http\Exception\HttpResponseException;
+use Laravel\Lumen\Routing\Closure as RoutingClosure;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Laravel\Lumen\Routing\Controller as LumenController;
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 trait RoutesRequests
@@ -557,16 +557,16 @@ trait RoutesRequests
                 );
             });
         } catch (Exception $e) {
-            return $this->sendExceptionToHandler($e);
+            return $this->prepareResponse($this->sendExceptionToHandler($e));
         } catch (Throwable $e) {
-            return $this->sendExceptionToHandler($e);
+            return $this->prepareResponse($this->sendExceptionToHandler($e));
         }
     }
 
     /**
      * Parse the incoming request and return the method and path info.
      *
-     * @param  \Illuminate\Http\Request|null  $request
+     * @param  \Symfony\Component\HttpFoundation\Request|null  $request
      *
      * @return array
      */
@@ -620,10 +620,8 @@ trait RoutesRequests
         switch ($routeInfo[0]) {
             case Dispatcher::NOT_FOUND:
                 throw new NotFoundHttpException();
-
             case Dispatcher::METHOD_NOT_ALLOWED:
                 throw new MethodNotAllowedHttpException($routeInfo[1]);
-
             case Dispatcher::FOUND:
                 return $this->handleFoundRoute($routeInfo);
         }

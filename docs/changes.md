@@ -5,6 +5,12 @@ title: Lumen Change Log
 
 ## Version 3.3 {#v3-3}
 
+### v3.3.1 {#v3-3-1}
+
+* Add support for `Laravel\Lumen\Application::getCachedExtensionServicesPath()`.
+* `Laravel\Lumen\Application` should be able to handle request from `Symfony\Component\HttpFoundation\Request`.
+* Better support for integrating with Orchestra Platform.
+
 ### v3.3.0 {#v3-3-0}
 
 * Update support for Lumen Framework v5.3.x.
