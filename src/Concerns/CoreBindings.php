@@ -14,6 +14,7 @@ use Laravel\Lumen\Http\ResponseFactory;
 use Laravel\Lumen\Routing\UrlGenerator;
 use Zend\Diactoros\Response as PsrResponse;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 trait CoreBindings
 {
@@ -573,12 +574,16 @@ trait CoreBindings
     /**
      * Prepare the given request instance for use with the application.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Symfony\Component\HttpFoundation\Request  $request
      *
      * @return \Illuminate\Http\Request
      */
-    protected function prepareRequest(Request $request)
+    protected function prepareRequest(SymfonyRequest $request)
     {
+        if (! $request instanceof Request) {
+            $request = Request::createFromBase($request);
+        }
+
         $request->setUserResolver(function ($guard = null) {
             return $this->make('auth')->guard($guard)->user();
         })->setRouteResolver(function () {
