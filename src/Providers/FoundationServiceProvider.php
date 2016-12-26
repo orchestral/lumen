@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Lumen\Providers;
+namespace Laravel\Lumen\Providers;
 
+use Laravel\Lumen\Foundation\Foundation;
+use Laravel\Lumen\Foundation\RouteResolver;
 use Illuminate\Contracts\Foundation\Application;
 use Orchestra\Extension\ExtensionServiceProvider as ServiceProvider;
 
