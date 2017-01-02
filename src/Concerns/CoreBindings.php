@@ -250,7 +250,9 @@ trait CoreBindings
     {
         $loader = new FileLoader(new Filesystem(), $this->resourcePath('config'));
 
-        $this->instance('config', $config = new Repository($loader, $this->environment()));
+        $this->singleton('config', function () use ($loader) {
+            return new Repository($loader, $this->environment());
+        });
     }
 
     /**
