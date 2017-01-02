@@ -136,7 +136,7 @@ class Application extends Container implements ApplicationContract
      */
     public function version()
     {
-        return 'Lumen (5.3.3) (Laravel Components 5.3.*)';
+        return 'Lumen (5.4.0-Dev) (Laravel Components 5.4.*)';
     }
 
     /**
@@ -268,7 +268,7 @@ class Application extends Container implements ApplicationContract
      */
     public function make($abstract, array $parameters = [])
     {
-        $abstract = $this->getAlias($this->normalize($abstract));
+        $abstract = $this->getAlias($abstract);
 
         if (array_key_exists($abstract, $this->availableBindings) &&
             ! array_key_exists($this->availableBindings[$abstract], $this->ranServiceBinders)) {
@@ -611,6 +611,8 @@ class Application extends Container implements ApplicationContract
         $this->withFacades($aliases);
 
         $this->configure('database');
+
+        $this->register(Console\ConsoleServiceProvider::class);
     }
 
     /**
