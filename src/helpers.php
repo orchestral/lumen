@@ -57,13 +57,14 @@ if (! function_exists('api\route')) {
      *
      * @param  string  $name
      * @param  array   $parameters
+     * @param  bool    $secure
      *
      * @return string
      */
-    function route($name, $parameters = [])
+    function route($name, $parameters = [], $secure = null)
     {
         return (new UrlGenerator(app()))
-                    ->route($name, $parameters);
+                    ->route($name, $parameters, $secure);
     }
 }
 
