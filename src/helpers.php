@@ -33,7 +33,7 @@ if (! function_exists('api\response')) {
     /**
      * Return a new response from the application.
      *
-     * @param  string  $content
+     * @param  object|string  $content
      * @param  int     $status
      * @param  array   $headers
      *
