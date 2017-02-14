@@ -136,7 +136,7 @@ class Application extends Container implements ApplicationContract
      */
     public function version()
     {
-        return 'Lumen (5.4.0-Dev) (Laravel Components 5.4.*)';
+        return 'Lumen (5.4.4) (Laravel Components 5.4.*)';
     }
 
     /**
@@ -262,11 +262,10 @@ class Application extends Container implements ApplicationContract
      * Resolve the given type from the container.
      *
      * @param  string  $abstract
-     * @param  array   $parameters
      *
      * @return mixed
      */
-    public function make($abstract, array $parameters = [])
+    public function make($abstract)
     {
         $abstract = $this->getAlias($abstract);
 
@@ -277,7 +276,7 @@ class Application extends Container implements ApplicationContract
             $this->ranServiceBinders[$method] = true;
         }
 
-        return parent::make($abstract, $parameters);
+        return parent::make($abstract);
     }
 
     /**

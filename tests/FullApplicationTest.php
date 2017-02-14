@@ -3,9 +3,10 @@
 use Mockery as m;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Application;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
-class FullApplicationTest extends PHPUnit_Framework_TestCase
+class FullApplicationTest extends TestCase
 {
     public function tearDown()
     {
