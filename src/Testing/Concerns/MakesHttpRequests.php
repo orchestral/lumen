@@ -5,6 +5,7 @@ namespace Laravel\Lumen\Testing\Concerns;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use PHPUnit\Framework\Assert as PHPUnit;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 trait MakesHttpRequests
 {
@@ -193,7 +194,11 @@ trait MakesHttpRequests
             json_decode($this->response->getContent(), true)
         ));
 
-        PHPUnit::assertEquals(json_encode(array_sort_recursive($data)), $actual);
+        $data = json_encode(array_sort_recursive(
+            json_decode(json_encode($data), true)
+        ));
+
+        PHPUnit::assertEquals($data, $actual);
 
         return $this;
     }
@@ -341,13 +346,13 @@ trait MakesHttpRequests
     {
         $this->currentUri = $this->prepareUrlForRequest($uri);
 
-        $request = Request::create(
+        $symfonyRequest = SymfonyRequest::create(
             $this->currentUri, $method, $parameters,
             $cookies, $files, $server, $content
         );
 
         return $this->response = $this->app->prepareResponse(
-            $this->app->handle($request)
+            $this->app->handle(Request::createFromBase($symfonyRequest))
         );
     }
 
