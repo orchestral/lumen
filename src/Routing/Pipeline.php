@@ -22,12 +22,12 @@ class Pipeline extends BasePipeline
      *
      * @return \Closure
      */
-    protected function getSlice()
+    protected function carry()
     {
         return function ($stack, $pipe) {
             return function ($passable) use ($stack, $pipe) {
                 try {
-                    $slice = parent::getSlice();
+                    $slice = parent::carry();
 
                     return call_user_func($slice($stack, $pipe), $passable);
                 } catch (Exception $e) {
@@ -46,7 +46,7 @@ class Pipeline extends BasePipeline
      *
      * @return \Closure
      */
-    protected function getInitialSlice(BaseClosure $destination)
+    protected function prepareDestination(BaseClosure $destination)
     {
         return function ($passable) use ($destination) {
             try {
@@ -62,6 +62,7 @@ class Pipeline extends BasePipeline
     /**
      * Handle the given exception.
      *
+     * @param  mixed  $passable
      * @param  \Exception  $e
      *
      * @return mixed

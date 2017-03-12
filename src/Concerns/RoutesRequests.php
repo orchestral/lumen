@@ -11,9 +11,8 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Laravel\Lumen\Routing\Pipeline;
-use Illuminate\Http\Exception\HttpResponseException;
 use Laravel\Lumen\Routing\Closure as RoutingClosure;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Laravel\Lumen\Routing\Controller as LumenController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
@@ -163,7 +162,7 @@ trait RoutesRequests
     protected static function formatUsesPrefix($new, $old)
     {
         if (isset($new['namespace'])) {
-            return isset($old['namespace'])
+            return isset($old['namespace']) && strpos($new['namespace'], '\\') !== 0
                 ? trim($old['namespace'], '\\').'\\'.trim($new['namespace'], '\\')
                 : trim($new['namespace'], '\\');
         }
@@ -474,7 +473,7 @@ trait RoutesRequests
     /**
      * {@inheritdoc}
      */
-    public function handle(SymfonyRequest $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
+    public function handle(SymfonyRequest $request)
     {
         $response = $this->dispatch($request);
 
@@ -572,14 +571,13 @@ trait RoutesRequests
      */
     protected function parseIncomingRequest($request)
     {
-        if ($request) {
-            $this->instance(Request::class, $this->prepareRequest($request));
-            $this->ranServiceBinders['registerRequestBindings'] = true;
-
-            return [$request->getMethod(), $request->getPathInfo()];
-        } else {
-            return [$this->getMethod(), $this->getPathInfo()];
+        if (! $request) {
+            $request = Request::capture();
         }
+
+        $this->instance(Request::class, $this->prepareRequest($request));
+
+        return [$request->getMethod(), $request->getPathInfo()];
     }
 
     /**
@@ -835,32 +833,6 @@ trait RoutesRequests
         }
 
         return $response;
-    }
-
-    /**
-     * Get the current HTTP request method.
-     *
-     * @return string
-     */
-    protected function getMethod()
-    {
-        if (isset($_POST['_method'])) {
-            return strtoupper($_POST['_method']);
-        } else {
-            return $_SERVER['REQUEST_METHOD'];
-        }
-    }
-
-    /**
-     * Get the current HTTP path info.
-     *
-     * @return string
-     */
-    protected function getPathInfo()
-    {
-        $query = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '';
-
-        return '/'.trim(str_replace('?'.$query, '', $_SERVER['REQUEST_URI']), '/');
     }
 
     /**

@@ -3,9 +3,10 @@
 use Mockery as m;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Application;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
-class FullApplicationTest extends PHPUnit_Framework_TestCase
+class FullApplicationTest extends TestCase
 {
     public function tearDown()
     {
@@ -54,44 +55,6 @@ class FullApplicationTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('Hello World', $response->getContent());
-    }
-
-    public function testRequestWithoutSymfonyClass()
-    {
-        $app = new Application;
-
-        $app->get('/', function () {
-            return api\response('Hello World');
-        });
-
-        $_SERVER['REQUEST_METHOD'] = 'GET';
-        $_SERVER['REQUEST_URI'] = '/';
-
-        $response = $app->dispatch();
-
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals('Hello World', $response->getContent());
-
-        unset($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
-    }
-
-    public function testRequestWithoutSymfonyClassTrailingSlash()
-    {
-        $app = new Application;
-
-        $app->get('/foo', function () {
-            return api\response('Hello World');
-        });
-
-        $_SERVER['REQUEST_METHOD'] = 'GET';
-        $_SERVER['REQUEST_URI'] = '/foo/';
-
-        $response = $app->dispatch();
-
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals('Hello World', $response->getContent());
-
-        unset($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
     }
 
     public function testRequestWithParameters()
