@@ -3,6 +3,10 @@
     "description": "Lumen Framework for Orchestra Platform",
     "keywords": ["framework", "laravel", "lumen", "orchestral", "orchestra-platform"],
     "license": "MIT",
+    "support": {
+        "issues": "https://github.com/orchestral/lumen/issues",
+        "source": "https://github.com/orchestral/lumen"
+    },
     "authors": [
         {
             "name": "Mior Muhammad Zaki",
