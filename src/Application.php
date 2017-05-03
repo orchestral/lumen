@@ -136,7 +136,7 @@ class Application extends Container implements ApplicationContract
      */
     public function version()
     {
-        return 'Lumen (5.4.5) (Laravel Components 5.4.*)';
+        return 'Lumen (5.4.6) (Laravel Components 5.4.*)';
     }
 
     /**
@@ -541,13 +541,14 @@ class Application extends Container implements ApplicationContract
     }
 
     /**
-     * Get the database path for the application.
+     * Get the path to the database directory.
      *
+     * @param  string  $path
      * @return string
      */
-    public function databasePath()
+    public function databasePath($path = '')
     {
-        return $this->resourcePath('database');
+        return $this->resourcePath('database').($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
@@ -571,6 +572,7 @@ class Application extends Container implements ApplicationContract
      *
      * @param  string|null  $path
      *
+     * @param  string|null  $path
      * @return string
      */
     public function storagePath($path = null)
