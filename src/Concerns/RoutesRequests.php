@@ -577,7 +577,7 @@ trait RoutesRequests
 
         $this->instance(Request::class, $this->prepareRequest($request));
 
-        return [$request->getMethod(), $request->getPathInfo()];
+        return [$request->getMethod(), '/'.trim($request->getPathInfo(), '/')];
     }
 
     /**
