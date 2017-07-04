@@ -102,7 +102,9 @@ class Application extends Container implements ApplicationContract
      */
     public function __construct($basePath = null)
     {
-        date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
+        if (! empty(env('APP_TIMEZONE'))) {
+            date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
+        }
 
         $this->basePath = $basePath;
 
@@ -158,7 +160,7 @@ class Application extends Container implements ApplicationContract
      */
     public function environment()
     {
-        $env = env('APP_ENV', 'production');
+        $env = env('APP_ENV', config('app.env', 'production'));
 
         if (func_num_args() > 0) {
             $patterns = is_array(func_get_arg(0)) ? func_get_arg(0) : func_get_args();
