@@ -262,10 +262,11 @@ class Application extends Container implements ApplicationContract
      * Resolve the given type from the container.
      *
      * @param  string  $abstract
+     * @param  array  $parameters
      *
      * @return mixed
      */
-    public function make($abstract)
+    public function make($abstract, array $parameters = [])
     {
         $abstract = $this->getAlias($abstract);
 
@@ -276,7 +277,7 @@ class Application extends Container implements ApplicationContract
             $this->ranServiceBinders[$method] = true;
         }
 
-        return parent::make($abstract);
+        return parent::make($abstract, $parameters);
     }
 
     /**
