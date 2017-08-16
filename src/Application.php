@@ -6,6 +6,10 @@ use Closure;
 use Exception;
 use RuntimeException;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Composer;
+use Laravel\Lumen\Routing\Router;
+use Monolog\Handler\StreamHandler;
 use Illuminate\Container\Container;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
@@ -96,6 +100,13 @@ class Application extends Container implements ApplicationContract
     protected $namespace;
 
     /**
+     * The Router instance.
+     *
+     * @var \Laravel\Lumen\Routing\Router
+     */
+    public $router;
+
+    /**
      * Create a new Lumen application instance.
      *
      * @param  string|null  $basePath
@@ -108,6 +119,7 @@ class Application extends Container implements ApplicationContract
 
         $this->bootstrapContainer();
         $this->registerErrorHandling();
+        $this->bootstrapRouter();
     }
 
     /**
@@ -130,13 +142,23 @@ class Application extends Container implements ApplicationContract
     }
 
     /**
+     * Bootstrap the router instance.
+     *
+     * @return void
+     */
+    public function bootstrapRouter()
+    {
+        $this->router = new Router($this);
+    }
+
+    /**
      * Get the version number of the application.
      *
      * @return string
      */
     public function version()
     {
-        return 'Lumen (5.4.6) (Laravel Components 5.4.*)';
+        return 'Lumen (5.5.0) (Laravel Components 5.5.*)';
     }
 
     /**
@@ -444,18 +466,6 @@ class Application extends Container implements ApplicationContract
         }
 
         return $this;
-    }
-
-    /**
-     * Register the facade aliases for the application.
-     *
-     * @return $this
-     *
-     * @deprecated v3.3.0
-     */
-    public function withFacadeAliases()
-    {
-        $this->withAliases();
     }
 
     /**

@@ -202,12 +202,12 @@ trait CoreBindings
      */
     protected function registerBroadcastingBindings()
     {
+        $this->singleton('Illuminate\Contracts\Broadcasting\Factory', function () {
+            return $this->loadComponent('broadcasting', 'Illuminate\Broadcasting\BroadcastServiceProvider', 'Illuminate\Contracts\Broadcasting\Factory');
+        });
+
         $this->singleton('Illuminate\Contracts\Broadcasting\Broadcaster', function () {
-            $this->configure('broadcasting');
-
-            $this->register('Illuminate\Broadcasting\BroadcastServiceProvider');
-
-            return $this->make('Illuminate\Contracts\Broadcasting\Broadcaster');
+            return $this->loadComponent('broadcasting', 'Illuminate\Broadcasting\BroadcastServiceProvider', 'Illuminate\Contracts\Broadcasting\Broadcaster');
         });
     }
 
