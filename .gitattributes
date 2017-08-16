@@ -14,5 +14,6 @@
 /build.xml export-ignore
 /phpunit.php export-ignore
 /phpunit.xml export-ignore
-/LICENSE.md export-ignore
+/CHANGELOG.md export-ignore
+/LICENSE export-ignore
 /README.md export-ignore

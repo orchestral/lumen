@@ -613,6 +613,10 @@ class FullApplicationTest extends TestCase
 
     public function testCanMergeUserProvidedFacadesWithDefaultOnes()
     {
+        if (class_exists('Event', false)) {
+            $this->markTestSkipped('Event extension is installed!');
+        }
+
         $app = new Application();
 
         $aliases = [

@@ -20,10 +20,8 @@ class RouteResolver extends BaseRouteResolver
             return parent::generateRouteByName($name, $default);
         }
 
-        return $this->app->make(RouteGenerator::class, [
-            $prefix,
-            $this->app->make('request'),
-            config($name === 'api' ? 'app.api' : 'app.url'),
-        ]);
+        return $this->app->make(RouteGenerator::class)
+                    ->handle($prefix)
+                    ->setBaseUrl(config($name === 'api' ? 'app.api' : 'app.url'));
     }
 }
