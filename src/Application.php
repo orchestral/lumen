@@ -6,10 +6,8 @@ use Closure;
 use Exception;
 use RuntimeException;
 use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use Illuminate\Support\Composer;
 use Laravel\Lumen\Routing\Router;
-use Monolog\Handler\StreamHandler;
 use Illuminate\Container\Container;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
@@ -555,6 +553,7 @@ class Application extends Container implements ApplicationContract
      * Get the path to the database directory.
      *
      * @param  string  $path
+     *
      * @return string
      */
     public function databasePath($path = '')
@@ -582,8 +581,8 @@ class Application extends Container implements ApplicationContract
      * Get the storage path for the application.
      *
      * @param  string|null  $path
-     *
      * @param  string|null  $path
+     *
      * @return string
      */
     public function storagePath($path = null)

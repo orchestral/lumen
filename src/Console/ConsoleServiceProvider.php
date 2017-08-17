@@ -41,25 +41,25 @@ class ConsoleServiceProvider extends ServiceProvider
      * @var array
      */
     protected $commands = [
-        'CacheClear' => 'command.cache.clear',
-        'CacheForget' => 'command.cache.forget',
-        'ClearResets' => 'command.auth.resets.clear',
-        'Migrate' => 'command.migrate',
-        'MigrateInstall' => 'command.migrate.install',
-        'MigrateRefresh' => 'command.migrate.refresh',
-        'MigrateReset' => 'command.migrate.reset',
+        'CacheClear'      => 'command.cache.clear',
+        'CacheForget'     => 'command.cache.forget',
+        'ClearResets'     => 'command.auth.resets.clear',
+        'Migrate'         => 'command.migrate',
+        'MigrateInstall'  => 'command.migrate.install',
+        'MigrateRefresh'  => 'command.migrate.refresh',
+        'MigrateReset'    => 'command.migrate.reset',
         'MigrateRollback' => 'command.migrate.rollback',
-        'MigrateStatus' => 'command.migrate.status',
-        'QueueFailed' => 'command.queue.failed',
-        'QueueFlush' => 'command.queue.flush',
-        'QueueForget' => 'command.queue.forget',
-        'QueueListen' => 'command.queue.listen',
-        'QueueRestart' => 'command.queue.restart',
-        'QueueRetry' => 'command.queue.retry',
-        'QueueWork' => 'command.queue.work',
-        'Seed' => 'command.seed',
-        'ScheduleFinish' => 'Illuminate\Console\Scheduling\ScheduleFinishCommand',
-        'ScheduleRun' => 'Illuminate\Console\Scheduling\ScheduleRunCommand',
+        'MigrateStatus'   => 'command.migrate.status',
+        'QueueFailed'     => 'command.queue.failed',
+        'QueueFlush'      => 'command.queue.flush',
+        'QueueForget'     => 'command.queue.forget',
+        'QueueListen'     => 'command.queue.listen',
+        'QueueRestart'    => 'command.queue.restart',
+        'QueueRetry'      => 'command.queue.retry',
+        'QueueWork'       => 'command.queue.work',
+        'Seed'            => 'command.seed',
+        'ScheduleFinish'  => 'Illuminate\Console\Scheduling\ScheduleFinishCommand',
+        'ScheduleRun'     => 'Illuminate\Console\Scheduling\ScheduleRunCommand',
     ];
 
     /**
@@ -68,11 +68,11 @@ class ConsoleServiceProvider extends ServiceProvider
      * @var array
      */
     protected $devCommands = [
-        'CacheTable' => 'command.cache.table',
-        'MigrateMake' => 'command.migrate.make',
+        'CacheTable'       => 'command.cache.table',
+        'MigrateMake'      => 'command.migrate.make',
         'QueueFailedTable' => 'command.queue.failed-table',
-        'QueueTable' => 'command.queue.table',
-        'SeederMake' => 'command.seeder.make',
+        'QueueTable'       => 'command.queue.table',
+        'SeederMake'       => 'command.seeder.make',
     ];
 
     /**
@@ -91,6 +91,7 @@ class ConsoleServiceProvider extends ServiceProvider
      * Register the given commands.
      *
      * @param  array  $commands
+     *
      * @return void
      */
     protected function registerCommands(array $commands)
@@ -146,7 +147,7 @@ class ConsoleServiceProvider extends ServiceProvider
     protected function registerClearResetsCommand()
     {
         $this->app->singleton('command.auth.resets.clear', function () {
-            return new ClearResetsCommand;
+            return new ClearResetsCommand();
         });
     }
 
@@ -201,7 +202,7 @@ class ConsoleServiceProvider extends ServiceProvider
     protected function registerMigrateRefreshCommand()
     {
         $this->app->singleton('command.migrate.refresh', function () {
-            return new MigrateRefreshCommand;
+            return new MigrateRefreshCommand();
         });
     }
 
@@ -249,7 +250,7 @@ class ConsoleServiceProvider extends ServiceProvider
     protected function registerQueueFailedCommand()
     {
         $this->app->singleton('command.queue.failed', function () {
-            return new ListFailedQueueCommand;
+            return new ListFailedQueueCommand();
         });
     }
 
@@ -261,7 +262,7 @@ class ConsoleServiceProvider extends ServiceProvider
     protected function registerQueueForgetCommand()
     {
         $this->app->singleton('command.queue.forget', function () {
-            return new ForgetFailedQueueCommand;
+            return new ForgetFailedQueueCommand();
         });
     }
 
@@ -273,7 +274,7 @@ class ConsoleServiceProvider extends ServiceProvider
     protected function registerQueueFlushCommand()
     {
         $this->app->singleton('command.queue.flush', function () {
-            return new FlushFailedQueueCommand;
+            return new FlushFailedQueueCommand();
         });
     }
 
@@ -297,7 +298,7 @@ class ConsoleServiceProvider extends ServiceProvider
     protected function registerQueueRestartCommand()
     {
         $this->app->singleton('command.queue.restart', function () {
-            return new QueueRestartCommand;
+            return new QueueRestartCommand();
         });
     }
 
@@ -309,7 +310,7 @@ class ConsoleServiceProvider extends ServiceProvider
     protected function registerQueueRetryCommand()
     {
         $this->app->singleton('command.queue.retry', function () {
-            return new QueueRetryCommand;
+            return new QueueRetryCommand();
         });
     }
 

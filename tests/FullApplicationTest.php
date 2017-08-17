@@ -154,7 +154,7 @@ class FullApplicationTest extends TestCase
 
         $app->routeMiddleware(['foo' => 'LumenTestParameterizedMiddleware']);
 
-        $app->router->get('/', ['middleware' => 'passing|foo:bar,boom', function () {
+        $app->router->get('/', ['middleware' => 'foo:bar,boom', function () {
             return \api\response('Hello World');
         }]);
 

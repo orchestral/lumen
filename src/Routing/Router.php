@@ -49,6 +49,7 @@ class Router
      *
      * @param  array  $attributes
      * @param  \Closure  $callback
+     *
      * @return void
      */
     public function group(array $attributes, \Closure $callback)
@@ -68,6 +69,7 @@ class Router
      * Update the group stack with the given attributes.
      *
      * @param  array  $attributes
+     *
      * @return void
      */
     protected function updateGroupStack(array $attributes)
@@ -84,6 +86,7 @@ class Router
      *
      * @param  array  $new
      * @param  array  $old
+     *
      * @return array
      */
     public function mergeGroup($new, $old)
@@ -111,6 +114,7 @@ class Router
      * Merge the given group attributes with the last added group.
      *
      * @param  array $new
+     *
      * @return array
      */
     protected function mergeWithLastGroup($new)
@@ -123,6 +127,7 @@ class Router
      *
      * @param  array  $new
      * @param  array  $old
+     *
      * @return string|null
      */
     protected static function formatUsesPrefix($new, $old)
@@ -133,7 +138,7 @@ class Router
                 : trim($new['namespace'], '\\');
         }
 
-        return isset($old['namespace']) ? $old['namespace'] : null;
+        return $old['namespace'] ?? null;
     }
 
     /**
@@ -141,11 +146,12 @@ class Router
      *
      * @param  array  $new
      * @param  array  $old
+     *
      * @return string|null
      */
     protected static function formatGroupPrefix($new, $old)
     {
-        $oldPrefix = isset($old['prefix']) ? $old['prefix'] : null;
+        $oldPrefix = $old['prefix'] ?? null;
 
         if (isset($new['prefix'])) {
             return trim($oldPrefix, '/').'/'.trim($new['prefix'], '/');
@@ -160,6 +166,7 @@ class Router
      * @param  array|string  $method
      * @param  string  $uri
      * @param  mixed  $action
+     *
      * @return void
      */
     public function addRoute($method, $uri, $action)
@@ -203,6 +210,7 @@ class Router
      * Parse the action into an array format.
      *
      * @param  mixed  $action
+     *
      * @return array
      */
     protected function parseAction($action)
@@ -235,13 +243,14 @@ class Router
      *
      * @param  array  $action
      * @param  array  $attributes The group attributes
+     *
      * @return array
      */
     protected function mergeGroupAttributes(array $action, array $attributes)
     {
-        $namespace = isset($attributes['namespace']) ? $attributes['namespace'] : null;
-        $middleware = isset($attributes['middleware']) ? $attributes['middleware'] : null;
-        $as = isset($attributes['as']) ? $attributes['as'] : null;
+        $namespace  = $attributes['namespace'] ?? null;
+        $middleware = $attributes['middleware'] ?? null;
+        $as         = $attributes['as'] ?? null;
 
         return $this->mergeNamespaceGroup(
             $this->mergeMiddlewareGroup(
@@ -256,6 +265,7 @@ class Router
      *
      * @param  array  $action
      * @param  string $namespace
+     *
      * @return array
      */
     protected function mergeNamespaceGroup(array $action, $namespace = null)
@@ -272,6 +282,7 @@ class Router
      *
      * @param  array  $action
      * @param  array  $middleware
+     *
      * @return array
      */
     protected function mergeMiddlewareGroup(array $action, $middleware = null)
@@ -292,6 +303,7 @@ class Router
      *
      * @param  array $action
      * @param  string $as
+     *
      * @return array
      */
     protected function mergeAsGroup(array $action, $as = null)
@@ -312,6 +324,7 @@ class Router
      *
      * @param  string  $uri
      * @param  mixed  $action
+     *
      * @return $this
      */
     public function get($uri, $action)
@@ -326,6 +339,7 @@ class Router
      *
      * @param  string  $uri
      * @param  mixed  $action
+     *
      * @return $this
      */
     public function post($uri, $action)
@@ -340,6 +354,7 @@ class Router
      *
      * @param  string  $uri
      * @param  mixed  $action
+     *
      * @return $this
      */
     public function put($uri, $action)
@@ -354,6 +369,7 @@ class Router
      *
      * @param  string  $uri
      * @param  mixed  $action
+     *
      * @return $this
      */
     public function patch($uri, $action)
@@ -368,6 +384,7 @@ class Router
      *
      * @param  string  $uri
      * @param  mixed  $action
+     *
      * @return $this
      */
     public function delete($uri, $action)
@@ -382,6 +399,7 @@ class Router
      *
      * @param  string  $uri
      * @param  mixed  $action
+     *
      * @return $this
      */
     public function options($uri, $action)
