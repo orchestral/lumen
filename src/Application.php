@@ -6,6 +6,8 @@ use Closure;
 use Exception;
 use RuntimeException;
 use Illuminate\Support\Str;
+use Illuminate\Support\Composer;
+use Laravel\Lumen\Routing\Router;
 use Illuminate\Container\Container;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
@@ -96,6 +98,13 @@ class Application extends Container implements ApplicationContract
     protected $namespace;
 
     /**
+     * The Router instance.
+     *
+     * @var \Laravel\Lumen\Routing\Router
+     */
+    public $router;
+
+    /**
      * Create a new Lumen application instance.
      *
      * @param  string|null  $basePath
@@ -108,6 +117,7 @@ class Application extends Container implements ApplicationContract
 
         $this->bootstrapContainer();
         $this->registerErrorHandling();
+        $this->bootstrapRouter();
     }
 
     /**
@@ -130,13 +140,23 @@ class Application extends Container implements ApplicationContract
     }
 
     /**
+     * Bootstrap the router instance.
+     *
+     * @return void
+     */
+    public function bootstrapRouter()
+    {
+        $this->router = new Router($this);
+    }
+
+    /**
      * Get the version number of the application.
      *
      * @return string
      */
     public function version()
     {
-        return 'Lumen (5.4.6) (Laravel Components 5.4.*)';
+        return 'Lumen (5.5.0) (Laravel Components 5.5.*)';
     }
 
     /**
@@ -211,6 +231,16 @@ class Application extends Container implements ApplicationContract
      * @return string
      */
     public function getCachedServicesPath()
+    {
+        throw new Exception(__FUNCTION__.' is not implemented by Lumen.');
+    }
+
+    /**
+     * Get the path to the cached packages.php file.
+     *
+     * @return string
+     */
+    public function getCachedPackagesPath()
     {
         throw new Exception(__FUNCTION__.' is not implemented by Lumen.');
     }
@@ -447,18 +477,6 @@ class Application extends Container implements ApplicationContract
     }
 
     /**
-     * Register the facade aliases for the application.
-     *
-     * @return $this
-     *
-     * @deprecated v3.3.0
-     */
-    public function withFacadeAliases()
-    {
-        $this->withAliases();
-    }
-
-    /**
      * Register the aliases for the application.
      *
      * @param  array  $custom
@@ -545,6 +563,7 @@ class Application extends Container implements ApplicationContract
      * Get the path to the database directory.
      *
      * @param  string  $path
+     *
      * @return string
      */
     public function databasePath($path = '')
@@ -572,8 +591,8 @@ class Application extends Container implements ApplicationContract
      * Get the storage path for the application.
      *
      * @param  string|null  $path
-     *
      * @param  string|null  $path
+     *
      * @return string
      */
     public function storagePath($path = null)

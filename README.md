@@ -1,15 +1,13 @@
 Lumen Framework for Orchestra Platform
 ==============
 
-[![Join the chat at https://gitter.im/orchestral/lumenate](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/orchestral/lumenate?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 This repository contains the core code of the Orchestra Lumen. If you want to build an application using Orchestra Platform, visit [the main repository](https://github.com/orchestral/platform).
 
-[![Latest Stable Version](https://img.shields.io/github/release/orchestral/lumen.svg?style=flat-square)](https://packagist.org/packages/orchestra/lumen)
-[![Total Downloads](https://img.shields.io/packagist/dt/orchestra/lumen.svg?style=flat-square)](https://packagist.org/packages/orchestra/lumen)
-[![MIT License](https://img.shields.io/packagist/l/orchestra/lumen.svg?style=flat-square)](https://packagist.org/packages/orchestra/lumen)
-[![Build Status](https://img.shields.io/travis/orchestral/lumen/3.4.svg?style=flat-square)](https://travis-ci.org/orchestral/lumen)
-[![Scrutinizer Quality Score](https://img.shields.io/scrutinizer/g/orchestral/lumen/3.4.svg?style=flat-square)](https://scrutinizer-ci.com/g/orchestral/lumen/)
+[![Build Status](https://travis-ci.org/orchestral/lumen.svg?branch=master)](https://travis-ci.org/orchestral/lumen)
+[![Latest Stable Version](https://poser.pugx.org/orchestra/lumen/version)](https://packagist.org/packages/orchestra/lumen)
+[![Total Downloads](https://poser.pugx.org/orchestra/lumen/downloads)](https://packagist.org/packages/orchestra/lumen)
+[![Latest Unstable Version](https://poser.pugx.org/orchestra/lumen/v/unstable)](//packagist.org/packages/orchestra/lumen)
+[![License](https://poser.pugx.org/orchestra/lumen/license)](https://packagist.org/packages/orchestra/lumen)
 
 * [Installation](#installation)
 * [API Routing](#api-routing)
@@ -50,13 +48,13 @@ You can also choose to add new path to autoload to detect `lumen/app` using PSR-
 }
 ```
 
-> It is recommended for you to set `"prefer-stable": true` and `"minimum-stability": "dev"` as both `dingo/api` and `tymon/jwt-auth` doesn't have a stable release for latest Lumen yet.
+> It is recommended for you to set `"prefer-stable": true` and `"minimum-stability": "dev"` as both `laravie/api` and `tymon/jwt-auth` doesn't have a stable release for latest Lumen yet.
 
 ## API Routing
 
-Install `dingo/api` via the command line:
+Install `laravie/api` via the command line:
 
-    composer require "dingo/api=~1.0"
+    composer require "laravie/api=~1.0"
 
 Next, enable the following service provider from `lumen/bootstrap.php`:
 
