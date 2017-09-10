@@ -27,7 +27,7 @@ class Guard extends Authorization
     /**
      * Create a new basic provider instance.
      *
-     * @param \Orchestra\Auth\AuthManager $auth
+     * @param \Illuminate\Auth\AuthManager $auth
      */
     public function __construct(AuthManager $auth)
     {
