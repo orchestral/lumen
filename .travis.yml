@@ -32,6 +32,4 @@ matrix:
       env: setup=lowest
     - php: 5.6
       env: setup=stable
-  allow_failures:
-    - env: setup=stable
   fast_finish: true
