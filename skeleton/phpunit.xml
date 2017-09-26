@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         bootstrap="../vendor/autoload.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         defaultTestSuite="app"
+         processIsolation="false"
+         stopOnFailure="false">
+    <testsuites>
+        <testsuite name="api">
+            <directory suffix="Test.php">./tests</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./app</directory>
+        </whitelist>
+    </filter>
+    <php>
+        <env name="APP_URL" value="http://localhost"/>
+        <env name="APP_ENV" value="testing"/>
+        <env name="API_PREFIX" value="api"/>
+    </php>
+</phpunit>
