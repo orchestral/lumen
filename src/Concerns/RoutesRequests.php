@@ -367,9 +367,9 @@ trait RoutesRequests
      */
     protected function mergeGroupAttributes(array $action, array $attributes)
     {
-        $namespace  = isset($attributes['namespace']) ? $attributes['namespace'] : null;
+        $namespace = isset($attributes['namespace']) ? $attributes['namespace'] : null;
         $middleware = isset($attributes['middleware']) ? $attributes['middleware'] : null;
-        $as         = isset($attributes['as']) ? $attributes['as'] : null;
+        $as = isset($attributes['as']) ? $attributes['as'] : null;
 
         return $this->mergeNamespaceGroup(
             $this->mergeMiddlewareGroup(

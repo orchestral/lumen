@@ -91,6 +91,7 @@ class ConsoleServiceProvider extends ServiceProvider
      * Register the given commands.
      *
      * @param  array  $commands
+     *
      * @return void
      */
     protected function registerCommands(array $commands)
@@ -146,7 +147,7 @@ class ConsoleServiceProvider extends ServiceProvider
     protected function registerClearResetsCommand()
     {
         $this->app->singleton('command.auth.resets.clear', function () {
-            return new ClearResetsCommand;
+            return new ClearResetsCommand();
         });
     }
 
@@ -201,7 +202,7 @@ class ConsoleServiceProvider extends ServiceProvider
     protected function registerMigrateRefreshCommand()
     {
         $this->app->singleton('command.migrate.refresh', function () {
-            return new MigrateRefreshCommand;
+            return new MigrateRefreshCommand();
         });
     }
 
@@ -249,7 +250,7 @@ class ConsoleServiceProvider extends ServiceProvider
     protected function registerQueueFailedCommand()
     {
         $this->app->singleton('command.queue.failed', function () {
-            return new ListFailedQueueCommand;
+            return new ListFailedQueueCommand();
         });
     }
 
@@ -261,7 +262,7 @@ class ConsoleServiceProvider extends ServiceProvider
     protected function registerQueueForgetCommand()
     {
         $this->app->singleton('command.queue.forget', function () {
-            return new ForgetFailedQueueCommand;
+            return new ForgetFailedQueueCommand();
         });
     }
 
@@ -273,7 +274,7 @@ class ConsoleServiceProvider extends ServiceProvider
     protected function registerQueueFlushCommand()
     {
         $this->app->singleton('command.queue.flush', function () {
-            return new FlushFailedQueueCommand;
+            return new FlushFailedQueueCommand();
         });
     }
 
@@ -297,7 +298,7 @@ class ConsoleServiceProvider extends ServiceProvider
     protected function registerQueueRestartCommand()
     {
         $this->app->singleton('command.queue.restart', function () {
-            return new QueueRestartCommand;
+            return new QueueRestartCommand();
         });
     }
 
@@ -309,7 +310,7 @@ class ConsoleServiceProvider extends ServiceProvider
     protected function registerQueueRetryCommand()
     {
         $this->app->singleton('command.queue.retry', function () {
-            return new QueueRetryCommand;
+            return new QueueRetryCommand();
         });
     }
 

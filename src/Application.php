@@ -467,19 +467,19 @@ class Application extends Container implements ApplicationContract
     public function withAliases($custom = [])
     {
         $defaults = [
-            'Illuminate\Support\Facades\Auth'      => 'Auth',
-            'Illuminate\Support\Facades\Cache'     => 'Cache',
-            'Illuminate\Support\Facades\DB'        => 'DB',
-            'Illuminate\Support\Facades\Crypt'     => 'Crypt',
-            'Illuminate\Support\Facades\Event'     => 'Event',
-            'Illuminate\Support\Facades\Gate'      => 'Gate',
-            'Illuminate\Support\Facades\Hash'      => 'Hash',
-            'Illuminate\Support\Facades\Log'       => 'Log',
-            'Illuminate\Support\Facades\Queue'     => 'Queue',
-            'Illuminate\Support\Facades\Schema'    => 'Schema',
-            'Illuminate\Support\Facades\Session'   => 'Session',
-            'Illuminate\Support\Facades\Storage'   => 'Storage',
-            'Illuminate\Support\Facades\URL'       => 'URL',
+            'Illuminate\Support\Facades\Auth' => 'Auth',
+            'Illuminate\Support\Facades\Cache' => 'Cache',
+            'Illuminate\Support\Facades\DB' => 'DB',
+            'Illuminate\Support\Facades\Crypt' => 'Crypt',
+            'Illuminate\Support\Facades\Event' => 'Event',
+            'Illuminate\Support\Facades\Gate' => 'Gate',
+            'Illuminate\Support\Facades\Hash' => 'Hash',
+            'Illuminate\Support\Facades\Log' => 'Log',
+            'Illuminate\Support\Facades\Queue' => 'Queue',
+            'Illuminate\Support\Facades\Schema' => 'Schema',
+            'Illuminate\Support\Facades\Session' => 'Session',
+            'Illuminate\Support\Facades\Storage' => 'Storage',
+            'Illuminate\Support\Facades\URL' => 'URL',
             'Illuminate\Support\Facades\Validator' => 'Validator',
         ];
 
@@ -544,6 +544,7 @@ class Application extends Container implements ApplicationContract
      * Get the path to the database directory.
      *
      * @param  string  $path
+     *
      * @return string
      */
     public function databasePath($path = '')
@@ -571,8 +572,8 @@ class Application extends Container implements ApplicationContract
      * Get the storage path for the application.
      *
      * @param  string|null  $path
-     *
      * @param  string|null  $path
+     *
      * @return string
      */
     public function storagePath($path = null)
