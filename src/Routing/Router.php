@@ -248,9 +248,9 @@ class Router
      */
     protected function mergeGroupAttributes(array $action, array $attributes)
     {
-        $namespace  = $attributes['namespace'] ?? null;
+        $namespace = $attributes['namespace'] ?? null;
         $middleware = $attributes['middleware'] ?? null;
-        $as         = $attributes['as'] ?? null;
+        $as = $attributes['as'] ?? null;
 
         return $this->mergeNamespaceGroup(
             $this->mergeMiddlewareGroup(
