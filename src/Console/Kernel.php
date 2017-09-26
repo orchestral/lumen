@@ -33,7 +33,7 @@ class Kernel implements KernelContract
      *
      * @var bool
      */
-    protected $aliases = true;
+    protected $aliases = false;
 
     /**
      * The Artisan commands provided by the application.

@@ -71,6 +71,7 @@ trait CoreBindings
         'Orchestra\Contracts\Memory\Provider'             => 'registerMemoryBindings',
         'queue'                                           => 'registerQueueBindings',
         'queue.connection'                                => 'registerQueueBindings',
+        'queue.listener'                                  => 'registerQueueBindings',
         'Illuminate\Contracts\Queue\Factory'              => 'registerQueueBindings',
         'Illuminate\Contracts\Queue\Queue'                => 'registerQueueBindings',
         'redis'                                           => 'registerRedisBindings',
@@ -458,6 +459,10 @@ trait CoreBindings
     {
         $this->singleton('queue', function () {
             return $this->loadComponent('queue', 'Illuminate\Queue\QueueServiceProvider', 'queue');
+        });
+
+        $this->singleton('queue.listener', function () {
+            return $this->loadComponent('queue', 'Illuminate\Queue\QueueServiceProvider', 'queue.listener');
         });
 
         $this->singleton('queue.connection', function () {
