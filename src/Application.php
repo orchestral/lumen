@@ -329,6 +329,23 @@ class Application extends Container implements ApplicationContract
     }
 
     /**
+     * Flush the container of all bindings and resolved instances.
+     *
+     * @return void
+     */
+    public function flush()
+    {
+        parent::flush();
+
+        $this->bootingCallbacks = [];
+        $this->bootedCallbacks = [];
+        $this->terminatingCallbacks = [];
+        $this->loadedConfigurations = [];
+        $this->loadedProviders = [];
+        $this->ranServiceBinders = [];
+    }
+
+    /**
      * Register a terminating callback with the application.
      *
      * @param  \Closure  $callback
