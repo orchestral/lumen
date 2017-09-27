@@ -3,17 +3,17 @@
 namespace Laravel\Lumen\Testing;
 
 use Tymon\JWTAuth\Facades\JWTAuth;
-use Orchestra\Foundation\Auth\User;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
 trait AuthenticateWithJWT
 {
     /**
      * Get token from user.
      *
-     * @param \Katsana\Model\User $user
+     * @param \Tymon\JWTAuth\Contracts\JWTSubject $user
      * @return string
      */
-    protected function authorizationBearerFromUser(User $user)
+    protected function authorizationBearerFromUser(JWTSubject $user)
     {
         return 'Bearer '.JWTAuth::fromUser($user);
     }
