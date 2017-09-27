@@ -124,6 +124,7 @@ class Application extends Container implements ApplicationContract
 
         $this->instance('path', $this->path());
         $this->instance('path.config', $this->basePath('resources/config'));
+        $this->instance('path.database', $this->databasePath());
         $this->instance('path.storage', $this->storagePath());
 
         $this->registerContainerAliases();
