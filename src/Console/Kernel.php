@@ -33,7 +33,7 @@ class Kernel implements KernelContract
      *
      * @var bool
      */
-    protected $aliases = true;
+    protected $aliases = false;
 
     /**
      * The Artisan commands provided by the application.
@@ -180,8 +180,8 @@ class Kernel implements KernelContract
     protected function getCommands()
     {
         return array_merge($this->commands, [
-            'Illuminate\Console\Scheduling\ScheduleRunCommand',
-            'Laravel\Lumen\Console\Commands\ServeCommand',
+            \Illuminate\Console\Scheduling\ScheduleRunCommand::class,
+            \Laravel\Lumen\Console\Commands\ServeCommand::class,
         ]);
     }
 

@@ -39,8 +39,8 @@ trait MakesHttpRequests
 
         $headers = array_merge([
             'CONTENT_LENGTH' => mb_strlen($content, '8bit'),
-            'CONTENT_TYPE'   => 'application/json',
-            'Accept'         => 'application/json',
+            'CONTENT_TYPE' => 'application/json',
+            'Accept' => 'application/json',
         ], $headers);
 
         $this->call(
@@ -391,7 +391,7 @@ trait MakesHttpRequests
         foreach ($headers as $name => $value) {
             $name = strtr(strtoupper($name), '-', '_');
 
-            if (! starts_with($name, $prefix) && $name != 'CONTENT_TYPE') {
+            if (! Str::startsWith($name, $prefix) && $name != 'CONTENT_TYPE') {
                 $name = $prefix.$name;
             }
 

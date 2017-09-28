@@ -532,10 +532,13 @@ class FullApplicationTest extends TestCase
         $this->assertTrue($app->environment(['production']));
     }
 
+    /**
+     * @expectedException \RuntimeException
+     */
     public function testNamespaceDetection()
     {
         $app = new Application;
-        $this->expectException('RuntimeException');
+
         $app->getNamespace();
     }
 

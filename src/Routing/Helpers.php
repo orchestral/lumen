@@ -19,7 +19,7 @@ trait Helpers
      */
     protected function getVersionedResourceClassName($group, $name)
     {
-        $class   = str_replace('.', '\\', $name);
+        $class = str_replace('.', '\\', $name);
         $version = $this->getVersionNamespace();
 
         return sprintf('%s\%s\%s\%s', $this->namespace, $group, $version, $class);
@@ -32,7 +32,7 @@ trait Helpers
      */
     protected function getVersionNamespace()
     {
-        $version   = $this->api()->getVersion();
+        $version = $this->api()->getVersion();
         $supported = $this->getSupportedVersionNamespace();
 
         if (isset($supported[$version])) {

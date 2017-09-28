@@ -2,6 +2,7 @@
 
 namespace Laravel\Lumen\Routing;
 
+use Illuminate\Support\Str;
 use Laravel\Lumen\Application;
 use Illuminate\Contracts\Routing\UrlRoutable;
 
@@ -257,7 +258,7 @@ class UrlGenerator
      */
     public function isValidUrl($path)
     {
-        if (starts_with($path, ['#', '//', 'mailto:', 'tel:', 'http://', 'https://'])) {
+        if (Str::startsWith($path, ['#', '//', 'mailto:', 'tel:', 'http://', 'https://'])) {
             return true;
         }
 
@@ -334,7 +335,7 @@ class UrlGenerator
             $root = $this->cachedRoot;
         }
 
-        $start = starts_with($root, 'http://') ? 'http://' : 'https://';
+        $start = Str::startsWith($root, 'http://') ? 'http://' : 'https://';
 
         return preg_replace('~'.$start.'~', $scheme, $root, 1);
     }

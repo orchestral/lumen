@@ -134,6 +134,7 @@ class Application extends Container implements ApplicationContract
 
         $this->instance('path', $this->path());
         $this->instance('path.config', $this->basePath('resources/config'));
+        $this->instance('path.database', $this->databasePath());
         $this->instance('path.storage', $this->storagePath());
 
         $this->registerContainerAliases();
@@ -156,7 +157,7 @@ class Application extends Container implements ApplicationContract
      */
     public function version()
     {
-        return 'Lumen (5.5.0) (Laravel Components 5.5.*)';
+        return 'Lumen (5.5.1) (Laravel Components 5.5.*)';
     }
 
     /**
@@ -360,6 +361,23 @@ class Application extends Container implements ApplicationContract
     }
 
     /**
+     * Flush the container of all bindings and resolved instances.
+     *
+     * @return void
+     */
+    public function flush()
+    {
+        parent::flush();
+
+        $this->bootingCallbacks = [];
+        $this->bootedCallbacks = [];
+        $this->terminatingCallbacks = [];
+        $this->loadedConfigurations = [];
+        $this->loadedProviders = [];
+        $this->ranServiceBinders = [];
+    }
+
+    /**
      * Register a terminating callback with the application.
      *
      * @param  \Closure  $callback
@@ -486,19 +504,20 @@ class Application extends Container implements ApplicationContract
     public function withAliases($custom = [])
     {
         $defaults = [
-            'Illuminate\Support\Facades\Auth'      => 'Auth',
-            'Illuminate\Support\Facades\Cache'     => 'Cache',
-            'Illuminate\Support\Facades\DB'        => 'DB',
-            'Illuminate\Support\Facades\Crypt'     => 'Crypt',
-            'Illuminate\Support\Facades\Event'     => 'Event',
-            'Illuminate\Support\Facades\Gate'      => 'Gate',
-            'Illuminate\Support\Facades\Hash'      => 'Hash',
-            'Illuminate\Support\Facades\Log'       => 'Log',
-            'Illuminate\Support\Facades\Queue'     => 'Queue',
-            'Illuminate\Support\Facades\Schema'    => 'Schema',
-            'Illuminate\Support\Facades\Session'   => 'Session',
-            'Illuminate\Support\Facades\Storage'   => 'Storage',
-            'Illuminate\Support\Facades\URL'       => 'URL',
+            'Illuminate\Support\Facades\Auth' => 'Auth',
+            'Illuminate\Support\Facades\Cache' => 'Cache',
+            'Illuminate\Support\Facades\DB' => 'DB',
+            'Illuminate\Support\Facades\Crypt' => 'Crypt',
+            'Illuminate\Support\Facades\Event' => 'Event',
+            'Illuminate\Support\Facades\Gate' => 'Gate',
+            'Illuminate\Support\Facades\Hash' => 'Hash',
+            'Illuminate\Support\Facades\Log' => 'Log',
+            'Illuminate\Support\Facades\Queue' => 'Queue',
+            'Illuminate\Support\Facades\Route' => 'Route',
+            'Illuminate\Support\Facades\Schema' => 'Schema',
+            'Illuminate\Support\Facades\Session' => 'Session',
+            'Illuminate\Support\Facades\Storage' => 'Storage',
+            'Illuminate\Support\Facades\URL' => 'URL',
             'Illuminate\Support\Facades\Validator' => 'Validator',
         ];
 
@@ -633,7 +652,11 @@ class Application extends Container implements ApplicationContract
 
         $this->configure('database');
 
+        $this->register(\Illuminate\Database\MigrationServiceProvider::class);
+        $this->register(\Orchestra\Database\ConsoleServiceProvider::class);
         $this->register(Console\ConsoleServiceProvider::class);
+        $this->register(\Orchestra\Publisher\PublisherServiceProvider::class);
+        $this->register(\Orchestra\Foundation\Providers\SupportServiceProvider::class);
     }
 
     /**
@@ -651,7 +674,7 @@ class Application extends Container implements ApplicationContract
 
         $composer = json_decode(file_get_contents($this->basePath('composer.json')), true);
 
-        foreach ((array) data_get($composer, 'autoload.psr-4') as $namespace => $path) {
+        foreach ((array) ($composer['autoload']['psr-4'] ?? []) as $namespace => $path) {
             foreach ((array) $path as $pathChoice) {
                 if (realpath($this->path()) == realpath($this->basePath().'/'.$pathChoice)) {
                     return $this->namespace = $namespace;
