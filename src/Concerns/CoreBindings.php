@@ -26,9 +26,9 @@ trait CoreBindings
     public $availableBindings = [
         'auth' => 'registerAuthBindings',
         'auth.driver' => 'registerAuthBindings',
+        'Illuminate\Auth\AuthManager' => 'registerAuthBindings',
         'Illuminate\Contracts\Auth\Guard' => 'registerAuthBindings',
         'Illuminate\Contracts\Auth\Access\Gate' => 'registerAuthBindings',
-        'Illuminate\Auth\AuthManager' => 'registerAuthBindings',
         'Orchestra\Auth\AuthManager' => 'registerAuthBindings',
         'orchestra.acl' => 'registerAuthorizationBindings',
         'orchestra.platform.acl' => 'registerAuthorizationBindings',
@@ -37,6 +37,7 @@ trait CoreBindings
         'Orchestra\Contracts\Authorization\Factory' => 'registerAuthorizationBindings',
         'Orchestra\Contracts\Authorization\Authorization' => 'registerAuthorizationBindings',
         'Illuminate\Contracts\Broadcasting\Broadcaster' => 'registerBroadcastingBindings',
+        'Illuminate\Contracts\Broadcasting\Factory' => 'registerBroadcastingBindings',
         'Illuminate\Contracts\Bus\Dispatcher' => 'registerBusBindings',
         'cache' => 'registerCacheBindings',
         'cache.store' => 'registerCacheBindings',
@@ -76,6 +77,7 @@ trait CoreBindings
         'Illuminate\Contracts\Queue\Queue' => 'registerQueueBindings',
         'redis' => 'registerRedisBindings',
         'request' => 'registerRequestBindings',
+        'router' => 'registerRouterBindings',
         'Psr\Http\Message\ServerRequestInterface' => 'registerPsrRequestBindings',
         'Psr\Http\Message\ResponseInterface' => 'registerPsrResponseBindings',
         'Illuminate\Contracts\Routing\ResponseFactory' => 'registerResponseFactoryBindings',
@@ -145,6 +147,7 @@ trait CoreBindings
             'Illuminate\Redis\Database' => 'redis',
             'Illuminate\Contracts\Redis\Database' => 'redis',
             'request' => 'Illuminate\Http\Request',
+            'Laravel\Lumen\Routing\Router' => 'router',
             'Illuminate\Session\SessionManager' => 'session',
             'Illuminate\Session\Store' => 'session.store',
             'Illuminate\Contracts\Routing\UrlGenerator' => 'url',
@@ -491,6 +494,18 @@ trait CoreBindings
     {
         $this->singleton('Illuminate\Http\Request', function () {
             return $this->prepareRequest(Request::capture());
+        });
+    }
+
+    /**
+     * Register container bindings for the application.
+     *
+     * @return void
+     */
+    protected function registerRouterBindings()
+    {
+        $this->singleton('router', function () {
+            return $this->router;
         });
     }
 

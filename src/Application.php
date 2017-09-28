@@ -157,7 +157,7 @@ class Application extends Container implements ApplicationContract
      */
     public function version()
     {
-        return 'Lumen (5.5.0) (Laravel Components 5.5.*)';
+        return 'Lumen (5.5.1) (Laravel Components 5.5.*)';
     }
 
     /**
@@ -513,6 +513,7 @@ class Application extends Container implements ApplicationContract
             'Illuminate\Support\Facades\Hash' => 'Hash',
             'Illuminate\Support\Facades\Log' => 'Log',
             'Illuminate\Support\Facades\Queue' => 'Queue',
+            'Illuminate\Support\Facades\Route' => 'Route',
             'Illuminate\Support\Facades\Schema' => 'Schema',
             'Illuminate\Support\Facades\Session' => 'Session',
             'Illuminate\Support\Facades\Storage' => 'Storage',
