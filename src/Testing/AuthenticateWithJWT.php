@@ -11,6 +11,7 @@ trait AuthenticateWithJWT
      * Get token from user.
      *
      * @param \Tymon\JWTAuth\Contracts\JWTSubject $user
+     *
      * @return string
      */
     protected function authorizationBearerFromUser(JWTSubject $user)

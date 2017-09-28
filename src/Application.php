@@ -632,7 +632,11 @@ class Application extends Container implements ApplicationContract
 
         $this->configure('database');
 
+        $this->register(\Illuminate\Database\MigrationServiceProvider::class);
+        $this->register(\Orchestra\Database\ConsoleServiceProvider::class);
         $this->register(Console\ConsoleServiceProvider::class);
+        $this->register(\Orchestra\Publisher\PublisherServiceProvider::class);
+        $this->register(\Orchestra\Foundation\Providers\SupportServiceProvider::class);
     }
 
     /**

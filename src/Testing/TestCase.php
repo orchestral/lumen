@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Contracts\Auth\Authenticatable;
 use PHPUnit\Framework\TestCase as BaseTestCase;
+use Illuminate\Contracts\Console\Kernel as ConsoleKernel;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -65,6 +66,8 @@ abstract class TestCase extends BaseTestCase
     {
         if (! $this->app) {
             $this->refreshApplication();
+
+            $this->app->make(ConsoleKernel::class);
         }
 
         $this->setUpTraits();
@@ -73,7 +76,7 @@ abstract class TestCase extends BaseTestCase
     /**
      * Boot the testing helper traits.
      *
-     * @return void
+     * @return array
      */
     protected function setUpTraits()
     {
@@ -94,6 +97,8 @@ abstract class TestCase extends BaseTestCase
         if (isset($uses[WithoutEvents::class])) {
             $this->disableEventsForAllTests();
         }
+
+        return $uses;
     }
 
     /**
