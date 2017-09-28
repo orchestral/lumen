@@ -9,6 +9,6 @@ class LumenTestCase extends Laravel\Lumen\Testing\TestCase
      */
     public function createApplication()
     {
-        return require __DIR__.'/../bootstrap.php';
+        return require __DIR__.'/../lumen/bootstrap.php';
     }
 }

@@ -134,6 +134,7 @@ class Application extends Container implements ApplicationContract
 
         $this->instance('path', $this->path());
         $this->instance('path.config', $this->basePath('resources/config'));
+        $this->instance('path.database', $this->databasePath());
         $this->instance('path.storage', $this->storagePath());
 
         $this->registerContainerAliases();
@@ -357,6 +358,23 @@ class Application extends Container implements ApplicationContract
         if ($this->booted) {
             $this->fireAppCallbacks([$callback]);
         }
+    }
+
+    /**
+     * Flush the container of all bindings and resolved instances.
+     *
+     * @return void
+     */
+    public function flush()
+    {
+        parent::flush();
+
+        $this->bootingCallbacks = [];
+        $this->bootedCallbacks = [];
+        $this->terminatingCallbacks = [];
+        $this->loadedConfigurations = [];
+        $this->loadedProviders = [];
+        $this->ranServiceBinders = [];
     }
 
     /**
@@ -633,7 +651,11 @@ class Application extends Container implements ApplicationContract
 
         $this->configure('database');
 
+        $this->register(\Illuminate\Database\MigrationServiceProvider::class);
+        $this->register(\Orchestra\Database\ConsoleServiceProvider::class);
         $this->register(Console\ConsoleServiceProvider::class);
+        $this->register(\Orchestra\Publisher\PublisherServiceProvider::class);
+        $this->register(\Orchestra\Foundation\Providers\SupportServiceProvider::class);
     }
 
     /**

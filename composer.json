@@ -33,7 +33,8 @@
     },
     "require-dev": {
         "mockery/mockery": "^0.9.4",
-        "phpunit/phpunit": "~6.0"
+        "phpunit/phpunit": "~6.0",
+        "tymon/jwt-auth": "dev-develop"
     },
     "suggest": {
         "laravie/api": "Better API routing support based on Dingo API (~1.0)",
