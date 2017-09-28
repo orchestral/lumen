@@ -180,8 +180,12 @@ class Kernel implements KernelContract
     protected function getCommands()
     {
         return array_merge($this->commands, [
-            'Illuminate\Console\Scheduling\ScheduleRunCommand',
-            'Laravel\Lumen\Console\Commands\ServeCommand',
+            \Orchestra\Database\ConsoleServiceProvider::class,
+            \Illuminate\Database\MigrationServiceProvider::class,
+            \Orchestra\Publisher\PublisherServiceProvider::class,
+            \Illuminate\Console\Scheduling\ScheduleRunCommand::class,
+            \Laravel\Lumen\Console\Commands\ServeCommand::class,
+            \Orchestra\Foundation\Providers\SupportServiceProvider::class,
         ]);
     }
 
