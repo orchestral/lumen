@@ -6,8 +6,10 @@ use Mockery;
 use Exception;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Orchestra\Foundation\Testing\Installation;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Illuminate\Contracts\Console\Kernel as ConsoleKernel;
+use Orchestra\Foundation\Testing\Concerns\WithInstallation;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -81,6 +83,10 @@ abstract class TestCase extends BaseTestCase
     protected function setUpTraits()
     {
         $uses = array_flip(class_uses_recursive(get_class($this)));
+
+        if (isset($uses[WithInstallation::class]) && isset($uses[Installation::class])) {
+            $this->beginInstallation();
+        }
 
         if (isset($uses[DatabaseMigrations::class])) {
             $this->runDatabaseMigrations();

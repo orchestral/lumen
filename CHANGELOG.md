@@ -2,6 +2,14 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/lumen`.
 
+## 3.4.4
+
+Released: 2017-10-02
+
+### Added
+
+* Allow to automatically handle Orchestra Platform installation during testing when given `Orchestra\Foundation\Testing\Installation`.
+
 ## 3.4.3
 
 Released: 2017-09-28
