@@ -5,6 +5,7 @@ namespace Laravel\Lumen;
 use Closure;
 use Exception;
 use RuntimeException;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Composer;
 use Laravel\Lumen\Routing\Router;
@@ -453,7 +454,9 @@ class Application extends Container implements ApplicationContract
         $path = $this->getConfigurationPath($name);
 
         if (! is_null($path)) {
-            $this->make('config')->set($name, require $path);
+            $this->make('config')->set(Arr::dot([
+                $name => require $path,
+            ]));
         }
     }
 
