@@ -57,7 +57,7 @@ trait ProvidesConvenienceMethods
      * @param  array  $messages
      * @param  array  $customAttributes
      *
-     * @return void
+     * @return array
      */
     public function validate(Request $request, array $rules, array $messages = [], array $customAttributes = [])
     {
@@ -66,6 +66,8 @@ trait ProvidesConvenienceMethods
         if ($validator->fails()) {
             $this->throwValidationException($request, $validator);
         }
+
+        return $validator->getData();
     }
 
     /**
