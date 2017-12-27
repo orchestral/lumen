@@ -14,7 +14,7 @@ trait AuthenticateWithJWT
      *
      * @return string
      */
-    protected function authorizationBearerFromUser(JWTSubject $user)
+    protected function authorizationBearerFromUser(JWTSubject $user): string
     {
         return 'Bearer '.JWTAuth::fromUser($user);
     }
