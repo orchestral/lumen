@@ -5,13 +5,6 @@ namespace Laravel\Lumen\Testing;
 trait AuthenticateWithPassport
 {
     /**
-     * Passport has been installed.
-     *
-     * @var bool
-     */
-    protected $passportHasBeenInstalled = false;
-
-    /**
      * Setup passport.
      *
      * @return void
