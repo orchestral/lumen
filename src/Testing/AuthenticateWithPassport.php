@@ -5,6 +5,13 @@ namespace Laravel\Lumen\Testing;
 trait AuthenticateWithPassport
 {
     /**
+     * Passport has been installed.
+     *
+     * @var bool
+     */
+    protected $passportHasBeenInstalled = false;
+
+    /**
      * Setup passport.
      *
      * @return void
@@ -22,9 +29,9 @@ trait AuthenticateWithPassport
      *
      * @return string
      */
-    protected function authorizationBearerFromUser($user): string
+    protected function authorizationBearerUsingPassport($user): string
     {
-        $token = $this->adminUser->createToken('Testing', ['*']);
+        $token = $user->createToken('Testing', ['*']);
 
         return 'Bearer '.$token->accessToken;
     }
