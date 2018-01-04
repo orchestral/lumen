@@ -439,7 +439,7 @@ class FullApplicationTest extends TestCase
         $response = $app->handle(Request::create('/', 'GET'));
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('Hello World', $response->getContent());
-        $this->assertEquals(true, $_SERVER['__middleware.response']);
+        $this->assertTrue($_SERVER['__middleware.response']);
     }
 
     public function testBasicControllerDispatching()
@@ -546,7 +546,7 @@ class FullApplicationTest extends TestCase
     {
         $app = new Application;
 
-        $this->assertEquals(false, $app->runningUnitTests());
+        $this->assertFalse($app->runningUnitTests());
     }
 
     public function testValidationHelpers()
