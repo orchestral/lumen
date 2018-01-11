@@ -23,11 +23,11 @@ class UrlGenerator
     protected $forcedRoot;
 
     /**
-     * The cached URL scheme for generating URLs.
+     * The forced schema for URLs.
      *
-     * @var string|null
+     * @var string
      */
-    protected $cachedScheme;
+    protected $forceScheme;
 
     /**
      * The cached URL root.
@@ -37,11 +37,11 @@ class UrlGenerator
     protected $cachedRoot;
 
     /**
-     * The URL schema to be forced on all generated URLs.
+     * A cached copy of the URL schema for the current request.
      *
      * @var string|null
      */
-    protected $forceSchema;
+    protected $cachedSchema;
 
     /**
      * Create a new URL redirector instance.
@@ -137,7 +137,7 @@ class UrlGenerator
         // Once we get the root URL, we will check to see if it contains an index.php
         // file in the paths. If it does, we will remove it since it is not needed
         // for asset paths, but only for routes to endpoints in the application.
-        $root = $this->getRootUrl($this->getScheme($secure));
+        $root = $this->getRootUrl($this->formatScheme($secure));
 
         return $this->removeIndex($root).'/'.trim($path, '/');
     }
@@ -156,7 +156,7 @@ class UrlGenerator
         // Once we get the root URL, we will check to see if it contains an index.php
         // file in the paths. If it does, we will remove it since it is not needed
         // for asset paths, but only for routes to endpoints in the application.
-        $root = $this->getRootUrl($this->getScheme($secure), $root);
+        $root = $this->getRootUrl($this->formatScheme($secure), $root);
 
         return $this->removeIndex($root).'/'.trim($path, '/');
     }
@@ -196,11 +196,7 @@ class UrlGenerator
      */
     protected function getScheme($secure)
     {
-        if (is_null($secure)) {
-            return $this->forceSchema ?: $this->app->make('request')->getScheme().'://';
-        }
-
-        return $secure ? 'https://' : 'http://';
+        return $this->formatScheme($secure);
     }
 
     /**
@@ -212,7 +208,40 @@ class UrlGenerator
      */
     public function forceSchema($schema)
     {
-        $this->forceSchema = $schema.'://';
+        $this->forceScheme($schema);
+    }
+
+    /**
+     * Force the schema for URLs.
+     *
+     * @param  string  $schema
+     *
+     * @return void
+     */
+    public function forceScheme($schema)
+    {
+        $this->cachedSchema = null;
+
+        $this->forceScheme = $schema.'://';
+    }
+
+    /**
+     * Get the default scheme for a raw URL.
+     *
+     * @param  bool|null  $secure
+     * @return string
+     */
+    public function formatScheme($secure)
+    {
+        if (! is_null($secure)) {
+            return $secure ? 'https://' : 'http://';
+        }
+
+        if (is_null($this->cachedSchema)) {
+            $this->cachedSchema = $this->forceScheme ?: $this->app->make('request')->getScheme().'://';
+        }
+
+        return $this->cachedSchema;
     }
 
     /**
@@ -275,11 +304,11 @@ class UrlGenerator
     protected function getSchemeForUrl($secure)
     {
         if (is_null($secure)) {
-            if (is_null($this->cachedScheme)) {
-                $this->cachedScheme = $this->getScheme($secure);
+            if (is_null($this->cachedSchema)) {
+                $this->cachedSchema = $this->formatScheme($secure);
             }
 
-            return $this->cachedScheme;
+            return $this->cachedSchema;
         }
 
         return $secure ? 'https://' : 'http://';
@@ -350,6 +379,7 @@ class UrlGenerator
     public function forceRootUrl($root)
     {
         $this->forcedRoot = rtrim($root, '/');
+
         $this->cachedRoot = null;
     }
 
