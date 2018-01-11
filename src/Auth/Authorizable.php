@@ -14,7 +14,7 @@ trait Authorizable
      *
      * @return bool
      */
-    public function can($ability, $arguments = [])
+    public function can(string $ability, $arguments = []): bool
     {
         return app(Gate::class)->forUser($this)->check($ability, $arguments);
     }
@@ -27,7 +27,7 @@ trait Authorizable
      *
      * @return bool
      */
-    public function cant($ability, $arguments = [])
+    public function cant(string $ability, $arguments = []): bool
     {
         return ! $this->can($ability, $arguments);
     }
@@ -40,7 +40,7 @@ trait Authorizable
      *
      * @return bool
      */
-    public function cannot($ability, $arguments = [])
+    public function cannot(string $ability, $arguments = []): bool
     {
         return $this->cant($ability, $arguments);
     }
