@@ -25,6 +25,7 @@ trait AuthenticateWithJWT
      * @param \Tymon\JWTAuth\Contracts\JWTSubject $user
      *
      * @return string
+     *
      * @deprecated v3.5.1
      */
     protected function authorizationBearerFromUser(JWTSubject $user): string

@@ -178,6 +178,7 @@ trait ProvidesConvenienceMethods
      *
      * @param  mixed  $job
      * @param  mixed  $handler
+     *
      * @return mixed
      */
     public function dispatchNow($job, $handler = null)

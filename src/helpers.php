@@ -4,7 +4,6 @@ namespace api;
 
 use Laravel\Lumen\Http\Redirector;
 use Laravel\Lumen\Http\ResponseFactory;
-use Laravel\Lumen\Routing\UrlGenerator;
 
 if (! function_exists('api\redirect')) {
     /**
