@@ -193,6 +193,8 @@ class UrlGenerator
      * @param  bool|null  $secure
      *
      * @return string
+     *
+     * @deprecated v3.5.x
      */
     protected function getScheme($secure)
     {
@@ -205,6 +207,8 @@ class UrlGenerator
      * @param  string  $schema
      *
      * @return void
+     *
+     * @deprecated v3.5.x
      */
     public function forceSchema($schema)
     {
@@ -229,6 +233,7 @@ class UrlGenerator
      * Get the default scheme for a raw URL.
      *
      * @param  bool|null  $secure
+     *
      * @return string
      */
     public function formatScheme($secure)
