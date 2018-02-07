@@ -4,7 +4,6 @@ namespace api;
 
 use Laravel\Lumen\Http\Redirector;
 use Laravel\Lumen\Http\ResponseFactory;
-use Laravel\Lumen\Routing\UrlGenerator;
 
 if (! function_exists('api\redirect')) {
     /**
@@ -17,7 +16,7 @@ if (! function_exists('api\redirect')) {
      *
      * @return \Laravel\Lumen\Http\Redirector|\Illuminate\Http\RedirectResponse
      */
-    function redirect($to = null, $status = 302, $headers = [], $secure = null)
+    function redirect($to = null, int $status = 302, array $headers = [], $secure = null)
     {
         $redirector = new Redirector(app());
 
@@ -39,7 +38,7 @@ if (! function_exists('api\response')) {
      *
      * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
      */
-    function response($content = '', $status = 200, array $headers = [])
+    function response($content = '', int $status = 200, array $headers = [])
     {
         $factory = new ResponseFactory();
 
@@ -61,10 +60,9 @@ if (! function_exists('api\route')) {
      *
      * @return string
      */
-    function route($name, $parameters = [], $secure = null)
+    function route($name, array $parameters = [], $secure = null): string
     {
-        return (new UrlGenerator(app()))
-                    ->route($name, $parameters, $secure);
+        return app('url')->route($name, $parameters, $secure);
     }
 }
 
@@ -73,13 +71,13 @@ if (! function_exists('api\url')) {
      * Generate a url for the application.
      *
      * @param  string  $path
-     * @param  mixed   $parameters
-     * @param  bool    $secure
+     * @param  array  $parameters
+     * @param  bool  $secure
      *
      * @return string
      */
-    function url($path = null, $parameters = [], $secure = null)
+    function url($path = null, array $parameters = [], $secure = null): string
     {
-        return (new UrlGenerator(app()))->to($path, $parameters, $secure);
+        return app('url')->to($path, $parameters, $secure);
     }
 }

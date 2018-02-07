@@ -2,6 +2,18 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/lumen`.
 
+## 3.5.2
+
+Released: 2018-01-20
+
+### Changes
+
+* Improves compatibility between Laravel and Lumen `UrlGenerator`.
+
+### Fixes
+
+* Fixes "Too Many Connections" error during testing. ([@felipemfp](https://github.com/felipemfp))
+
 ## 3.5.1
 
 Released: 2018-01-04
