@@ -10,7 +10,7 @@ class RouteResolver extends BaseRouteResolver
     /**
      * {@inheritdoc}
      */
-    protected function generateRouteByName($name, $default = null)
+    protected function generateRouteByName(string $name, string $default)
     {
         $prefix = '/';
 
