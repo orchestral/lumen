@@ -404,6 +404,8 @@ class FullApplicationTest extends TestCase
         $app = new Application;
         $provider = new LumenTestServiceProvider($app);
         $app->register($provider);
+
+        $this->assertTrue(true);
     }
 
     public function testUsingCustomDispatcher()

@@ -4,6 +4,7 @@ namespace Laravel\Lumen\Concerns;
 
 use Monolog\Logger;
 use Illuminate\Http\Request;
+use Illuminate\Log\LogManager;
 use Illuminate\Support\Composer;
 use Orchestra\Config\FileLoader;
 use Orchestra\Config\Repository;
@@ -378,11 +379,9 @@ trait CoreBindings
     protected function registerLogBindings()
     {
         $this->singleton('Psr\Log\LoggerInterface', function () {
-            if ($this->monologConfigurator) {
-                return call_user_func($this->monologConfigurator, new Logger('lumen'));
-            } else {
-                return new Logger('lumen', [$this->getMonologHandler()]);
-            }
+            $this->configure('logging');
+
+            return new LogManager($this);
         });
     }
 
