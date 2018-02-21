@@ -161,6 +161,8 @@ trait RoutesRequests
         list($method, $pathInfo) = $this->parseIncomingRequest($request);
 
         try {
+            $this->boot();
+
             return $this->sendThroughPipeline($this->middleware, function () use ($method, $pathInfo) {
                 if (isset($this->router->getRoutes()[$method.$pathInfo])) {
                     return $this->handleFoundRoute([true, $this->router->getRoutes()[$method.$pathInfo]['action'], []]);

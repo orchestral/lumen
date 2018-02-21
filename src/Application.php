@@ -266,14 +266,14 @@ class Application extends Container implements ApplicationContract
             return;
         }
 
-        $this->loadedProviders[$providerName] = true;
+        $this->loadedProviders[$providerName] = $provider;
 
         if (method_exists($provider, 'register')) {
             $provider->register();
         }
 
-        if (method_exists($provider, 'boot')) {
-            return $this->call([$provider, 'boot']);
+        if ($this->booted) {
+            $this->bootProvider($provider);
         }
     }
 
@@ -291,37 +291,17 @@ class Application extends Container implements ApplicationContract
     }
 
     /**
-     * Resolve the given type from the container.
-     *
-     * @param  string  $abstract
-     * @param  array  $parameters
-     *
-     * @return mixed
-     */
-    public function make($abstract, array $parameters = [])
-    {
-        $abstract = $this->getAlias($abstract);
-
-        if (array_key_exists($abstract, $this->availableBindings) &&
-            ! array_key_exists($this->availableBindings[$abstract], $this->ranServiceBinders)) {
-            $this->{$method = $this->availableBindings[$abstract]}();
-
-            $this->ranServiceBinders[$method] = true;
-        }
-
-        return parent::make($abstract, $parameters);
-    }
-
-    /**
-     * Boot the application's service providers.
-     *
-     * @return void
+     * Boots the registered providers.
      */
     public function boot()
     {
         if ($this->booted) {
             return;
         }
+
+        array_walk($this->loadedProviders, function ($p) {
+            $this->bootProvider($p);
+        });
 
         // Once the application has booted we will also fire some "booted" callbacks
         // for any listeners that need to do work after this initial booting gets
@@ -331,6 +311,20 @@ class Application extends Container implements ApplicationContract
         $this->booted = true;
 
         $this->fireAppCallbacks($this->bootedCallbacks);
+    }
+
+    /**
+     * Boot the given service provider.
+     *
+     * @param  \Illuminate\Support\ServiceProvider  $provider
+     *
+     * @return mixed
+     */
+    protected function bootProvider(ServiceProvider $provider)
+    {
+        if (method_exists($provider, 'boot')) {
+            return $this->call([$provider, 'boot']);
+        }
     }
 
     /**
@@ -359,6 +353,28 @@ class Application extends Container implements ApplicationContract
         if ($this->booted) {
             $this->fireAppCallbacks([$callback]);
         }
+    }
+
+    /**
+     * Resolve the given type from the container.
+     *
+     * @param  string  $abstract
+     * @param  array  $parameters
+     *
+     * @return mixed
+     */
+    public function make($abstract, array $parameters = [])
+    {
+        $abstract = $this->getAlias($abstract);
+
+        if (array_key_exists($abstract, $this->availableBindings) &&
+            ! array_key_exists($this->availableBindings[$abstract], $this->ranServiceBinders)) {
+            $this->{$method = $this->availableBindings[$abstract]}();
+
+            $this->ranServiceBinders[$method] = true;
+        }
+
+        return parent::make($abstract, $parameters);
     }
 
     /**
