@@ -2,6 +2,18 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/lumen`.
 
+## 3.5.3
+
+Released: 2018-02-28
+
+### Added
+
+* Add `Laravel\Lumen\Testing\Concerns\Testing`.
+
+### Changes
+
+* Include the exception in the logger context. ([@yuloh](https://github.com/yuloh))
+
 ## 3.5.2
 
 Released: 2018-01-20
