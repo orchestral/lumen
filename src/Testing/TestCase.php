@@ -71,22 +71,7 @@ abstract class TestCase extends BaseTestCase
      */
     protected function tearDown()
     {
-        if (class_exists('Mockery')) {
-            if (($container = \Mockery::getContainer()) !== null) {
-                $this->addToAssertionCount($container->mockery_getExpectationCount());
-            }
-
-            Mockery::close();
-        }
-
-        if ($this->app) {
-            foreach ($this->beforeApplicationDestroyedCallbacks as $callback) {
-                call_user_func($callback);
-            }
-
-            $this->app->flush();
-            $this->app = null;
-        }
+        $this->tearDownTheTestEnvironment();
     }
 
     /**
