@@ -9,8 +9,11 @@ php:
 
 env:
   global:
-    - setup=basic
     - coverage=no
+  matrix:
+    - setup=basic
+    - setup=lowest
+    - setup=stable
 
 before_script:
   - composer config discard-changes true
@@ -27,9 +30,4 @@ after_script:
   - if [[ $setup = 'coveralls' ]]; then php vendor/bin/coveralls -v; fi
 
 matrix:
-  include:
-    - php: 7.0
-      env: setup=lowest
-    - php: 7.0
-      env: setup=stable
   fast_finish: true
