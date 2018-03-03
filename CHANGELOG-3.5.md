@@ -2,6 +2,14 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/lumen`.
 
+## 3.5.4
+
+Released: 2018-03-03
+
+### Changes
+
+* Update `Laravel\Lumen\Testing\TestCase`.
+
 ## 3.5.3
 
 Released: 2018-02-28
