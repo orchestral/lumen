@@ -151,6 +151,7 @@ trait CoreBindings
             'Laravel\Lumen\Routing\Router' => 'router',
             'Illuminate\Session\SessionManager' => 'session',
             'Illuminate\Session\Store' => 'session.store',
+            'Illuminate\Contracts\Translation\Translator' => 'translator',
             'Illuminate\Contracts\Routing\UrlGenerator' => 'url',
             'Laravel\Lumen\Routing\UrlGenerator' => 'url',
             'Illuminate\Contracts\Validation\Factory' => 'validator',

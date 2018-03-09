@@ -6,21 +6,13 @@ use Mockery;
 use Exception;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Orchestra\Foundation\Testing\Installation;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Illuminate\Contracts\Console\Kernel as ConsoleKernel;
-use Orchestra\Foundation\Testing\Concerns\WithInstallation;
 
 abstract class TestCase extends BaseTestCase
 {
-    use Concerns\MakesHttpRequests;
-
-    /**
-     * The application instance.
-     *
-     * @var \Laravel\Lumen\Application
-     */
-    protected $app;
+    use Concerns\MakesHttpRequests,
+        Concerns\Testing;
 
     /**
      * The base URL to use while testing the application.
@@ -28,13 +20,6 @@ abstract class TestCase extends BaseTestCase
      * @var string
      */
     protected $baseUrl = 'http://localhost';
-
-    /**
-     * The callbacks that should be run before the application is destroyed.
-     *
-     * @var array
-     */
-    protected $beforeApplicationDestroyedCallbacks = [];
 
     /**
      * Creates the application.
@@ -64,15 +49,9 @@ abstract class TestCase extends BaseTestCase
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp()
     {
-        if (! $this->app) {
-            $this->refreshApplication();
-
-            $this->app->make(ConsoleKernel::class);
-        }
-
-        $this->setUpTraits();
+        $this->setUpTheTestEnvironment();
     }
 
     /**
@@ -82,29 +61,7 @@ abstract class TestCase extends BaseTestCase
      */
     protected function setUpTraits()
     {
-        $uses = array_flip(class_uses_recursive(get_class($this)));
-
-        if (isset($uses[WithInstallation::class]) && isset($uses[Installation::class])) {
-            $this->beginInstallation();
-        }
-
-        if (isset($uses[DatabaseMigrations::class])) {
-            $this->runDatabaseMigrations();
-        }
-
-        if (isset($uses[DatabaseTransactions::class])) {
-            $this->beginDatabaseTransaction();
-        }
-
-        if (isset($uses[WithoutMiddleware::class])) {
-            $this->disableMiddlewareForAllTests();
-        }
-
-        if (isset($uses[WithoutEvents::class])) {
-            $this->disableEventsForAllTests();
-        }
-
-        return $uses;
+        return $this->setUpTheTestEnvironmentTraits();
     }
 
     /**
@@ -112,24 +69,9 @@ abstract class TestCase extends BaseTestCase
      *
      * @return void
      */
-    public function tearDown()
+    protected function tearDown()
     {
-        if (class_exists('Mockery')) {
-            if (($container = \Mockery::getContainer()) !== null) {
-                $this->addToAssertionCount($container->mockery_getExpectationCount());
-            }
-
-            Mockery::close();
-        }
-
-        if ($this->app) {
-            foreach ($this->beforeApplicationDestroyedCallbacks as $callback) {
-                call_user_func($callback);
-            }
-
-            $this->app->flush();
-            $this->app = null;
-        }
+        $this->tearDownTheTestEnvironment();
     }
 
     /**
@@ -329,18 +271,6 @@ abstract class TestCase extends BaseTestCase
      */
     public function artisan($command, $parameters = [])
     {
-        return $this->code = $this->app['Illuminate\Contracts\Console\Kernel']->call($command, $parameters);
-    }
-
-    /**
-     * Register a callback to be run before the application is destroyed.
-     *
-     * @param  callable  $callback
-     *
-     * @return void
-     */
-    protected function beforeApplicationDestroyed(callable $callback)
-    {
-        $this->beforeApplicationDestroyedCallbacks[] = $callback;
+        return $this->code = $this->app[ConsoleKernel::class]->call($command, $parameters);
     }
 }

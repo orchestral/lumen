@@ -52,20 +52,10 @@ You can also choose to add new path to autoload to detect `lumen/app` using PSR-
 
 ## API Routing
 
-Install `laravie/api` via the command line:
-
-    composer require "laravie/api=~1.0"
-
-Next, enable the following service provider from `lumen/bootstrap.php`:
+Dingo API is preinstall with Lumen. To start using it you just need to uncomment the following from `lumen/bootstrap.php`:
 
 ```php
-$app->register(Dingo\Api\Provider\LumenServiceProvider::class);
-```
-
-Finally, you can use `lumen/api.php` to register available routes for your API. To do this first you need to require the file from `lumen/bootstrap.php`:
-
-```php
-require __DIR__.'/api.php';
+require base_path('routes/api.php');
 ```
 
 ## JWT Authentication
@@ -93,7 +83,9 @@ This would add `JWT_SECRET` value to your main `.env` file.
 Finally you can extends the default `App\User` model to support `Tymon\JWTAuth\Contracts\JWTSubject`:
 
 ```php
-<?php namespace App;
+<?php 
+
+namespace App;
 
 use App\Lumen\User as Eloquent;
 
