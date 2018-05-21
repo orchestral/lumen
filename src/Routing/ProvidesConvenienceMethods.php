@@ -60,7 +60,7 @@ trait ProvidesConvenienceMethods
      *
      * @return array
      *
-     * @throws ValidationException
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function validate(Request $request, array $rules, array $messages = [], array $customAttributes = [])
     {
@@ -95,7 +95,7 @@ trait ProvidesConvenienceMethods
      *
      * @return void
      *
-     * @throws ValidationException
+     * @throws \Illuminate\Validation\ValidationException
      */
     protected function throwValidationException(Request $request, $validator)
     {
