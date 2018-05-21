@@ -339,6 +339,7 @@ class Router
      *
      * @param  string  $uri
      * @param  mixed  $action
+     *
      * @return $this
      */
     public function get($uri, $action)

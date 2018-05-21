@@ -64,6 +64,7 @@ class Kernel implements KernelContract
      * Set the request instance for URL generation.
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
+     *
      * @return void
      */
     protected function setRequestForConsole(Application $app)

@@ -2,7 +2,6 @@
 
 namespace Laravel\Lumen\Foundation;
 
-use Orchestra\Extension\RouteGenerator;
 use Orchestra\Foundation\RouteResolver as BaseRouteResolver;
 
 class RouteResolver extends BaseRouteResolver

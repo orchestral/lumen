@@ -78,6 +78,7 @@ trait ProvidesConvenienceMethods
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  array  $rules
+     *
      * @return array
      */
     protected function extractInputFromRules(Request $request, array $rules)
