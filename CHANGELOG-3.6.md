@@ -2,6 +2,14 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/lumen`.
 
+## 3.6.1
+
+Released: 2018-05-24
+
+### Fixes
+
+* Replace deprecated `Orchestra\Extension\RouteGenerator` with `orchestra.extension.url`.
+
 ## 3.6.0
 
 Released: 2018-05-21
