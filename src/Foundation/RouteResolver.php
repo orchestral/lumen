@@ -2,7 +2,6 @@
 
 namespace Laravel\Lumen\Foundation;
 
-use Orchestra\Extension\RouteGenerator;
 use Orchestra\Foundation\RouteResolver as BaseRouteResolver;
 
 class RouteResolver extends BaseRouteResolver
@@ -20,7 +19,7 @@ class RouteResolver extends BaseRouteResolver
             return parent::generateRouteByName($name, $default);
         }
 
-        return $this->app->make(RouteGenerator::class)
+        return $this->app->make('orchestra.extension.url')
                     ->handle($prefix)
                     ->setBaseUrl(config($name === 'api' ? 'app.api' : 'app.url'));
     }

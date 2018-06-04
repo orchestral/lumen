@@ -400,7 +400,7 @@ trait CoreBindings
         });
 
         $this->singleton('orchestra.platform.memory', function () {
-            return $this->make('orchestra.memory')->make();
+            return $this->make('orchestra.memory')->makeOrFallback();
         });
     }
 

@@ -138,6 +138,8 @@ class Application extends Container implements ApplicationContract
         $this->instance('path.database', $this->databasePath());
         $this->instance('path.storage', $this->storagePath());
 
+        $this->instance('env', $this->environment());
+
         $this->registerContainerAliases();
     }
 
@@ -158,7 +160,7 @@ class Application extends Container implements ApplicationContract
      */
     public function version()
     {
-        return 'Lumen (5.6.1) (Laravel Components 5.6.*)';
+        return 'Lumen (5.6.3) (Laravel Components 5.6.*)';
     }
 
     /**
@@ -645,7 +647,7 @@ class Application extends Container implements ApplicationContract
      */
     public function runningInConsole()
     {
-        return php_sapi_name() == 'cli';
+        return php_sapi_name() === 'cli' || php_sapi_name() === 'phpdbg';
     }
 
     /**
