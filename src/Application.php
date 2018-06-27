@@ -372,12 +372,26 @@ class Application extends Container implements ApplicationContract
     {
         parent::flush();
 
+        $this->afterResolvingCallbacks = [];
         $this->bootingCallbacks = [];
         $this->bootedCallbacks = [];
+        $this->reboundCallbacks = [];
+        $this->resolvingCallbacks = [];
         $this->terminatingCallbacks = [];
+
+        $this->availableBindings = [];
         $this->loadedConfigurations = [];
         $this->loadedProviders = [];
         $this->ranServiceBinders = [];
+
+        $this->currentRoute = [];
+        $this->middleware = [];
+        $this->routeMiddleware = [];
+
+        $this->router = null;
+        $this->dispatcher = null;
+
+        static::$instance = null;
     }
 
     /**
