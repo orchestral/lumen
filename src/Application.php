@@ -160,7 +160,7 @@ class Application extends Container implements ApplicationContract
      */
     public function version()
     {
-        return 'Lumen (5.6.3) (Laravel Components 5.6.*)';
+        return 'Lumen (5.6.4) (Laravel Components 5.6.*)';
     }
 
     /**
@@ -388,12 +388,23 @@ class Application extends Container implements ApplicationContract
     {
         parent::flush();
 
+        $this->middleware = [];
+        $this->currentRoute = [];
+        $this->routeMiddleware = [];
+        $this->loadedProviders = [];
         $this->bootingCallbacks = [];
         $this->bootedCallbacks = [];
+        $this->reboundCallbacks = [];
+        $this->resolvingCallbacks = [];
         $this->terminatingCallbacks = [];
-        $this->loadedConfigurations = [];
-        $this->loadedProviders = [];
+        $this->availableBindings = [];
         $this->ranServiceBinders = [];
+        $this->loadedConfigurations = [];
+        $this->afterResolvingCallbacks = [];
+
+        $this->router = null;
+        $this->dispatcher = null;
+        static::$instance = null;
     }
 
     /**

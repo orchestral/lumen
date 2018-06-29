@@ -2,6 +2,24 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/lumen`.
 
+## 3.6.3
+
+Released: 2018-06-29
+
+### Fixes
+
+* Reduce memory leaks during testing.
+* Fixes condition to `json_decode` on `$responseData` when using `Laravel\Lumen\Testing\Concerns\MakesHttpRequests::seeJsonStructure()`.
+
+## 3.6.2
+
+Released: 2018-06-05
+
+### Changes
+
+* Bind the app environment as 'env'. ([@yuloh](https://github.com/yuloh))
+* Able to resolve `Illuminate\Hashing\HashManager`.
+
 ## 3.6.1
 
 Released: 2018-05-24
