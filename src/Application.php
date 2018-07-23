@@ -636,6 +636,16 @@ class Application extends Container implements ApplicationContract
     }
 
     /**
+     * Determine if the application routes are cached.
+     *
+     * @return bool
+     */
+    public function routesAreCached()
+    {
+        return false;
+    }
+
+    /**
      * Determine if the application is running in the console.
      *
      * @return bool
