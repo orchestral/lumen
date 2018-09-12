@@ -160,7 +160,7 @@ class Application extends Container implements ApplicationContract
      */
     public function version()
     {
-        return 'Lumen (5.6.4) (Laravel Components 5.6.*)';
+        return 'Lumen (5.7.0) (Laravel Components 5.7.*)';
     }
 
     /**
@@ -649,6 +649,16 @@ class Application extends Container implements ApplicationContract
     public function storagePath($path = null)
     {
         return $this->basePath('storage'.($path ? '/'.$path : $path));
+    }
+
+    /**
+     * Determine if the application routes are cached.
+     *
+     * @return bool
+     */
+    public function routesAreCached()
+    {
+        return false;
     }
 
     /**
