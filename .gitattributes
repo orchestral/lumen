@@ -13,7 +13,7 @@
 /.travis.yml export-ignore
 /build.xml export-ignore
 /phpunit.php export-ignore
-/phpunit.xml export-ignore
+/phpunit.xml.dist export-ignore
 /CHANGELOG-*.md export-ignore
 /LICENSE export-ignore
 /README.md export-ignore
