@@ -17,7 +17,7 @@ This repository contains the core code of the Orchestra Lumen. If you want to bu
 
 First, install the Lumenate installer and make sure that the global Composer `bin` directory is within your system's `$PATH`:
 
-    composer global require "orchestra/lumenate=~0.2"
+    composer global require "orchestra/lumenate=~0.4"
 
 From within a working Orchestra Platform project, run the following command:
 
@@ -93,3 +93,4 @@ class User extends Eloquent
 {
     //
 }
+```
