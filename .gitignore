@@ -1,4 +1,9 @@
-/vendor
-composer.phar
-composer.lock
+# Composer
+/vendor/*
+/composer.phar
+/composer.lock
+
+# PHPUnit
+/coverage/*
+/.phpunit.result.cache
 /phpunit.xml
