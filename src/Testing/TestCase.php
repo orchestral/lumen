@@ -42,6 +42,8 @@ abstract class TestCase extends BaseTestCase
         Facade::clearResolvedInstances();
 
         $this->app = $this->createApplication();
+
+        $this->app->boot();
     }
 
     /**

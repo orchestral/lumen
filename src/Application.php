@@ -160,7 +160,7 @@ class Application extends Container implements ApplicationContract
      */
     public function version()
     {
-        return 'Lumen (5.7.0) (Laravel Components 5.7.*)';
+        return 'Lumen (5.7.1) (Laravel Components 5.7.*)';
     }
 
     /**
