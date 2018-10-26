@@ -3,7 +3,6 @@
 namespace Laravel\Lumen\Concerns;
 
 use Closure;
-use Exception;
 use Throwable;
 use FastRoute\Dispatcher;
 use Illuminate\Support\Arr;
@@ -173,8 +172,6 @@ trait RoutesRequests
                     $this->createDispatcher()->dispatch($method, $pathInfo)
                 );
             });
-        } catch (Exception $e) {
-            return $this->prepareResponse($this->sendExceptionToHandler($e));
         } catch (Throwable $e) {
             return $this->prepareResponse($this->sendExceptionToHandler($e));
         }
