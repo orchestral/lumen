@@ -2,6 +2,14 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/lumen`.
 
+## 3.6.4
+
+Released: 2018-07-26
+
+### Added
+
+* Added `Laravel\Lumen\Application::routesAreCached()` method. ([@JacksonIV](https://github.com/JacksonIV))
+
 ## 3.6.3
 
 Released: 2018-06-29
