@@ -341,6 +341,21 @@ class FullApplicationTest extends TestCase
         $this->assertEquals(405, $response->getStatusCode());
     }
 
+    public function testResponsableInterface()
+    {
+        $app = new Application;
+
+        $app->router->get('/foo/{foo}', function () {
+            return new ResponsableResponse;
+        });
+
+        $request = Request::create('/foo/999', 'GET');
+        $response = $app->handle($request);
+
+        $this->assertEquals(999, $request->route('foo'));
+        $this->assertEquals(999, $response->original);
+    }
+
     public function testUncaughtExceptionResponse()
     {
         $app = new Application;
@@ -359,7 +374,6 @@ class FullApplicationTest extends TestCase
     {
         $app = new Application;
         $app->instance('request', Request::create('http://lumen.laravel.com', 'GET'));
-        unset($app->availableBindings['request']);
 
         $app->router->get('/foo-bar', ['as' => 'foo', function () {
             //
@@ -379,7 +393,6 @@ class FullApplicationTest extends TestCase
     {
         $app = new Application;
         $app->instance('request', Request::create('http://lumen.laravel.com', 'GET'));
-        unset($app->availableBindings['request']);
 
         $app->router->get('/foo-bar', ['as' => 'foo', function () {
             //
@@ -767,6 +780,20 @@ class FullApplicationTest extends TestCase
         $this->assertArrayHasKey('hello.world', $app->router->namedRoutes);
         $this->assertEquals('/world', $app->router->namedRoutes['hello.world']);
     }
+
+    public function testContainerBindingsAreNotOverwritten()
+    {
+        $app = new Application();
+
+        $mock = m::mock(Illuminate\Bus\Dispatcher::class);
+
+        $app->instance(Illuminate\Contracts\Bus\Dispatcher::class, $mock);
+
+        $this->assertSame(
+            $mock,
+            $app->make(Illuminate\Contracts\Bus\Dispatcher::class)
+        );
+    }
 }
 
 class LumenTestService
@@ -865,5 +892,13 @@ class LumenTestTerminateMiddleware
     public function terminate($request, Illuminate\Http\Response $response)
     {
         $response->setContent('TERMINATED');
+    }
+}
+
+class ResponsableResponse implements \Illuminate\Contracts\Support\Responsable
+{
+    public function toResponse($request)
+    {
+        return $request->route('foo');
     }
 }

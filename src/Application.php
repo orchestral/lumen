@@ -7,7 +7,6 @@ use Exception;
 use RuntimeException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Illuminate\Support\Composer;
 use Laravel\Lumen\Routing\Router;
 use Illuminate\Container\Container;
 use Illuminate\Support\Facades\Facade;
@@ -160,7 +159,7 @@ class Application extends Container implements ApplicationContract
      */
     public function version()
     {
-        return 'Lumen (5.7.1) (Laravel Components 5.7.*)';
+        return 'Lumen (5.7.3) (Laravel Components 5.7.*)';
     }
 
     /**
@@ -369,7 +368,8 @@ class Application extends Container implements ApplicationContract
     {
         $abstract = $this->getAlias($abstract);
 
-        if (array_key_exists($abstract, $this->availableBindings) &&
+        if (! $this->bound($abstract) &&
+            array_key_exists($abstract, $this->availableBindings) &&
             ! array_key_exists($this->availableBindings[$abstract], $this->ranServiceBinders)) {
             $this->{$method = $this->availableBindings[$abstract]}();
 
