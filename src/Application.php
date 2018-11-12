@@ -130,7 +130,7 @@ class Application extends Container implements ApplicationContract
         static::setInstance($this);
 
         $this->instance('app', $this);
-        $this->instance('Laravel\Lumen\Application', $this);
+        $this->instance(static::class, $this);
 
         $this->instance('path', $this->path());
         $this->instance('path.config', $this->basePath('resources/config'));
@@ -159,7 +159,7 @@ class Application extends Container implements ApplicationContract
      */
     public function version()
     {
-        return 'Lumen (5.7.3) (Laravel Components 5.7.*)';
+        return 'Lumen (5.7.4) (Laravel Components 5.7.*)';
     }
 
     /**

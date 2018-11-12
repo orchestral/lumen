@@ -383,10 +383,22 @@ class FullApplicationTest extends TestCase
             //
         }]);
 
-        $this->assertEquals('http://lumen.laravel.com/something', api\url('something'));
-        $this->assertEquals('http://lumen.laravel.com/foo-bar', api\route('foo'));
-        $this->assertEquals('http://lumen.laravel.com/foo-bar/1/2', api\route('bar', ['baz' => 1, 'boom' => 2]));
-        $this->assertEquals('http://lumen.laravel.com/foo-bar?baz=1&boom=2', api\route('foo', ['baz' => 1, 'boom' => 2]));
+        $app->router->get('/foo-bar/{baz}[/{boom}]', ['as' => 'optional', function () {
+            //
+        }]);
+
+        $app->router->get('/foo-bar/{baz:[0-9]+}[/{boom}]', ['as' => 'regex', function () {
+            //
+        }]);
+
+        $this->assertEquals('http://lumen.laravel.com/something', url('something'));
+        $this->assertEquals('https://lumen.laravel.com/foo-bar', route('foo'));
+        $this->assertEquals('https://lumen.laravel.com/foo-bar/1/2', route('bar', ['baz' => 1, 'boom' => 2]));
+        $this->assertEquals('https://lumen.laravel.com/foo-bar?baz=1&boom=2', route('foo', ['baz' => 1, 'boom' => 2]));
+        $this->assertEquals('https://lumen.laravel.com/foo-bar/1/2', route('optional', ['baz' => 1, 'boom' => 2]));
+        $this->assertEquals('https://lumen.laravel.com/foo-bar/1', route('optional', ['baz' => 1]));
+        $this->assertEquals('https://lumen.laravel.com/foo-bar/1/2', route('regex', ['baz' => 1, 'boom' => 2]));
+        $this->assertEquals('https://lumen.laravel.com/foo-bar/1', route('regex', ['baz' => 1]));
     }
 
     public function testGeneratingUrlsForRegexParameters()
