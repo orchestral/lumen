@@ -26,3 +26,5 @@ $app = require __DIR__.'/../bootstrap.php';
 */
 
 $app->run();
+
+$app->terminate();

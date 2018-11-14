@@ -119,6 +119,8 @@ trait RoutesRequests
         if (count($this->middleware) > 0) {
             $this->callTerminableMiddleware($response);
         }
+
+        $this->terminate();
     }
 
     /**
@@ -461,7 +463,7 @@ trait RoutesRequests
      *
      * @return bool
      */
-    protected function shouldSkipMiddleware()
+    public function shouldSkipMiddleware()
     {
         return $this->bound('middleware.disable') && $this->make('middleware.disable') === true;
     }

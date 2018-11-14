@@ -3,7 +3,6 @@
 namespace Laravel\Lumen;
 
 use Closure;
-use Exception;
 use RuntimeException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -15,17 +14,11 @@ use Orchestra\Contracts\Foundation\Application as ApplicationContract;
 
 class Application extends Container implements ApplicationContract
 {
-    use Concerns\CoreBindings,
+    use Concerns\Compatibility,
+        Concerns\CoreBindings,
         Concerns\FoundationSupports,
         Concerns\RoutesRequests,
         Concerns\RegistersExceptionHandlers;
-
-    /**
-     * Indicates if the application has "booted".
-     *
-     * @var bool
-     */
-    protected $booted = false;
 
     /**
      * The array of booting callbacks.
@@ -63,18 +56,18 @@ class Application extends Container implements ApplicationContract
     protected $basePath;
 
     /**
-     * The resource path of the application installation.
-     *
-     * @var string
-     */
-    protected $resourcePath;
-
-    /**
      * All of the loaded configuration files.
      *
      * @var array
      */
     protected $loadedConfigurations = [];
+
+    /**
+     * Indicates if the application has "booted".
+     *
+     * @var bool
+     */
+    protected $booted = false;
 
     /**
      * The loaded service providers.
@@ -199,56 +192,6 @@ class Application extends Container implements ApplicationContract
     }
 
     /**
-     * Register all of the configured providers.
-     *
-     * @return void
-     */
-    public function registerConfiguredProviders()
-    {
-        //
-    }
-
-    /**
-     * Get the path to the cached "compiled.php" file.
-     *
-     * @return string
-     */
-    public function getCachedCompilePath()
-    {
-        throw new Exception(__FUNCTION__.' is not implemented by Lumen.');
-    }
-
-    /**
-     * Get the path to the cached extension.json file.
-     *
-     * @return string
-     */
-    public function getCachedExtensionServicesPath()
-    {
-        return $this->basePath().'/bootstrap/cache/extension.php';
-    }
-
-    /**
-     * Get the path to the cached services.json file.
-     *
-     * @return string
-     */
-    public function getCachedServicesPath()
-    {
-        throw new Exception(__FUNCTION__.' is not implemented by Lumen.');
-    }
-
-    /**
-     * Get the path to the cached packages.php file.
-     *
-     * @return string
-     */
-    public function getCachedPackagesPath()
-    {
-        throw new Exception(__FUNCTION__.' is not implemented by Lumen.');
-    }
-
-    /**
      * Register a service provider with the application.
      *
      * @param  \Illuminate\Support\ServiceProvider|string  $provider
@@ -260,7 +203,7 @@ class Application extends Container implements ApplicationContract
     public function register($provider, $options = [], $force = false)
     {
         if (! $provider instanceof ServiceProvider) {
-            $provider = new $provider($this);
+            $provider = $this->resolveProvider($provider);
         }
 
         if (array_key_exists($providerName = get_class($provider), $this->loadedProviders)) {
@@ -312,6 +255,18 @@ class Application extends Container implements ApplicationContract
         $this->booted = true;
 
         $this->fireAppCallbacks($this->bootedCallbacks);
+    }
+
+    /**
+     * Resolve a service provider instance from the class name.
+     *
+     * @param  string  $provider
+     *
+     * @return \Illuminate\Support\ServiceProvider
+     */
+    public function resolveProvider($provider)
+    {
+        return new $provider($this);
     }
 
     /**
@@ -408,20 +363,6 @@ class Application extends Container implements ApplicationContract
     }
 
     /**
-     * Register a terminating callback with the application.
-     *
-     * @param  \Closure  $callback
-     *
-     * @return $this
-     */
-    public function terminating(Closure $callback)
-    {
-        $this->terminatingCallbacks[] = $callback;
-
-        return $this;
-    }
-
-    /**
      * Call the booting callbacks for the application.
      *
      * @param  array  $callbacks
@@ -505,6 +446,22 @@ class Application extends Container implements ApplicationContract
         } elseif (file_exists($path = $this->basePath('lumen/config/').$name.'.php')) {
             return $path;
         }
+    }
+
+    /**
+     * Get the registered service provider instances if any exist.
+     *
+     * @param  \Illuminate\Support\ServiceProvider|string  $provider
+     *
+     * @return array
+     */
+    public function getProviders($provider)
+    {
+        $name = is_string($provider) ? $provider : get_class($provider);
+
+        return Arr::where($this->loadedProviders, function ($value) use ($name) {
+            return $value instanceof $name;
+        });
     }
 
     /**
@@ -629,7 +586,7 @@ class Application extends Container implements ApplicationContract
      *
      * @return string
      */
-    public function resourcePath($path = null)
+    public function resourcePath($path = '')
     {
         if ($this->resourcePath) {
             return $this->resourcePath.($path ? '/'.$path : $path);
@@ -646,7 +603,7 @@ class Application extends Container implements ApplicationContract
      *
      * @return string
      */
-    public function storagePath($path = null)
+    public function storagePath($path = '')
     {
         return $this->basePath('storage'.($path ? '/'.$path : $path));
     }
@@ -725,5 +682,31 @@ class Application extends Container implements ApplicationContract
         }
 
         throw new RuntimeException('Unable to detect application namespace.');
+    }
+
+    /**
+     * Register a terminating callback with the application.
+     *
+     * @param  \Closure  $callback
+     *
+     * @return $this
+     */
+    public function terminating(Closure $callback)
+    {
+        $this->terminatingCallbacks[] = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Terminate the application.
+     *
+     * @return void
+     */
+    public function terminate()
+    {
+        foreach ($this->terminatingCallbacks as $terminating) {
+            $this->call($terminating);
+        }
     }
 }

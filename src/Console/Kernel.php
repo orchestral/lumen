@@ -133,6 +133,19 @@ class Kernel implements KernelContract
     }
 
     /**
+     * Terminate the application.
+     *
+     * @param  \Symfony\Component\Console\Input\InputInterface  $input
+     * @param  int  $status
+     *
+     * @return void
+     */
+    public function terminate($input, $status)
+    {
+        $this->app->terminate();
+    }
+
+    /**
      * Define the application's command schedule.
      *
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
