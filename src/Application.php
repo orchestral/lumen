@@ -179,12 +179,12 @@ class Application extends Container implements ApplicationContract
      *
      * @return string
      */
-    public function environment()
+    public function environment(...$environments)
     {
         $env = env('APP_ENV', 'production');
 
         if (func_num_args() > 0) {
-            $patterns = is_array(func_get_arg(0)) ? func_get_arg(0) : func_get_args();
+            $patterns = is_array($environments[0]) ? $environments[0] : $environments;
 
             foreach ($patterns as $pattern) {
                 if (Str::is($pattern, $env)) {
