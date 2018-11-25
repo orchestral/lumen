@@ -806,6 +806,13 @@ class FullApplicationTest extends TestCase
             $app->make(Illuminate\Contracts\Bus\Dispatcher::class)
         );
     }
+
+    public function testApplicationClassCanBeOverwritten()
+    {
+        $app = new LumenTestApplication();
+
+        $this->assertInstanceOf(LumenTestApplication::class, $app->make(Application::class));
+    }
 }
 
 class LumenTestService
@@ -887,6 +894,14 @@ class LumenTestAction
     public function __invoke($id)
     {
         return $id;
+    }
+}
+
+class LumenTestApplication extends Application
+{
+    public function version()
+    {
+        return 'Custom Lumen App';
     }
 }
 
