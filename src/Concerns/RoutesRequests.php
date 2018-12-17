@@ -164,7 +164,9 @@ trait RoutesRequests
         try {
             $this->boot();
 
-            return $this->sendThroughPipeline($this->middleware, function () use ($method, $pathInfo) {
+            return $this->sendThroughPipeline($this->middleware, function ($request) use ($method, $pathInfo) {
+                $this->instance(Request::class, $request);
+
                 if (isset($this->router->getRoutes()[$method.$pathInfo])) {
                     return $this->handleFoundRoute([true, $this->router->getRoutes()[$method.$pathInfo]['action'], []]);
                 }
@@ -430,7 +432,7 @@ trait RoutesRequests
                 ->then($then);
         }
 
-        return $then();
+        return $then($this->make('request'));
     }
 
     /**
