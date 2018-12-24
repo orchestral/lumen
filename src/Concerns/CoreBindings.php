@@ -191,11 +191,7 @@ trait CoreBindings
      */
     protected function registerAuthorizationBindings()
     {
-        $this->singleton('orchestra.acl', function () {
-            $this->register('Orchestra\Authorization\AuthorizationServiceProvider');
-
-            return $this->make('orchestra.acl');
-        });
+        $this->register('Orchestra\Authorization\AuthorizationServiceProvider');
 
         $this->singleton('orchestra.platform.acl', function () {
             $acl = $this->make('orchestra.acl')->make('orchestra');
@@ -410,11 +406,7 @@ trait CoreBindings
      */
     protected function registerMemoryBindings()
     {
-        $this->singleton('orchestra.memory', function () {
-            $this->register('Orchestra\Memory\MemoryServiceProvider');
-
-            return $this->make('orchestra.memory');
-        });
+        $this->register('Orchestra\Memory\MemoryServiceProvider');
 
         $this->singleton('orchestra.platform.memory', function () {
             return $this->make('orchestra.memory')->makeOrFallback();
