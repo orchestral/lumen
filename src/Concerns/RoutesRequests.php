@@ -91,6 +91,8 @@ trait RoutesRequests
      */
     public function handle(SymfonyRequest $request)
     {
+        $this->instance(Request::class, $request);
+
         $response = $this->dispatch($request);
 
         if (count($this->middleware) > 0) {
