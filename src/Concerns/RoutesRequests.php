@@ -159,11 +159,11 @@ trait RoutesRequests
      */
     public function dispatch($request = null)
     {
+        $this->boot();
+
         list($method, $pathInfo) = $this->parseIncomingRequest($request);
 
         try {
-            $this->boot();
-
             return $this->sendThroughPipeline($this->middleware, function ($request) use ($method, $pathInfo) {
                 $this->instance(Request::class, $request);
 
