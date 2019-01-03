@@ -9,6 +9,8 @@ use Illuminate\Contracts\Routing\UrlRoutable;
 
 class UrlGenerator
 {
+    use Concerns\ProvidesSignedRoute;
+
     /**
      * The application instance.
      *
@@ -94,7 +96,7 @@ class UrlGenerator
 
         $scheme = $this->getSchemeForUrl($secure);
 
-        $extra = $this->formatParametersForUrl($extra);
+        $extra = $this->formatParameters($extra);
 
         $tail = implode('/', array_map(
             'rawurlencode', (array) $extra)
@@ -251,6 +253,25 @@ class UrlGenerator
     }
 
     /**
+     * Format the array of URL parameters.
+     *
+     * @param  mixed|array  $parameters
+     * @return array
+     */
+    public function formatParameters($parameters)
+    {
+        $parameters = Arr::wrap($parameters);
+
+        foreach ($parameters as $key => $parameter) {
+            if ($parameter instanceof UrlRoutable) {
+                $parameters[$key] = $parameter->getRouteKey();
+            }
+        }
+
+        return $parameters;
+    }
+
+    /**
      * Get the URL to a named route.
      *
      * @param  string  $name
@@ -269,7 +290,7 @@ class UrlGenerator
 
         $uri = $this->app->router->namedRoutes[$name];
 
-        $parameters = $this->formatParametersForUrl($parameters);
+        $parameters = $this->formatParameters($parameters);
 
         $uri = preg_replace_callback('/\[([^\]]*)\]$/', function ($matches) use ($uri, &$parameters) {
             $uri = $this->replaceRouteParameters($matches[1], $parameters);
