@@ -20,7 +20,7 @@ try {
 */
 
 $app = new Laravel\Lumen\Application(
-    realpath(__DIR__.'/../')
+    $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
 
 $app->withFacades();
@@ -97,8 +97,6 @@ $app->register(Dingo\Api\Provider\LumenServiceProvider::class);
 | can respond to, as well as the controllers that may handle them.
 |
 */
-
-$app->boot();
 
 $app->get('/', function () use ($app) {
     return $app->version();

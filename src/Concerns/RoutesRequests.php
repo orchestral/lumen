@@ -90,6 +90,8 @@ trait RoutesRequests
      */
     public function handle(SymfonyRequest $request)
     {
+        $this->instance(Request::class, $request);
+
         $response = $this->dispatch($request);
 
         if (count($this->middleware) > 0) {
@@ -160,14 +162,12 @@ trait RoutesRequests
      */
     public function dispatch($request = null)
     {
+        $this->boot();
+
         list($method, $pathInfo) = $this->parseIncomingRequest($request);
 
         try {
-            $this->boot();
-
-            return $this->sendThroughPipeline($this->middleware, function ($request) use ($method, $pathInfo) {
-                $this->instance(Request::class, $request);
-
+            return $this->sendThroughPipeline($this->middleware, function () use ($method, $pathInfo) {
                 if (isset($this->router->getRoutes()[$method.$pathInfo])) {
                     return $this->handleFoundRoute([true, $this->router->getRoutes()[$method.$pathInfo]['action'], []]);
                 }
@@ -431,7 +431,7 @@ trait RoutesRequests
                 ->then($then);
         }
 
-        return $then($this->make('request'));
+        return $then();
     }
 
     /**
