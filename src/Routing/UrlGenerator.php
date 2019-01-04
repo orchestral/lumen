@@ -253,25 +253,6 @@ class UrlGenerator
     }
 
     /**
-     * Format the array of URL parameters.
-     *
-     * @param  mixed|array  $parameters
-     * @return array
-     */
-    public function formatParameters($parameters)
-    {
-        $parameters = Arr::wrap($parameters);
-
-        foreach ($parameters as $key => $parameter) {
-            if ($parameter instanceof UrlRoutable) {
-                $parameters[$key] = $parameter->getRouteKey();
-            }
-        }
-
-        return $parameters;
-    }
-
-    /**
      * Get the URL to a named route.
      *
      * @param  string  $name
@@ -343,6 +324,25 @@ class UrlGenerator
         }
 
         return $secure ? 'https://' : 'http://';
+    }
+
+    /**
+     * Format the array of URL parameters.
+     *
+     * @param  mixed|array  $parameters
+     * @return array
+     */
+    public function formatParameters($parameters)
+    {
+        $parameters = Arr::wrap($parameters);
+
+        foreach ($parameters as $key => $parameter) {
+            if ($parameter instanceof UrlRoutable) {
+                $parameters[$key] = $parameter->getRouteKey();
+            }
+        }
+
+        return $parameters;
     }
 
     /**
