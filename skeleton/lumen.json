@@ -4,8 +4,8 @@
   "public": "lumen/public",
   "tests": "tests",
   "artisan": "lumen/artisan",
-  "api.php": "routes/api.php",
   "bootstrap.php": "lumen/bootstrap.php",
   "phpunit.xml": "lumen/phpunit.xml",
-  "server.php": "lumen/server.php"
+  "server.php": "lumen/server.php",
+  "routes/api.php": "routes/api.php"
 }
