@@ -2,6 +2,14 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/lumen`.
 
+## 3.7.1
+
+Released: 2019-02-13
+
+### Changes
+
+* Add signed route ability to Lumen.
+
 ## 3.7.0
 
 Released: 2018-12-25
