@@ -26,9 +26,9 @@ class ServeCommand extends Command
      *
      * @return void
      */
-    public function fire()
+    public function handle()
     {
-        chdir(base_path('public'));
+        \chdir(\base_path('public'));
 
         $host = $this->input->getOption('host');
 
@@ -38,7 +38,7 @@ class ServeCommand extends Command
 
         $this->info("Lumen development server started on http://{$host}:{$port}/");
 
-        passthru('"'.PHP_BINARY.'"'." -S {$host}:{$port} \"{$base}\"/lumen/server.php");
+        \passthru('"'.PHP_BINARY.'"'." -S {$host}:{$port} \"{$base}\"/lumen/server.php");
     }
 
     /**

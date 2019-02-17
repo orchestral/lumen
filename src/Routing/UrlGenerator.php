@@ -98,7 +98,7 @@ class UrlGenerator
 
         $extra = $this->formatParameters($extra);
 
-        $tail = implode('/', array_map(
+        $tail = \implode('/', \array_map(
             'rawurlencode', (array) $extra)
         );
 
@@ -175,7 +175,7 @@ class UrlGenerator
     {
         $i = 'index.php';
 
-        return Str::contains($root, $i) ? str_replace('/'.$i, '', $root) : $root;
+        return Str::contains($root, $i) ? \str_replace('/'.$i, '', $root) : $root;
     }
 
     /**
@@ -241,11 +241,11 @@ class UrlGenerator
      */
     public function formatScheme($secure)
     {
-        if (! is_null($secure)) {
+        if (! \is_null($secure)) {
             return $secure ? 'https://' : 'http://';
         }
 
-        if (is_null($this->cachedSchema)) {
+        if (\is_null($this->cachedSchema)) {
             $this->cachedSchema = $this->forceScheme ?: $this->app->make('request')->getScheme().'://';
         }
 
@@ -256,6 +256,7 @@ class UrlGenerator
      * Format the array of URL parameters.
      *
      * @param  mixed|array  $parameters
+     *
      * @return array
      */
     public function formatParameters($parameters)
@@ -292,7 +293,7 @@ class UrlGenerator
 
         $parameters = $this->formatParameters($parameters);
 
-        $uri = preg_replace_callback('/\[([^\]]*)\]$/', function ($matches) use ($uri, &$parameters) {
+        $uri = \preg_replace_callback('/\[([^\]]*)\]$/', function ($matches) use ($uri, &$parameters) {
             $uri = $this->replaceRouteParameters($matches[1], $parameters);
 
             return ($matches[1] == $uri) ? '' : $uri;
@@ -303,7 +304,7 @@ class UrlGenerator
         $uri = $this->to($uri, [], $secure);
 
         if (! empty($parameters)) {
-            $uri .= '?'.http_build_query($parameters);
+            $uri .= '?'.\http_build_query($parameters);
         }
 
         return $uri;
@@ -322,7 +323,7 @@ class UrlGenerator
             return true;
         }
 
-        return filter_var($path, FILTER_VALIDATE_URL) !== false;
+        return \filter_var($path, FILTER_VALIDATE_URL) !== false;
     }
 
     /**
@@ -334,8 +335,8 @@ class UrlGenerator
      */
     protected function getSchemeForUrl($secure)
     {
-        if (is_null($secure)) {
-            if (is_null($this->cachedSchema)) {
+        if (\is_null($secure)) {
+            if (\is_null($this->cachedSchema)) {
                 $this->cachedSchema = $this->formatScheme($secure);
             }
 
@@ -366,7 +367,7 @@ class UrlGenerator
      */
     protected function replaceRoutableParametersForUrl($parameters = [])
     {
-        $parameters = is_array($parameters) ? $parameters : [$parameters];
+        $parameters = \is_array($parameters) ? $parameters : [$parameters];
 
         foreach ($parameters as $key => $parameter) {
             if ($parameter instanceof UrlRoutable) {
@@ -382,11 +383,12 @@ class UrlGenerator
      *
      * @param  string  $route
      * @param  array $parameters
+     *
      * @return string
      */
     protected function replaceRouteParameters($route, &$parameters = [])
     {
-        return preg_replace_callback('/\{(.*?)(:.*?)?(\{[0-9,]+\})?\}/', function ($m) use (&$parameters) {
+        return \preg_replace_callback('/\{(.*?)(:.*?)?(\{[0-9,]+\})?\}/', function ($m) use (&$parameters) {
             return isset($parameters[$m[1]]) ? Arr::pull($parameters, $m[1]) : $m[0];
         }, $route);
     }
@@ -401,8 +403,8 @@ class UrlGenerator
      */
     protected function getRootUrl($scheme, $root = null)
     {
-        if (is_null($root)) {
-            if (is_null($this->cachedRoot)) {
+        if (\is_null($root)) {
+            if (\is_null($this->cachedRoot)) {
                 $this->cachedRoot = $this->forcedRoot ?: $this->app->make('request')->root();
             }
 
@@ -411,7 +413,7 @@ class UrlGenerator
 
         $start = Str::startsWith($root, 'http://') ? 'http://' : 'https://';
 
-        return preg_replace('~'.$start.'~', $scheme, $root, 1);
+        return \preg_replace('~'.$start.'~', $scheme, $root, 1);
     }
 
     /**
@@ -423,7 +425,7 @@ class UrlGenerator
      */
     public function forceRootUrl($root)
     {
-        $this->forcedRoot = rtrim($root, '/');
+        $this->forcedRoot = \rtrim($root, '/');
 
         $this->cachedRoot = null;
     }
@@ -439,6 +441,6 @@ class UrlGenerator
      */
     protected function trimUrl($root, $path, $tail = '')
     {
-        return trim($root.'/'.trim($path.'/'.$tail, '/'), '/');
+        return \trim($root.'/'.\trim($path.'/'.$tail, '/'), '/');
     }
 }

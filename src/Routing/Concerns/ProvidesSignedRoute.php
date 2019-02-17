@@ -36,12 +36,12 @@ trait ProvidesSignedRoute
             $parameters = $parameters + ['expires' => $this->availableAt($expiration)];
         }
 
-        ksort($parameters);
+        \ksort($parameters);
 
-        $key = call_user_func($this->keyResolver);
+        $key = \call_user_func($this->keyResolver);
 
         return $this->route($name, $parameters + [
-            'signature' => hash_hmac('sha256', $this->route($name, $parameters, $secure), $key),
+            'signature' => \hash_hmac('sha256', $this->route($name, $parameters, $secure), $key),
         ], $secure);
     }
 
@@ -52,6 +52,7 @@ trait ProvidesSignedRoute
      * @param  \DateTimeInterface|int  $expiration
      * @param  array  $parameters
      * @param  bool  $absolute
+     *
      * @return string
      */
     public function temporarySignedRoute($name, $expiration, $parameters = [], $absolute = true)
@@ -63,6 +64,7 @@ trait ProvidesSignedRoute
      * Determine if the given request has a valid signature.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return bool
      */
     public function hasValidSignature(Request $request)
@@ -73,11 +75,11 @@ trait ProvidesSignedRoute
             Arr::except($request->query(), 'signature')
         ), '?');
 
-        $expires = Arr::get($request->query(), 'expires');
+        $expires = $request->query()['expires'] ?? null;
 
-        $signature = hash_hmac('sha256', $original, call_user_func($this->keyResolver));
+        $signature = \hash_hmac('sha256', $original, \call_user_func($this->keyResolver));
 
-        return  hash_equals($signature, (string) $request->query('signature', '')) &&
+        return  \hash_equals($signature, (string) $request->query('signature', '')) &&
                ! ($expires && Carbon::now()->getTimestamp() > $expires);
     }
 
@@ -85,6 +87,7 @@ trait ProvidesSignedRoute
      * Set the encryption key resolver.
      *
      * @param  callable  $keyResolver
+     *
      * @return $this
      */
     public function setKeyResolver(callable $keyResolver)
@@ -98,6 +101,7 @@ trait ProvidesSignedRoute
      * Format the array of URL parameters.
      *
      * @param  mixed|array  $parameters
+     *
      * @return array
      */
     abstract public function formatParameters($parameters);

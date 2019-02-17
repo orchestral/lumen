@@ -84,7 +84,7 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->registerCommands(array_merge(
+        $this->registerCommands(\array_merge(
             $this->commands, $this->devCommands
         ));
     }
@@ -98,11 +98,11 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function registerCommands(array $commands)
     {
-        foreach (array_keys($commands) as $command) {
-            call_user_func_array([$this, "register{$command}Command"], []);
+        foreach (\array_keys($commands) as $command) {
+            \call_user_func_array([$this, "register{$command}Command"], []);
         }
 
-        $this->commands(array_values($commands));
+        $this->commands(\array_values($commands));
     }
 
     /**
@@ -415,6 +415,8 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return array_merge(array_values($this->commands), array_values($this->devCommands));
+        return \array_merge(
+            \array_values($this->commands), \array_values($this->devCommands)
+        );
     }
 }

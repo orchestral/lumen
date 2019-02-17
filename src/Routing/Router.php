@@ -107,7 +107,7 @@ class Router
             $new['suffix'] = $old['suffix'];
         }
 
-        return array_merge_recursive(Arr::except($old, ['namespace', 'prefix', 'as', 'suffix']), $new);
+        return \array_merge_recursive(Arr::except($old, ['namespace', 'prefix', 'as', 'suffix']), $new);
     }
 
     /**
@@ -119,7 +119,7 @@ class Router
      */
     protected function mergeWithLastGroup($new)
     {
-        return $this->mergeGroup($new, end($this->groupStack));
+        return $this->mergeGroup($new, \end($this->groupStack));
     }
 
     /**
@@ -133,9 +133,9 @@ class Router
     protected static function formatUsesPrefix($new, $old)
     {
         if (isset($new['namespace'])) {
-            return isset($old['namespace']) && strpos($new['namespace'], '\\') !== 0
-                ? trim($old['namespace'], '\\').'\\'.trim($new['namespace'], '\\')
-                : trim($new['namespace'], '\\');
+            return isset($old['namespace']) && \strpos($new['namespace'], '\\') !== 0
+                ? \trim($old['namespace'], '\\').'\\'.\trim($new['namespace'], '\\')
+                : \trim($new['namespace'], '\\');
         }
 
         return $old['namespace'] ?? null;
@@ -154,7 +154,7 @@ class Router
         $oldPrefix = $old['prefix'] ?? null;
 
         if (isset($new['prefix'])) {
-            return trim($oldPrefix, '/').'/'.trim($new['prefix'], '/');
+            return \trim($oldPrefix, '/').'/'.\trim($new['prefix'], '/');
         }
 
         return $oldPrefix;
@@ -179,25 +179,25 @@ class Router
             $attributes = $this->mergeWithLastGroup([]);
         }
 
-        if (isset($attributes) && is_array($attributes)) {
+        if (isset($attributes) && \is_array($attributes)) {
             if (isset($attributes['prefix'])) {
-                $uri = trim($attributes['prefix'], '/').'/'.trim($uri, '/');
+                $uri = \trim($attributes['prefix'], '/').'/'.\trim($uri, '/');
             }
 
             if (isset($attributes['suffix'])) {
-                $uri = trim($uri, '/').rtrim($attributes['suffix'], '/');
+                $uri = \trim($uri, '/').\rtrim($attributes['suffix'], '/');
             }
 
             $action = $this->mergeGroupAttributes($action, $attributes);
         }
 
-        $uri = '/'.trim($uri, '/');
+        $uri = '/'.\trim($uri, '/');
 
         if (isset($action['as'])) {
             $this->namedRoutes[$action['as']] = $uri;
         }
 
-        if (is_array($method)) {
+        if (\is_array($method)) {
             foreach ($method as $verb) {
                 $this->routes[$verb.$uri] = ['method' => $verb, 'uri' => $uri, 'action' => $action];
             }
@@ -215,14 +215,14 @@ class Router
      */
     protected function parseAction($action)
     {
-        if (is_string($action)) {
+        if (\is_string($action)) {
             return ['uses' => $action];
-        } elseif (! is_array($action)) {
+        } elseif (! \is_array($action)) {
             return [$action];
         }
 
-        if (isset($action['middleware']) && is_string($action['middleware'])) {
-            $action['middleware'] = explode('|', $action['middleware']);
+        if (isset($action['middleware']) && \is_string($action['middleware'])) {
+            $action['middleware'] = \explode('|', $action['middleware']);
         }
 
         return $action;
@@ -282,11 +282,12 @@ class Router
      *
      * @param  string $class
      * @param  string $namespace
+     *
      * @return string
      */
     protected function prependGroupNamespace($class, $namespace = null)
     {
-        return $namespace !== null && strpos($class, '\\') !== 0
+        return $namespace !== null && \strpos($class, '\\') !== 0
             ? $namespace.'\\'.$class : $class;
     }
 
@@ -302,7 +303,7 @@ class Router
     {
         if (isset($middleware)) {
             if (isset($action['middleware'])) {
-                $action['middleware'] = array_merge($middleware, $action['middleware']);
+                $action['middleware'] = \array_merge($middleware, $action['middleware']);
             } else {
                 $action['middleware'] = $middleware;
             }

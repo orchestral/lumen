@@ -15,12 +15,12 @@ class RouteResolver extends BaseRouteResolver
 
         // Orchestra Platform routing is managed by `orchestra/foundation::handles`
         // and can be manage using configuration.
-        if (! in_array($name, ['api', 'app'])) {
+        if (! \in_array($name, ['api', 'app'])) {
             return parent::generateRouteByName($name, $default);
         }
 
         return $this->app->make('orchestra.extension.url')
                     ->handle($prefix)
-                    ->setBaseUrl(config($name === 'api' ? 'app.api' : 'app.url'));
+                    ->setBaseUrl(\config($name === 'api' ? 'app.api' : 'app.url'));
     }
 }

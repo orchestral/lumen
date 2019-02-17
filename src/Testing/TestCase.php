@@ -37,7 +37,7 @@ abstract class TestCase extends BaseTestCase
      */
     protected function refreshApplication()
     {
-        putenv('APP_ENV=testing');
+        \putenv('APP_ENV=testing');
 
         Facade::clearResolvedInstances();
 
@@ -93,8 +93,8 @@ abstract class TestCase extends BaseTestCase
     {
         $count = $this->app->make('db')->connection($onConnection)->table($table)->where($data)->count();
 
-        $this->assertGreaterThan(0, $count, sprintf(
-            'Unable to find row in database table [%s] that matched attributes [%s].', $table, json_encode($data)
+        $this->assertGreaterThan(0, $count, \sprintf(
+            'Unable to find row in database table [%s] that matched attributes [%s].', $table, \json_encode($data)
         ));
 
         return $this;
@@ -127,8 +127,8 @@ abstract class TestCase extends BaseTestCase
     {
         $count = $this->app->make('db')->connection($onConnection)->table($table)->where($data)->count();
 
-        $this->assertEquals(0, $count, sprintf(
-            'Found unexpected records in database table [%s] that matched attributes [%s].', $table, json_encode($data)
+        $this->assertEquals(0, $count, \sprintf(
+            'Found unexpected records in database table [%s] that matched attributes [%s].', $table, \json_encode($data)
         ));
 
         return $this;
@@ -145,15 +145,15 @@ abstract class TestCase extends BaseTestCase
      */
     public function expectsEvents($events)
     {
-        $events = is_array($events) ? $events : func_get_args();
+        $events = \is_array($events) ? $events : \func_get_args();
 
         $mock = Mockery::spy('Illuminate\Contracts\Events\Dispatcher');
 
         $mock->shouldReceive('fire', 'dispatch')->andReturnUsing(function ($called) use (&$events) {
             foreach ($events as $key => $event) {
-                if ((is_string($called) && $called === $event) ||
-                    (is_string($called) && is_subclass_of($called, $event)) ||
-                    (is_object($called) && $called instanceof $event)) {
+                if ((\is_string($called) && $called === $event) ||
+                    (\is_string($called) && \is_subclass_of($called, $event)) ||
+                    (\is_object($called) && $called instanceof $event)) {
                     unset($events[$key]);
                 }
             }
@@ -162,7 +162,7 @@ abstract class TestCase extends BaseTestCase
         $this->beforeApplicationDestroyed(function () use (&$events) {
             if ($events) {
                 throw new Exception(
-                    'The following events were not fired: ['.implode(', ', $events).']'
+                    'The following events were not fired: ['.\implode(', ', $events).']'
                 );
             }
         });
@@ -199,7 +199,7 @@ abstract class TestCase extends BaseTestCase
      */
     protected function expectsJobs($jobs)
     {
-        $jobs = is_array($jobs) ? $jobs : func_get_args();
+        $jobs = \is_array($jobs) ? $jobs : \func_get_args();
 
         $mock = Mockery::mock('Illuminate\Bus\Dispatcher[dispatch]', [$this->app]);
 

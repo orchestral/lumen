@@ -38,7 +38,7 @@ class Handler implements ExceptionHandler
         }
 
         try {
-            $logger = app('Psr\Log\LoggerInterface');
+            $logger = \app('Psr\Log\LoggerInterface');
         } catch (Exception $ex) {
             throw $e; // throw the original exception
         }
@@ -98,7 +98,7 @@ class Handler implements ExceptionHandler
 
         $fe = FlattenException::create($e);
 
-        $handler = new SymfonyExceptionHandler(env('APP_DEBUG', false));
+        $handler = new SymfonyExceptionHandler(\env('APP_DEBUG', false));
 
         $decorated = $this->decorate($handler->getContent($fe), $handler->getStylesheet($fe));
 

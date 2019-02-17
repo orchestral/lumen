@@ -6,6 +6,7 @@ use Closure as BaseClosure;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Validator;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Validation\ValidationException;
@@ -83,7 +84,7 @@ trait ProvidesConvenienceMethods
      */
     protected function extractInputFromRules(Request $request, array $rules)
     {
-        return $request->only(collect($rules)->keys()->map(function ($rule) {
+        return $request->only(Collection::make($rules)->keys()->map(function ($rule) {
             return Str::contains($rule, '.') ? explode('.', $rule)[0] : $rule;
         })->unique()->toArray());
     }
@@ -111,7 +112,7 @@ trait ProvidesConvenienceMethods
     protected function buildFailedValidationResponse(Request $request, array $errors)
     {
         if (isset(static::$responseBuilder)) {
-            return call_user_func(static::$responseBuilder, $request, $errors);
+            return \call_user_func(static::$responseBuilder, $request, $errors);
         }
 
         return new JsonResponse($errors, 422);
@@ -123,7 +124,7 @@ trait ProvidesConvenienceMethods
     protected function formatValidationErrors(Validator $validator)
     {
         if (isset(static::$errorFormatter)) {
-            return call_user_func(static::$errorFormatter, $validator);
+            return \call_user_func(static::$errorFormatter, $validator);
         }
 
         return $validator->errors()->getMessages();
@@ -143,7 +144,7 @@ trait ProvidesConvenienceMethods
     {
         list($ability, $arguments) = $this->parseAbilityAndArguments($ability, $arguments);
 
-        return app(Gate::class)->authorize($ability, $arguments);
+        return \app(Gate::class)->authorize($ability, $arguments);
     }
 
     /**
@@ -161,7 +162,7 @@ trait ProvidesConvenienceMethods
     {
         list($ability, $arguments) = $this->parseAbilityAndArguments($ability, $arguments);
 
-        return app(Gate::class)->forUser($user)->authorize($ability, $arguments);
+        return \app(Gate::class)->forUser($user)->authorize($ability, $arguments);
     }
 
     /**
@@ -174,11 +175,11 @@ trait ProvidesConvenienceMethods
      */
     protected function parseAbilityAndArguments($ability, $arguments)
     {
-        if (is_string($ability)) {
+        if (\is_string($ability)) {
             return [$ability, $arguments];
         }
 
-        return [debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3)[2]['function'], $ability];
+        return [\debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3)[2]['function'], $ability];
     }
 
     /**
@@ -190,7 +191,7 @@ trait ProvidesConvenienceMethods
      */
     public function dispatch($job)
     {
-        return app('Illuminate\Contracts\Bus\Dispatcher')->dispatch($job);
+        return \app('Illuminate\Contracts\Bus\Dispatcher')->dispatch($job);
     }
 
     /**
@@ -203,7 +204,7 @@ trait ProvidesConvenienceMethods
      */
     public function dispatchNow($job, $handler = null)
     {
-        return app('Illuminate\Contracts\Bus\Dispatcher')->dispatchNow($job, $handler);
+        return \app('Illuminate\Contracts\Bus\Dispatcher')->dispatchNow($job, $handler);
     }
 
     /**
@@ -213,6 +214,6 @@ trait ProvidesConvenienceMethods
      */
     protected function getValidationFactory()
     {
-        return app('validator');
+        return \app('validator');
     }
 }

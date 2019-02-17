@@ -39,19 +39,19 @@ trait RegistersExceptionHandlers
      */
     protected function registerErrorHandling()
     {
-        error_reporting(-1);
+        \error_reporting(-1);
 
-        set_error_handler(function ($level, $message, $file = '', $line = 0) {
-            if (error_reporting() & $level) {
+        \set_error_handler(function ($level, $message, $file = '', $line = 0) {
+            if (\error_reporting() & $level) {
                 throw new ErrorException($message, 0, $level, $file, $line);
             }
         });
 
-        set_exception_handler(function ($e) {
+        \set_exception_handler(function ($e) {
             $this->handleUncaughtException($e);
         });
 
-        register_shutdown_function(function () {
+        \register_shutdown_function(function () {
             $this->handleShutdown();
         });
     }
@@ -63,7 +63,7 @@ trait RegistersExceptionHandlers
      */
     protected function handleShutdown()
     {
-        if (! is_null($error = error_get_last()) && $this->isFatalError($error['type'])) {
+        if (! \is_null($error = \error_get_last()) && $this->isFatalError($error['type'])) {
             $this->handleUncaughtException(new FatalErrorException(
                 $error['message'], $error['type'], 0, $error['file'], $error['line']
             ));
@@ -81,11 +81,11 @@ trait RegistersExceptionHandlers
     {
         $errorCodes = [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE];
 
-        if (defined('FATAL_ERROR')) {
+        if (\defined('FATAL_ERROR')) {
             $errorCodes[] = FATAL_ERROR;
         }
 
-        return in_array($type, $errorCodes);
+        return \in_array($type, $errorCodes);
     }
 
     /**

@@ -63,11 +63,11 @@ trait RoutesRequests
      */
     public function middleware($middleware)
     {
-        if (! is_array($middleware)) {
+        if (! \is_array($middleware)) {
             $middleware = [$middleware];
         }
 
-        $this->middleware = array_unique(array_merge($this->middleware, $middleware));
+        $this->middleware = \array_unique(\array_merge($this->middleware, $middleware));
 
         return $this;
     }
@@ -81,7 +81,7 @@ trait RoutesRequests
      */
     public function routeMiddleware(array $middleware)
     {
-        $this->routeMiddleware = array_merge($this->routeMiddleware, $middleware);
+        $this->routeMiddleware = \array_merge($this->routeMiddleware, $middleware);
 
         return $this;
     }
@@ -95,7 +95,7 @@ trait RoutesRequests
 
         $response = $this->dispatch($request);
 
-        if (count($this->middleware) > 0) {
+        if (\count($this->middleware) > 0) {
             $this->callTerminableMiddleware($response);
         }
 
@@ -119,7 +119,7 @@ trait RoutesRequests
             echo (string) $response;
         }
 
-        if (count($this->middleware) > 0) {
+        if (\count($this->middleware) > 0) {
             $this->callTerminableMiddleware($response);
         }
     }
@@ -140,13 +140,13 @@ trait RoutesRequests
         $response = $this->prepareResponse($response);
 
         foreach ($this->middleware as $middleware) {
-            if (! is_string($middleware)) {
+            if (! \is_string($middleware)) {
                 continue;
             }
 
-            $instance = $this->make(explode(':', $middleware)[0]);
+            $instance = $this->make(\explode(':', $middleware)[0]);
 
-            if (method_exists($instance, 'terminate')) {
+            if (\method_exists($instance, 'terminate')) {
                 $instance->terminate($this->make('request'), $response);
             }
         }
@@ -197,7 +197,7 @@ trait RoutesRequests
 
         $this->instance(Request::class, $this->prepareRequest($request));
 
-        return [$request->getMethod(), '/'.trim($request->getPathInfo(), '/')];
+        return [$request->getMethod(), '/'.\trim($request->getPathInfo(), '/')];
     }
 
     /**
@@ -316,13 +316,13 @@ trait RoutesRequests
     {
         $uses = $routeInfo[1]['uses'];
 
-        if (is_string($uses) && ! Str::contains($uses, '@')) {
+        if (\is_string($uses) && ! Str::contains($uses, '@')) {
             $uses .= '@__invoke';
         }
 
-        list($controller, $method) = explode('@', $uses);
+        list($controller, $method) = \explode('@', $uses);
 
-        if (! method_exists($instance = $this->make($controller), $method)) {
+        if (! \method_exists($instance = $this->make($controller), $method)) {
             throw new NotFoundHttpException();
         }
 
@@ -348,7 +348,7 @@ trait RoutesRequests
     {
         $middleware = $instance->getMiddlewareForMethod($method);
 
-        if (count($middleware) > 0) {
+        if (\count($middleware) > 0) {
             return $this->callLumenControllerWithMiddleware(
                 $instance, $method, $routeInfo, $middleware
             );
@@ -406,10 +406,10 @@ trait RoutesRequests
      */
     protected function gatherMiddlewareClassNames($middleware)
     {
-        $middleware = is_string($middleware) ? explode('|', $middleware) : (array) $middleware;
+        $middleware = \is_string($middleware) ? \explode('|', $middleware) : (array) $middleware;
 
-        return array_map(function ($name) {
-            list($name, $parameters) = array_pad(explode(':', $name, 2), 2, null);
+        return \array_map(function ($name) {
+            list($name, $parameters) = \array_pad(\explode(':', $name, 2), 2, null);
 
             return Arr::get($this->routeMiddleware, $name, $name).($parameters ? ':'.$parameters : '');
         }, $middleware);
@@ -425,7 +425,7 @@ trait RoutesRequests
      */
     protected function sendThroughPipeline(array $middleware, Closure $then)
     {
-        if (count($middleware) > 0 && ! $this->shouldSkipMiddleware()) {
+        if (\count($middleware) > 0 && ! $this->shouldSkipMiddleware()) {
             return (new Pipeline($this))
                 ->send($this->make('request'))
                 ->through($middleware)
@@ -444,7 +444,7 @@ trait RoutesRequests
      */
     public function prepareResponse($response)
     {
-        $request = app(Request::class);
+        $request = \app(Request::class);
 
         if ($response instanceof Responsable) {
             $response = $response->toResponse($request);

@@ -22,10 +22,8 @@ class ThrottleRequests extends Throttle
             throw new RuntimeException('Unable to generate fingerprint. Route unavailable.');
         }
 
-        return sha1(
-            implode('|', $route['version']).
-            '|'.$request->fullUrl().
-            '|'.$request->ip()
+        return \sha1(
+            \implode('|', $route['version']).'|'.$request->fullUrl().'|'.$request->ip()
         );
     }
 }

@@ -11,8 +11,8 @@ trait AuthenticateWithPassport
      */
     protected function setUpPassport()
     {
-        $this->artisan('passport:keys');
-        $this->artisan('passport:install');
+        $this->artisan('passport:keys')->run();
+        $this->artisan('passport:install')->run();
     }
 
     /**
