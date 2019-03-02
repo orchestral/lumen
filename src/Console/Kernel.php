@@ -17,7 +17,7 @@ class Kernel implements KernelContract
     /**
      * The application implementation.
      *
-     * @var \Illuminate\Contracts\Foundation\Application
+     * @var \Laravel\Lumen\Application
      */
     protected $app;
 
@@ -136,7 +136,10 @@ class Kernel implements KernelContract
      *
      * @param  \Symfony\Component\Console\Input\InputInterface  $input
      * @param  int  $status
+<<<<<<< HEAD
      *
+=======
+>>>>>>> laravel/master
      * @return void
      */
     public function terminate($input, $status)
