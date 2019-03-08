@@ -127,7 +127,7 @@ class Application extends Container implements ApplicationContract
 
         $this->instance('path', $this->path());
         $this->instance('path.base', $this->basePath());
-        $this->instance('path.config', $this->basePath('resources/config'));
+        $this->instance('path.config', $this->basePath('config'));
         $this->instance('path.database', $this->databasePath());
         $this->instance('path.storage', $this->storagePath());
         $this->instance('path.resources', $this->resourcePath());
@@ -579,7 +579,7 @@ class Application extends Container implements ApplicationContract
      */
     public function databasePath($path = '')
     {
-        return $this->resourcePath('database').($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return $this->basePath('database').($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
