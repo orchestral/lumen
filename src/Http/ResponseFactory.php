@@ -47,7 +47,7 @@ class ResponseFactory
      * @param  \SplFileInfo|string  $file
      * @param  string  $name
      * @param  array   $headers
-     * @param  null|string  $disposition
+     * @param  string|null  $disposition
      *
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
@@ -55,8 +55,8 @@ class ResponseFactory
     {
         $response = new BinaryFileResponse($file, 200, $headers, true, $disposition);
 
-        if (! is_null($name)) {
-            return $response->setContentDisposition($disposition, $name, str_replace('%', '', Str::ascii($name)));
+        if (! \is_null($name)) {
+            return $response->setContentDisposition($disposition, $name, \str_replace('%', '', Str::ascii($name)));
         }
 
         return $response;

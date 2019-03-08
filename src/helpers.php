@@ -5,7 +5,7 @@ namespace api;
 use Laravel\Lumen\Http\Redirector;
 use Laravel\Lumen\Http\ResponseFactory;
 
-if (! function_exists('api\redirect')) {
+if (! \function_exists('api\redirect')) {
     /**
      * Get an instance of the redirector.
      *
@@ -20,7 +20,7 @@ if (! function_exists('api\redirect')) {
     {
         $redirector = new Redirector(app());
 
-        if (is_null($to)) {
+        if (\is_null($to)) {
             return $redirector;
         }
 
@@ -28,7 +28,7 @@ if (! function_exists('api\redirect')) {
     }
 }
 
-if (! function_exists('api\response')) {
+if (! \function_exists('api\response')) {
     /**
      * Return a new response from the application.
      *
@@ -42,7 +42,7 @@ if (! function_exists('api\response')) {
     {
         $factory = new ResponseFactory();
 
-        if (func_num_args() === 0) {
+        if (\func_num_args() === 0) {
             return $factory;
         }
 
@@ -50,7 +50,7 @@ if (! function_exists('api\response')) {
     }
 }
 
-if (! function_exists('api\route')) {
+if (! \function_exists('api\route')) {
     /**
      * Generate a URL to a named route.
      *
@@ -62,11 +62,11 @@ if (! function_exists('api\route')) {
      */
     function route($name, array $parameters = [], $secure = null): string
     {
-        return app('url')->route($name, $parameters, $secure);
+        return \app('url')->route($name, $parameters, $secure);
     }
 }
 
-if (! function_exists('api\url')) {
+if (! \function_exists('api\url')) {
     /**
      * Generate a url for the application.
      *
@@ -78,6 +78,6 @@ if (! function_exists('api\url')) {
      */
     function url($path = null, array $parameters = [], $secure = null): string
     {
-        return app('url')->to($path, $parameters, $secure);
+        return \app('url')->to($path, $parameters, $secure);
     }
 }

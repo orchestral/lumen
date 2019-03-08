@@ -54,7 +54,7 @@ trait Testing
         $this->setUpTraits();
 
         foreach ($this->afterApplicationCreatedCallbacks as $callback) {
-            call_user_func($callback);
+            \call_user_func($callback);
         }
 
         $this->setUpHasRun = true;
@@ -67,7 +67,7 @@ trait Testing
      */
     final protected function tearDownTheTestEnvironment()
     {
-        if (class_exists('Mockery')) {
+        if (\class_exists('Mockery')) {
             if (($container = Mockery::getContainer()) !== null) {
                 $this->addToAssertionCount($container->mockery_getExpectationCount());
             }
@@ -77,7 +77,7 @@ trait Testing
 
         if ($this->app) {
             foreach ($this->beforeApplicationDestroyedCallbacks as $callback) {
-                call_user_func($callback);
+                \call_user_func($callback);
             }
 
             $this->app->flush();
@@ -100,7 +100,7 @@ trait Testing
      */
     final protected function setUpTheTestEnvironmentTraits(): array
     {
-        $uses = array_flip(class_uses_recursive(get_class($this)));
+        $uses = \array_flip(\class_uses_recursive(get_class($this)));
 
         if (isset($uses[WithInstallation::class]) && isset($uses[Installation::class])) {
             $this->beginInstallation();
@@ -137,7 +137,7 @@ trait Testing
         $this->afterApplicationCreatedCallbacks[] = $callback;
 
         if ($this->setUpHasRun) {
-            call_user_func($callback);
+            \call_user_func($callback);
         }
     }
 
@@ -150,7 +150,7 @@ trait Testing
      */
     protected function beforeApplicationDestroyed(callable $callback)
     {
-        array_unshift($this->beforeApplicationDestroyedCallbacks, $callback);
+        \array_unshift($this->beforeApplicationDestroyedCallbacks, $callback);
     }
 
     /**

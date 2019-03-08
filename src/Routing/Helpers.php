@@ -19,10 +19,10 @@ trait Helpers
      */
     protected function getVersionedResourceClassName($group, $name)
     {
-        $class = str_replace('.', '\\', $name);
+        $class = \str_replace('.', '\\', $name);
         $version = $this->getVersionNamespace();
 
-        return sprintf('%s\%s\%s\%s', $this->namespace, $group, $version, $class);
+        return \sprintf('%s\%s\%s\%s', $this->namespace, $group, $version, $class);
     }
 
     /**

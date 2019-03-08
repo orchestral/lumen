@@ -70,12 +70,12 @@ class Kernel implements KernelContract
     {
         $uri = $app->make('config')->get('app.url', env('APP_URL', 'http://localhost'));
 
-        $components = parse_url($uri);
+        $components = \parse_url($uri);
 
         $server = $_SERVER;
 
         if (isset($components['path'])) {
-            $server = array_merge($server, [
+            $server = \array_merge($server, [
                 'SCRIPT_FILENAME' => $components['path'],
                 'SCRIPT_NAME' => $components['path'],
             ]);
@@ -94,7 +94,7 @@ class Kernel implements KernelContract
     protected function defineConsoleSchedule()
     {
         $this->app->instance(
-            'Illuminate\Console\Scheduling\Schedule', $schedule = new Schedule
+            'Illuminate\Console\Scheduling\Schedule', $schedule = new Schedule()
         );
 
         $this->schedule($schedule);
@@ -209,7 +209,7 @@ class Kernel implements KernelContract
      */
     protected function getArtisan()
     {
-        if (is_null($this->artisan)) {
+        if (\is_null($this->artisan)) {
             return $this->artisan = (new Artisan($this->app, $this->app->make('events'), $this->app->version()))
                                 ->resolveCommands($this->getCommands());
         }
@@ -224,7 +224,7 @@ class Kernel implements KernelContract
      */
     protected function getCommands()
     {
-        return array_merge($this->commands, [
+        return \array_merge($this->commands, [
             \Illuminate\Console\Scheduling\ScheduleRunCommand::class,
             \Laravel\Lumen\Console\Commands\ServeCommand::class,
         ]);

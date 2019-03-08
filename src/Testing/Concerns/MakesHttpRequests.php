@@ -6,6 +6,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use PHPUnit\Framework\Assert as PHPUnit;
+use Laravel\Lumen\Http\Request as LumenRequest;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 trait MakesHttpRequests
@@ -36,10 +37,10 @@ trait MakesHttpRequests
      */
     public function json($method, $uri, array $data = [], array $headers = [])
     {
-        $content = json_encode($data);
+        $content = \json_encode($data);
 
-        $headers = array_merge([
-            'CONTENT_LENGTH' => mb_strlen($content, '8bit'),
+        $headers = \array_merge([
+            'CONTENT_LENGTH' => \mb_strlen($content, '8bit'),
             'CONTENT_TYPE' => 'application/json',
             'Accept' => 'application/json',
         ], $headers);
@@ -191,12 +192,12 @@ trait MakesHttpRequests
      */
     public function seeJsonEquals(array $data)
     {
-        $actual = json_encode(Arr::sortRecursive(
-            json_decode($this->response->getContent(), true)
+        $actual = \json_encode(Arr::sortRecursive(
+            \json_decode($this->response->getContent(), true)
         ));
 
-        $data = json_encode(Arr::sortRecursive(
-            json_decode(json_encode($data), true)
+        $data = \json_encode(Arr::sortRecursive(
+            \json_decode(\json_encode($data), true)
         ));
 
         PHPUnit::assertEquals($data, $actual);
@@ -214,7 +215,7 @@ trait MakesHttpRequests
      */
     public function seeJson(array $data = null, $negate = false)
     {
-        if (is_null($data)) {
+        if (\is_null($data)) {
             PHPUnit::assertJson(
                 $this->response->getContent(), "JSON was not returned from [{$this->currentUri}]."
             );
@@ -247,22 +248,22 @@ trait MakesHttpRequests
      */
     public function seeJsonStructure(array $structure = null, $responseData = null)
     {
-        if (is_null($structure)) {
+        if (\is_null($structure)) {
             return $this->seeJson();
         }
 
-        if (! is_array($responseData)) {
-            $responseData = json_decode($this->response->getContent(), true);
+        if (! \is_array($responseData)) {
+            $responseData = \json_decode($this->response->getContent(), true);
         }
 
         foreach ($structure as $key => $value) {
-            if (is_array($value) && $key === '*') {
+            if (\is_array($value) && $key === '*') {
                 PHPUnit::assertInternalType('array', $responseData);
 
                 foreach ($responseData as $responseDataItem) {
                     $this->seeJsonStructure($structure['*'], $responseDataItem);
                 }
-            } elseif (is_array($value)) {
+            } elseif (\is_array($value)) {
                 PHPUnit::assertArrayHasKey($key, $responseData);
                 $this->seeJsonStructure($structure[$key], $responseData[$key]);
             } else {
@@ -285,13 +286,13 @@ trait MakesHttpRequests
     {
         $method = $negate ? 'assertFalse' : 'assertTrue';
 
-        $actual = json_decode($this->response->getContent(), true);
+        $actual = \json_decode($this->response->getContent(), true);
 
-        if (is_null($actual) || $actual === false) {
+        if (\is_null($actual) || $actual === false) {
             return PHPUnit::fail('Invalid JSON was returned from the route. Perhaps an exception was thrown?');
         }
 
-        $actual = json_encode(Arr::sortRecursive(
+        $actual = \json_encode(Arr::sortRecursive(
             (array) $actual
         ));
 
@@ -317,14 +318,14 @@ trait MakesHttpRequests
      */
     protected function formatToExpectedJson($key, $value)
     {
-        $expected = json_encode([$key => $value]);
+        $expected = \json_encode([$key => $value]);
 
         if (Str::startsWith($expected, '{')) {
-            $expected = substr($expected, 1);
+            $expected = \substr($expected, 1);
         }
 
         if (Str::endsWith($expected, '}')) {
-            $expected = substr($expected, 0, -1);
+            $expected = \substr($expected, 0, -1);
         }
 
         return $expected;
@@ -352,7 +353,7 @@ trait MakesHttpRequests
             $cookies, $files, $server, $content
         );
 
-        $this->app['request'] = Request::createFromBase($symfonyRequest);
+        $this->app['request'] = LumenRequest::createFromBase($symfonyRequest);
 
         return $this->response = $this->app->prepareResponse(
             $this->app->handle($this->app['request'])
@@ -369,14 +370,14 @@ trait MakesHttpRequests
     protected function prepareUrlForRequest($uri)
     {
         if (Str::startsWith($uri, '/')) {
-            $uri = substr($uri, 1);
+            $uri = \substr($uri, 1);
         }
 
         if (! Str::startsWith($uri, 'http')) {
             $uri = $this->baseUrl.'/'.$uri;
         }
 
-        return trim($uri, '/');
+        return \trim($uri, '/');
     }
 
     /**
@@ -392,7 +393,7 @@ trait MakesHttpRequests
         $prefix = 'HTTP_';
 
         foreach ($headers as $name => $value) {
-            $name = strtr(strtoupper($name), '-', '_');
+            $name = \strtr(\strtoupper($name), '-', '_');
 
             if (! Str::startsWith($name, $prefix) && $name != 'CONTENT_TYPE') {
                 $name = $prefix.$name;
@@ -458,7 +459,7 @@ trait MakesHttpRequests
 
         PHPUnit::assertTrue($headers->has($headerName), "Header [{$headerName}] not present on response.");
 
-        if (! is_null($value)) {
+        if (! \is_null($value)) {
             PHPUnit::assertEquals(
                 $value, $headers->get($headerName),
                 "Header [{$headerName}] was found, but value [{$headers->get($headerName)}] does not match [{$value}]."

@@ -60,6 +60,6 @@ class PendingDispatch
      */
     public function __destruct()
     {
-        app(Dispatcher::class)->dispatch($this->job);
+        \app(Dispatcher::class)->dispatch($this->job);
     }
 }

@@ -29,7 +29,7 @@ class Pipeline extends BasePipeline
                 try {
                     $slice = parent::carry();
 
-                    return call_user_func($slice($stack, $pipe), $passable);
+                    return \call_user_func($slice($stack, $pipe), $passable);
                 } catch (Exception $e) {
                     return $this->handleException($passable, $e);
                 } catch (Throwable $e) {
@@ -50,7 +50,7 @@ class Pipeline extends BasePipeline
     {
         return function ($passable) use ($destination) {
             try {
-                return call_user_func($destination, $passable);
+                return \call_user_func($destination, $passable);
             } catch (Exception $e) {
                 return $this->handleException($passable, $e);
             } catch (Throwable $e) {

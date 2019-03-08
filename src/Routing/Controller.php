@@ -38,11 +38,11 @@ class Controller
         $middleware = [];
 
         foreach ($this->middleware as $name => $options) {
-            if (isset($options['only']) && ! in_array($method, (array) $options['only'])) {
+            if (isset($options['only']) && ! \in_array($method, (array) $options['only'])) {
                 continue;
             }
 
-            if (isset($options['except']) && in_array($method, (array) $options['except'])) {
+            if (isset($options['except']) && \in_array($method, (array) $options['except'])) {
                 continue;
             }
 

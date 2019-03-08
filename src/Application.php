@@ -104,7 +104,7 @@ class Application extends Container implements ApplicationContract
      */
     public function __construct($basePath = null)
     {
-        date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
+        \date_default_timezone_set(\env('APP_TIMEZONE', 'UTC'));
 
         $this->basePath = $basePath;
 
@@ -165,7 +165,7 @@ class Application extends Container implements ApplicationContract
      */
     public function isDownForMaintenance()
     {
-        return file_exists($this->storagePath('framework/down'));
+        return \file_exists($this->storagePath('framework/down'));
     }
 
     /**
@@ -177,10 +177,10 @@ class Application extends Container implements ApplicationContract
      */
     public function environment(...$environments)
     {
-        $env = env('APP_ENV', 'production');
+        $env = \env('APP_ENV', 'production');
 
-        if (func_num_args() > 0) {
-            $patterns = is_array($environments[0]) ? $environments[0] : $environments;
+        if (\func_num_args() > 0) {
+            $patterns = \is_array($environments[0]) ? $environments[0] : $environments;
 
             foreach ($patterns as $pattern) {
                 if (Str::is($pattern, $env)) {
@@ -209,13 +209,13 @@ class Application extends Container implements ApplicationContract
             $provider = $this->resolveProvider($provider);
         }
 
-        if (array_key_exists($providerName = get_class($provider), $this->loadedProviders)) {
+        if (\array_key_exists($providerName = \get_class($provider), $this->loadedProviders)) {
             return;
         }
 
         $this->loadedProviders[$providerName] = $provider;
 
-        if (method_exists($provider, 'register')) {
+        if (\method_exists($provider, 'register')) {
             $provider->register();
         }
 
@@ -246,7 +246,7 @@ class Application extends Container implements ApplicationContract
             return;
         }
 
-        array_walk($this->loadedProviders, function ($p) {
+        \array_walk($this->loadedProviders, function ($p) {
             $this->bootProvider($p);
         });
 
@@ -281,7 +281,7 @@ class Application extends Container implements ApplicationContract
      */
     protected function bootProvider(ServiceProvider $provider)
     {
-        if (method_exists($provider, 'boot')) {
+        if (\method_exists($provider, 'boot')) {
             return $this->call([$provider, 'boot']);
         }
     }
@@ -327,8 +327,8 @@ class Application extends Container implements ApplicationContract
         $abstract = $this->getAlias($abstract);
 
         if (! $this->bound($abstract) &&
-            array_key_exists($abstract, $this->availableBindings) &&
-            ! array_key_exists($this->availableBindings[$abstract], $this->ranServiceBinders)) {
+            \array_key_exists($abstract, $this->availableBindings) &&
+            ! \array_key_exists($this->availableBindings[$abstract], $this->ranServiceBinders)) {
             $this->{$method = $this->availableBindings[$abstract]}();
 
             $this->ranServiceBinders[$method] = true;
@@ -375,7 +375,7 @@ class Application extends Container implements ApplicationContract
     protected function fireAppCallbacks(array $callbacks)
     {
         foreach ($callbacks as $callback) {
-            call_user_func($callback, $this);
+            \call_user_func($callback, $this);
         }
     }
 
@@ -426,7 +426,7 @@ class Application extends Container implements ApplicationContract
 
         $path = $this->getConfigurationPath($name);
 
-        if (! is_null($path)) {
+        if (! \is_null($path)) {
             $this->make('config')->set(Arr::dot([
                 $name => require $path,
             ]));
@@ -444,9 +444,9 @@ class Application extends Container implements ApplicationContract
      */
     public function getConfigurationPath($name = null)
     {
-        if (is_null($name)) {
-            return config_path();
-        } elseif (file_exists($path = $this->basePath('lumen/config/').$name.'.php')) {
+        if (\is_null($name)) {
+            return \config_path();
+        } elseif (\file_exists($path = $this->basePath('lumen/config/').$name.'.php')) {
             return $path;
         }
     }
@@ -516,10 +516,10 @@ class Application extends Container implements ApplicationContract
         if (! static::$aliasesRegistered) {
             static::$aliasesRegistered = true;
 
-            $merged = array_merge($defaults, $custom);
+            $merged = \array_merge($defaults, $custom);
 
             foreach ($merged as $original => $alias) {
-                class_alias($original, $alias);
+                \class_alias($original, $alias);
             }
         }
 
@@ -628,7 +628,7 @@ class Application extends Container implements ApplicationContract
      */
     public function runningInConsole()
     {
-        return php_sapi_name() === 'cli' || php_sapi_name() === 'phpdbg';
+        return \php_sapi_name() === 'cli' || \php_sapi_name() === 'phpdbg';
     }
 
     /**
@@ -670,15 +670,15 @@ class Application extends Container implements ApplicationContract
      */
     public function getNamespace()
     {
-        if (! is_null($this->namespace)) {
+        if (! \is_null($this->namespace)) {
             return $this->namespace;
         }
 
-        $composer = json_decode(file_get_contents($this->basePath('composer.json')), true);
+        $composer = \json_decode(\file_get_contents($this->basePath('composer.json')), true);
 
         foreach ((array) ($composer['autoload']['psr-4'] ?? []) as $namespace => $path) {
             foreach ((array) $path as $pathChoice) {
-                if (realpath($this->path()) == realpath($this->basePath().'/'.$pathChoice)) {
+                if (\realpath($this->path()) == \realpath($this->basePath().'/'.$pathChoice)) {
                     return $this->namespace = $namespace;
                 }
             }
