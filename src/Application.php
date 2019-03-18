@@ -460,7 +460,7 @@ class Application extends Container implements ApplicationContract
      */
     public function getProviders($provider)
     {
-        $name = is_string($provider) ? $provider : get_class($provider);
+        $name = \is_string($provider) ? $provider : \get_class($provider);
 
         return Arr::where($this->loadedProviders, function ($value) use ($name) {
             return $value instanceof $name;
