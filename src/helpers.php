@@ -6,6 +6,7 @@ use PhpOption\Option;
 use Laravel\Lumen\Http\Redirector;
 use Dotenv\Environment\DotenvFactory;
 use Laravel\Lumen\Http\ResponseFactory;
+use Dotenv\Environment\Adapter\PutenvAdapter;
 use Dotenv\Environment\Adapter\EnvConstAdapter;
 use Dotenv\Environment\Adapter\ServerConstAdapter;
 
@@ -15,6 +16,7 @@ if (! \function_exists('env')) {
      *
      * @param  string  $key
      * @param  mixed   $default
+     *
      * @return mixed
      */
     function env($key, $default = null)
@@ -22,7 +24,8 @@ if (! \function_exists('env')) {
         static $variables;
 
         if ($variables === null) {
-            $variables = (new DotenvFactory([new EnvConstAdapter, new ServerConstAdapter]))->createImmutable();
+            $variables = (new DotenvFactory([new EnvConstAdapter(), new PutenvAdapter(), new ServerConstAdapter()]))
+                ->createImmutable();
         }
 
         return Option::fromValue($variables->get($key))
