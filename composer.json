@@ -38,7 +38,7 @@
     },
     "suggest": {
         "laravel/tinker": "Required to use the tinker console command (^1.0).",
-        "tymon/jwt-auth": "Allows to use JWT-Auth support (^1.0)"
+        "tymon/jwt-auth": "Allows to use JWT-Auth support (^1.0)."
     },
     "extra": {
         "branch-alias": {

@@ -5,6 +5,7 @@ namespace Laravel\Lumen\Bootstrap;
 use Dotenv\Dotenv;
 use Dotenv\Environment\DotenvFactory;
 use Dotenv\Exception\InvalidFileException;
+use Dotenv\Environment\Adapter\PutenvAdapter;
 use Dotenv\Environment\Adapter\EnvConstAdapter;
 use Dotenv\Environment\Adapter\ServerConstAdapter;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -30,6 +31,7 @@ class LoadEnvironmentVariables
      *
      * @param  string  $path
      * @param  string|null  $name
+     *
      * @return void
      */
     public function __construct($path, $name = null)
@@ -74,7 +76,7 @@ class LoadEnvironmentVariables
         return Dotenv::create(
             $this->filePath,
             $this->fileName,
-            new DotenvFactory([new EnvConstAdapter, new ServerConstAdapter])
+            new DotenvFactory([new EnvConstAdapter(), new PutenvAdapter(), new ServerConstAdapter()])
         );
     }
 
@@ -82,11 +84,12 @@ class LoadEnvironmentVariables
      * Write the error information to the screen and exit.
      *
      * @param  string[]  $errors
+     *
      * @return void
      */
     protected function writeErrorAndDie(array $errors)
     {
-        $output = (new ConsoleOutput)->getErrorOutput();
+        $output = (new ConsoleOutput())->getErrorOutput();
 
         foreach ($errors as $error) {
             $output->writeln($error);
