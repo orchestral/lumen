@@ -44,6 +44,7 @@ $status = $kernel->handle($input = new ArgvInput(), new ConsoleOutput());
 | down the process. This is the last thing to happen to the request.
 |
 */
+
 $kernel->terminate($input, $status);
 
 exit($status);
