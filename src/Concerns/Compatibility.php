@@ -111,6 +111,16 @@ trait Compatibility
     }
 
     /**
+     * Determine if the application events are cached.
+     *
+     * @return bool
+     */
+    public function eventsAreCached()
+    {
+        return false;
+    }
+
+    /**
      * Get the path to the configuration cache file.
      *
      * @return string
