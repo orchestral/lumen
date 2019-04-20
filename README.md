@@ -3,7 +3,7 @@ Lumen Framework for Orchestra Platform
 
 This repository contains the core code of the Orchestra Lumen. If you want to build an application using Orchestra Platform, visit [the main repository](https://github.com/orchestral/platform).
 
-[![Build Status](https://travis-ci.org/orchestral/lumen.svg?branch=master)](https://travis-ci.org/orchestral/lumen)
+[![Build Status](https://travis-ci.org/orchestral/lumen.svg?branch=3.8)](https://travis-ci.org/orchestral/lumen)
 [![Latest Stable Version](https://poser.pugx.org/orchestra/lumen/version)](https://packagist.org/packages/orchestra/lumen)
 [![Total Downloads](https://poser.pugx.org/orchestra/lumen/downloads)](https://packagist.org/packages/orchestra/lumen)
 [![Latest Unstable Version](https://poser.pugx.org/orchestra/lumen/v/unstable)](//packagist.org/packages/orchestra/lumen)
