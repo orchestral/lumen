@@ -2,6 +2,14 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/lumen`.
 
+### 3.8.2
+
+Released: 2019-05-06
+
+### Added
+
+* Added `Laravel\Lumen\Http\ResponseFactory::stream()` method.
+
 ### 3.8.1
 
 Released: 2019-04-04
