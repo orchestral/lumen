@@ -164,7 +164,7 @@ trait RoutesRequests
     {
         $this->boot();
 
-        list($method, $pathInfo) = $this->parseIncomingRequest($request);
+        [$method, $pathInfo] = $this->parseIncomingRequest($request);
 
         try {
             return $this->sendThroughPipeline($this->middleware, function () use ($method, $pathInfo) {
@@ -319,7 +319,7 @@ trait RoutesRequests
             $uses .= '@__invoke';
         }
 
-        list($controller, $method) = \explode('@', $uses);
+        [$controller, $method] = \explode('@', $uses);
 
         if (! \method_exists($instance = $this->make($controller), $method)) {
             throw new NotFoundHttpException();
@@ -408,7 +408,7 @@ trait RoutesRequests
         $middleware = \is_string($middleware) ? \explode('|', $middleware) : (array) $middleware;
 
         return \array_map(function ($name) {
-            list($name, $parameters) = \array_pad(\explode(':', $name, 2), 2, null);
+            [$name, $parameters] = \array_pad(\explode(':', $name, 2), 2, null);
 
             return Arr::get($this->routeMiddleware, $name, $name).($parameters ? ':'.$parameters : '');
         }, $middleware);
