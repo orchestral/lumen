@@ -84,6 +84,13 @@ class Application extends Container implements ApplicationContract
     protected $ranServiceBinders = [];
 
     /**
+     * The custom storage path defined by the developer.
+     *
+     * @var string
+     */
+    protected $storagePath;
+
+    /**
      * The application namespace.
      *
      * @var string
@@ -155,7 +162,7 @@ class Application extends Container implements ApplicationContract
      */
     public function version()
     {
-        return 'Lumen (5.8.6) (Laravel Components 5.8.*)';
+        return 'Lumen (5.8.7) (Laravel Components 5.8.*)';
     }
 
     /**
@@ -599,6 +606,21 @@ class Application extends Container implements ApplicationContract
     }
 
     /**
+     * Set the storage directory.
+     *
+     * @param  string  $path
+     * @return $this
+     */
+    public function useStoragePath($path)
+    {
+        $this->storagePath = $path;
+
+        $this->instance('path.storage', $path);
+
+        return $this;
+    }
+
+    /**
      * Get the storage path for the application.
      *
      * @param  string|null  $path
@@ -608,6 +630,10 @@ class Application extends Container implements ApplicationContract
      */
     public function storagePath($path = '')
     {
+        if ($this->storagePath) {
+            return $this->storagePath.($path ? '/'.$path : $path);
+        }
+
         return $this->basePath('storage'.($path ? '/'.$path : $path));
     }
 
