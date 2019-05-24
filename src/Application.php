@@ -609,6 +609,7 @@ class Application extends Container implements ApplicationContract
      * Set the storage directory.
      *
      * @param  string  $path
+     *
      * @return $this
      */
     public function useStoragePath($path)
