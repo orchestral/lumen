@@ -4,7 +4,7 @@ namespace Laravel\Lumen\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Events\Dispatcher;
-use Orchestra\Support\Providers\Traits\EventProvider;
+use Orchestra\Support\Providers\Concerns\EventProvider;
 
 class EventServiceProvider extends ServiceProvider
 {
