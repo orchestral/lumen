@@ -2,6 +2,14 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/lumen`.
 
+### 3.8.3
+
+Released: 2019-05-24
+
+#### Added
+
+* Add `Laravel\Lumen\Application::useStoragePath()` method to register custom storage path.
+
 ### 3.8.2
 
 Released: 2019-05-06
