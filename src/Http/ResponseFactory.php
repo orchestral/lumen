@@ -48,6 +48,7 @@ class ResponseFactory
      * @param  \Closure  $callback
      * @param  int  $status
      * @param  array  $headers
+     *
      * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
     public function stream($callback, $status = 200, array $headers = [])
