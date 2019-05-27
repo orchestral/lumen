@@ -32,7 +32,7 @@ trait Helpers
      */
     protected function getVersionNamespace()
     {
-        $version = $this->api()->getVersion();
+        $version = \app('request')->version() ?? 'v1';
         $supported = $this->getSupportedVersionNamespace();
 
         if (isset($supported[$version])) {
