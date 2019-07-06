@@ -16,7 +16,7 @@ trait Authorizable
      */
     public function can(string $ability, $arguments = []): bool
     {
-        return app(Gate::class)->forUser($this)->check($ability, $arguments);
+        return \app(Gate::class)->forUser($this)->check($ability, $arguments);
     }
 
     /**

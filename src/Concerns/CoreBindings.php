@@ -428,7 +428,7 @@ trait CoreBindings
      */
     protected function getMonologHandler()
     {
-        return (new StreamHandler(storage_path('logs/lumen.log'), Logger::DEBUG))
+        return (new StreamHandler(\storage_path('logs/lumen.log'), Logger::DEBUG))
                             ->setFormatter(new LineFormatter(null, null, true, true));
     }
 
