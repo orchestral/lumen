@@ -29,8 +29,8 @@ if (! \function_exists('env')) {
         }
 
         return Option::fromValue($variables->get($key))
-            ->map(function ($value) {
-                switch (strtolower($value)) {
+            ->map(static function ($value) {
+                switch (\strtolower($value)) {
                     case 'true':
                     case '(true)':
                         return true;
@@ -47,8 +47,8 @@ if (! \function_exists('env')) {
 
                 return $value;
             })
-            ->getOrCall(function () use ($default) {
-                return value($default);
+            ->getOrCall(static function () use ($default) {
+                return \value($default);
             });
     }
 }
@@ -66,7 +66,7 @@ if (! \function_exists('api\redirect')) {
      */
     function redirect($to = null, int $status = 302, array $headers = [], $secure = null)
     {
-        $redirector = new Redirector(app());
+        $redirector = new Redirector(\app());
 
         if (\is_null($to)) {
             return $redirector;

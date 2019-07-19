@@ -149,7 +149,7 @@ abstract class TestCase extends BaseTestCase
 
         $mock = Mockery::spy('Illuminate\Contracts\Events\Dispatcher');
 
-        $mock->shouldReceive('dispatch')->andReturnUsing(function ($called) use (&$events) {
+        $mock->shouldReceive('dispatch')->andReturnUsing(static function ($called) use (&$events) {
             foreach ($events as $key => $event) {
                 if ((\is_string($called) && $called === $event) ||
                     (\is_string($called) && \is_subclass_of($called, $event)) ||
@@ -159,7 +159,7 @@ abstract class TestCase extends BaseTestCase
             }
         });
 
-        $this->beforeApplicationDestroyed(function () use (&$events) {
+        $this->beforeApplicationDestroyed(static function () use (&$events) {
             if ($events) {
                 throw new Exception(
                     'The following events were not fired: ['.\implode(', ', $events).']'

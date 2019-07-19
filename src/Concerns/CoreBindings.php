@@ -350,7 +350,7 @@ trait CoreBindings
      */
     protected function registerFilesBindings()
     {
-        $this->singleton('files', function () {
+        $this->singleton('files', static function () {
             return new Filesystem();
         });
 
@@ -457,7 +457,7 @@ trait CoreBindings
      */
     protected function registerPsrResponseBindings()
     {
-        $this->singleton('Psr\Http\Message\ResponseInterface', function () {
+        $this->singleton('Psr\Http\Message\ResponseInterface', static function () {
             return new PsrResponse();
         });
     }
