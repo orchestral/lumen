@@ -409,7 +409,9 @@ class Application extends Container implements ApplicationContract
     {
         $this->configure($config);
 
-        foreach ((array) $providers as $provider) {
+        $providers = \array_diff((array) $providers, $this->loadedProviders);
+
+        foreach ($providers as $provider) {
             $this->register($provider);
         }
 

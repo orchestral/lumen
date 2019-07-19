@@ -171,16 +171,20 @@ trait CoreBindings
      */
     protected function registerAuthBindings()
     {
-        $this->singleton('auth', function () {
-            return $this->loadComponent('auth', 'Orchestra\Auth\AuthServiceProvider', 'auth');
+        $this->singleton('auth', static function ($app) {
+            return $app->loadComponent('auth', 'Orchestra\Auth\AuthServiceProvider', 'auth');
         });
 
-        $this->singleton('auth.driver', function () {
-            return $this->loadComponent('auth', 'Orchestra\Auth\AuthServiceProvider', 'auth.driver');
+        $this->singleton('auth.driver', static function ($app) {
+            return $app->loadComponent(
+                'auth', 'Orchestra\Auth\AuthServiceProvider', 'auth.driver'
+            );
         });
 
-        $this->singleton('Illuminate\Contracts\Auth\Access\Gate', function () {
-            return $this->loadComponent('auth', 'Orchestra\Auth\AuthServiceProvider', 'Illuminate\Contracts\Auth\Access\Gate');
+        $this->singleton('Illuminate\Contracts\Auth\Access\Gate', static function ($app) {
+            return $app->loadComponent(
+                'auth', 'Orchestra\Auth\AuthServiceProvider', 'Illuminate\Contracts\Auth\Access\Gate'
+            );
         });
     }
 
@@ -193,10 +197,10 @@ trait CoreBindings
     {
         $this->register('Orchestra\Authorization\AuthorizationServiceProvider');
 
-        $this->singleton('orchestra.platform.acl', function () {
-            $acl = $this->make('orchestra.acl')->make('orchestra');
+        $this->singleton('orchestra.platform.acl', static function ($app) {
+            $acl = $app->make('orchestra.acl')->make('orchestra');
 
-            $acl->attach($this->make('orchestra.platform.memory'));
+            $acl->attach($app->make('orchestra.platform.memory'));
 
             return $acl;
         });
@@ -209,12 +213,16 @@ trait CoreBindings
      */
     protected function registerBroadcastingBindings()
     {
-        $this->singleton('Illuminate\Contracts\Broadcasting\Factory', function () {
-            return $this->loadComponent('broadcasting', 'Illuminate\Broadcasting\BroadcastServiceProvider', 'Illuminate\Contracts\Broadcasting\Factory');
+        $this->singleton('Illuminate\Contracts\Broadcasting\Factory', static function ($app) {
+            return $app->loadComponent(
+                'broadcasting', 'Illuminate\Broadcasting\BroadcastServiceProvider', 'Illuminate\Contracts\Broadcasting\Factory'
+            );
         });
 
-        $this->singleton('Illuminate\Contracts\Broadcasting\Broadcaster', function () {
-            return $this->loadComponent('broadcasting', 'Illuminate\Broadcasting\BroadcastServiceProvider', 'Illuminate\Contracts\Broadcasting\Broadcaster');
+        $this->singleton('Illuminate\Contracts\Broadcasting\Broadcaster', static function ($app) {
+            return $app->loadComponent(
+                'broadcasting', 'Illuminate\Broadcasting\BroadcastServiceProvider', 'Illuminate\Contracts\Broadcasting\Broadcaster'
+            );
         });
     }
 
@@ -225,10 +233,10 @@ trait CoreBindings
      */
     protected function registerBusBindings()
     {
-        $this->singleton('Illuminate\Contracts\Bus\Dispatcher', function () {
-            $this->register('Illuminate\Bus\BusServiceProvider');
+        $this->singleton('Illuminate\Contracts\Bus\Dispatcher', static function ($app) {
+            $app->register('Illuminate\Bus\BusServiceProvider');
 
-            return $this->make('Illuminate\Contracts\Bus\Dispatcher');
+            return $app->make('Illuminate\Contracts\Bus\Dispatcher');
         });
     }
 
@@ -239,12 +247,14 @@ trait CoreBindings
      */
     protected function registerCacheBindings()
     {
-        $this->singleton('cache', function () {
-            return $this->loadComponent('cache', 'Illuminate\Cache\CacheServiceProvider');
+        $this->singleton('cache', static function ($app) {
+            return $app->loadComponent('cache', 'Illuminate\Cache\CacheServiceProvider');
         });
 
-        $this->singleton('cache.store', function () {
-            return $this->loadComponent('cache', 'Illuminate\Cache\CacheServiceProvider', 'cache.store');
+        $this->singleton('cache.store', static function ($app) {
+            return $app->loadComponent(
+                'cache', 'Illuminate\Cache\CacheServiceProvider', 'cache.store'
+            );
         });
     }
 
@@ -257,8 +267,8 @@ trait CoreBindings
     {
         $loader = new FileLoader(new Filesystem(), $this->resourcePath('config'));
 
-        $this->singleton('config', function () use ($loader) {
-            return new Repository($loader, $this->environment());
+        $this->singleton('config', static function ($app) use ($loader) {
+            return new Repository($loader, $app->environment());
         });
     }
 
@@ -269,8 +279,8 @@ trait CoreBindings
      */
     protected function registerComposerBindings()
     {
-        $this->singleton('composer', function ($app) {
-            return new Composer($app->make('files'), $this->basePath());
+        $this->singleton('composer', static function ($app) {
+            return new Composer($app->make('files'), $app->basePath());
         });
     }
 
@@ -281,8 +291,10 @@ trait CoreBindings
      */
     protected function registerCookieBindings()
     {
-        $this->singleton('cookie', function () {
-            return $this->loadComponent('session', 'Illuminate\Cookie\CookieServiceProvider', 'cookie');
+        $this->singleton('cookie', static function ($app) {
+            return $app->loadComponent(
+                'session', 'Illuminate\Cookie\CookieServiceProvider', 'cookie'
+            );
         });
     }
 
@@ -293,8 +305,8 @@ trait CoreBindings
      */
     protected function registerDatabaseBindings()
     {
-        $this->singleton('db', function () {
-            return $this->loadComponent(
+        $this->singleton('db', static function ($app) {
+            return $app->loadComponent(
                 'database', [
                     'Illuminate\Database\DatabaseServiceProvider',
                     'Illuminate\Pagination\PaginationServiceProvider',
@@ -310,8 +322,10 @@ trait CoreBindings
      */
     protected function registerEncrypterBindings()
     {
-        $this->singleton('encrypter', function () {
-            return $this->loadComponent('app', 'Illuminate\Encryption\EncryptionServiceProvider', 'encrypter');
+        $this->singleton('encrypter', static function ($app) {
+            return $app->loadComponent(
+                'app', 'Illuminate\Encryption\EncryptionServiceProvider', 'encrypter'
+            );
         });
     }
 
@@ -322,10 +336,10 @@ trait CoreBindings
      */
     protected function registerEventBindings()
     {
-        $this->singleton('events', function () {
-            $this->register('Illuminate\Events\EventServiceProvider');
+        $this->singleton('events', static function ($app) {
+            $app->register('Illuminate\Events\EventServiceProvider');
 
-            return $this->make('events');
+            return $app->make('events');
         });
     }
 
@@ -354,8 +368,10 @@ trait CoreBindings
             return new Filesystem();
         });
 
-        $this->singleton('filesystem', function () {
-            return $this->loadComponent('filesystems', 'Illuminate\Filesystem\FilesystemServiceProvider', 'filesystem');
+        $this->singleton('filesystem', static function ($app) {
+            return $app->loadComponent(
+                'filesystems', 'Illuminate\Filesystem\FilesystemServiceProvider', 'filesystem'
+            );
         });
     }
 
@@ -366,8 +382,8 @@ trait CoreBindings
      */
     protected function registerFilesystemBindings()
     {
-        $this->singleton('filesystem', function () {
-            return $this->loadComponent('filesystems', 'Illuminate\Filesystem\FilesystemServiceProvider', 'filesystem');
+        $this->singleton('filesystem', static function ($app) {
+            return $app->loadComponent('filesystems', 'Illuminate\Filesystem\FilesystemServiceProvider', 'filesystem');
         });
     }
 
@@ -378,10 +394,10 @@ trait CoreBindings
      */
     protected function registerHashBindings()
     {
-        $this->singleton('hash', function () {
-            $this->register('Illuminate\Hashing\HashServiceProvider');
+        $this->singleton('hash', static function ($app) {
+            $app->register('Illuminate\Hashing\HashServiceProvider');
 
-            return $this->make('hash');
+            return $app->make('hash');
         });
     }
 
@@ -392,10 +408,10 @@ trait CoreBindings
      */
     protected function registerLogBindings()
     {
-        $this->singleton('Psr\Log\LoggerInterface', function () {
-            $this->configure('logging');
+        $this->singleton('Psr\Log\LoggerInterface', static function ($app) {
+            $app->configure('logging');
 
-            return new LogManager($this);
+            return new LogManager($app);
         });
     }
 
@@ -408,8 +424,8 @@ trait CoreBindings
     {
         $this->register('Orchestra\Memory\MemoryServiceProvider');
 
-        $this->singleton('orchestra.platform.memory', function () {
-            return $this->make('orchestra.memory')->makeOrFallback();
+        $this->singleton('orchestra.platform.memory', static function ($app) {
+            return $app->make('orchestra.memory')->makeOrFallback();
         });
     }
 
@@ -431,10 +447,10 @@ trait CoreBindings
      */
     protected function registerMailBindings()
     {
-        $this->singleton('mailer', function () {
-            $this->configure('services');
+        $this->singleton('mailer', static function ($app) {
+            $app->configure('services');
 
-            return $this->loadComponent('mail', 'Illuminate\Mail\MailServiceProvider', 'mailer');
+            return $app->loadComponent('mail', 'Illuminate\Mail\MailServiceProvider', 'mailer');
         });
     }
 
@@ -445,8 +461,8 @@ trait CoreBindings
      */
     protected function registerPsrRequestBindings()
     {
-        $this->singleton('Psr\Http\Message\ServerRequestInterface', function () {
-            return (new DiactorosFactory())->createRequest($this->make('request'));
+        $this->singleton('Psr\Http\Message\ServerRequestInterface', static function ($app) {
+            return (new DiactorosFactory())->createRequest($app->make('request'));
         });
     }
 
@@ -469,16 +485,16 @@ trait CoreBindings
      */
     protected function registerQueueBindings()
     {
-        $this->singleton('queue', function () {
-            return $this->loadComponent('queue', 'Illuminate\Queue\QueueServiceProvider', 'queue');
+        $this->singleton('queue', static function ($app) {
+            return $app->loadComponent('queue', 'Illuminate\Queue\QueueServiceProvider', 'queue');
         });
 
-        $this->singleton('queue.listener', function () {
-            return $this->loadComponent('queue', 'Illuminate\Queue\QueueServiceProvider', 'queue.listener');
+        $this->singleton('queue.listener', static function ($app) {
+            return $app->loadComponent('queue', 'Illuminate\Queue\QueueServiceProvider', 'queue.listener');
         });
 
-        $this->singleton('queue.connection', function () {
-            return $this->loadComponent('queue', 'Illuminate\Queue\QueueServiceProvider', 'queue.connection');
+        $this->singleton('queue.connection', static function ($app) {
+            return $app->loadComponent('queue', 'Illuminate\Queue\QueueServiceProvider', 'queue.connection');
         });
     }
 
@@ -489,8 +505,8 @@ trait CoreBindings
      */
     protected function registerRedisBindings()
     {
-        $this->singleton('redis', function () {
-            return $this->loadComponent('database', 'Illuminate\Redis\RedisServiceProvider', 'redis');
+        $this->singleton('redis', static function ($app) {
+            return $app->loadComponent('database', 'Illuminate\Redis\RedisServiceProvider', 'redis');
         });
     }
 
@@ -513,8 +529,8 @@ trait CoreBindings
      */
     protected function registerRouterBindings()
     {
-        $this->singleton('router', function () {
-            return $this->router;
+        $this->singleton('router', static function ($app) {
+            return $app->router;
         });
     }
 
@@ -525,7 +541,7 @@ trait CoreBindings
      */
     protected function registerResponseFactoryBindings()
     {
-        $this->singleton('Illuminate\Contracts\Routing\ResponseFactory', function ($app) {
+        $this->singleton('Illuminate\Contracts\Routing\ResponseFactory', static function () {
             return new ResponseFactory();
         });
     }
@@ -537,12 +553,12 @@ trait CoreBindings
      */
     protected function registerSessionBindings()
     {
-        $this->singleton('session', function () {
-            return $this->loadComponent('session', 'Illuminate\Session\SessionServiceProvider');
+        $this->singleton('session', static function ($app) {
+            return $app->loadComponent('session', 'Illuminate\Session\SessionServiceProvider');
         });
 
-        $this->singleton('session.store', function () {
-            return $this->loadComponent('session', 'Illuminate\Session\SessionServiceProvider', 'session.store');
+        $this->singleton('session.store', static function ($app) {
+            return $app->loadComponent('session', 'Illuminate\Session\SessionServiceProvider', 'session.store');
         });
     }
 
@@ -553,14 +569,14 @@ trait CoreBindings
      */
     protected function registerTranslationBindings()
     {
-        $this->singleton('translator', function () {
-            $this->configure('app');
+        $this->singleton('translator', function ($app) {
+            $app->configure('app');
 
-            $this->instance('path.lang', $this->getLanguagePath());
+            $app->instance('path.lang', $this->getLanguagePath());
 
-            $this->register('Orchestra\Translation\TranslationServiceProvider');
+            $app->register('Orchestra\Translation\TranslationServiceProvider');
 
-            return $this->make('translator');
+            return $app->make('translator');
         });
     }
 
@@ -571,8 +587,8 @@ trait CoreBindings
      */
     protected function registerUrlGeneratorBindings()
     {
-        $this->singleton('url', function () {
-            return new UrlGenerator($this);
+        $this->singleton('url', static function ($app) {
+            return new UrlGenerator($app);
         });
     }
 
@@ -583,10 +599,10 @@ trait CoreBindings
      */
     protected function registerValidatorBindings()
     {
-        $this->singleton('validator', function () {
-            $this->register('Illuminate\Validation\ValidationServiceProvider');
+        $this->singleton('validator', static function ($app) {
+            $app->register('Illuminate\Validation\ValidationServiceProvider');
 
-            return $this->make('validator');
+            return $app->make('validator');
         });
     }
 
@@ -597,8 +613,8 @@ trait CoreBindings
      */
     protected function registerViewBindings()
     {
-        $this->singleton('view', function () {
-            return $this->loadComponent('view', 'Orchestra\View\ViewServiceProvider');
+        $this->singleton('view', static function ($app) {
+            return $app->loadComponent('view', 'Orchestra\View\ViewServiceProvider');
         });
     }
 
