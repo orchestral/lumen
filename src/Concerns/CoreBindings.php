@@ -53,15 +53,17 @@ trait CoreBindings
         'db' => 'registerDatabaseBindings',
         'Illuminate\Database\Connection' => 'registerDatabaseBindings',
         'Illuminate\Database\Eloquent\Factory' => 'registerDatabaseBindings',
-        'filesystem' => 'registerFilesystemBindings',
-        'Illuminate\Contracts\Filesystem\Factory' => 'registerFilesystemBindings',
         'encrypter' => 'registerEncrypterBindings',
         'Illuminate\Contracts\Encryption\Encrypter' => 'registerEncrypterBindings',
         'events' => 'registerEventBindings',
         'Illuminate\Contracts\Events\Dispatcher' => 'registerEventBindings',
         'files' => 'registerFilesBindings',
-        'filesystem' => 'registerFilesBindings',
-        'Illuminate\Contracts\Filesystem\Factory' => 'registerFilesBindings',
+        'filesystem' => 'registerFilesystemBindings',
+        'filesystem.cloud' => 'registerFilesystemBindings',
+        'filesystem.disk' => 'registerFilesystemBindings',
+        'Illuminate\Contracts\Filesystem\Cloud' => 'registerFilesystemBindings',
+        'Illuminate\Contracts\Filesystem\Filesystem' => 'registerFilesystemBindings',
+        'Illuminate\Contracts\Filesystem\Factory' => 'registerFilesystemBindings',
         'hash' => 'registerHashBindings',
         'hash.driver' => 'registerHashBindings',
         'Illuminate\Hashing\HashManager' => 'registerHashBindings',
@@ -137,6 +139,8 @@ trait CoreBindings
             'Illuminate\Contracts\Encryption\Encrypter' => 'encrypter',
             'Illuminate\Contracts\Events\Dispatcher' => 'events',
             'Illuminate\Contracts\Filesystem\Factory' => 'filesystem',
+            'Illuminate\Contracts\Filesystem\Filesystem' => 'filesystem.disk',
+            'Illuminate\Contracts\Filesystem\Cloud' => 'filesystem.cloud',
             'Illuminate\Hashing\HashManager' => 'hash',
             'Illuminate\Contracts\Hashing\Hasher' => 'hash.driver',
             'log' => 'Psr\Log\LoggerInterface',
@@ -367,12 +371,6 @@ trait CoreBindings
         $this->singleton('files', static function () {
             return new Filesystem();
         });
-
-        $this->singleton('filesystem', static function ($app) {
-            return $app->loadComponent(
-                'filesystems', 'Illuminate\Filesystem\FilesystemServiceProvider', 'filesystem'
-            );
-        });
     }
 
     /**
@@ -384,6 +382,14 @@ trait CoreBindings
     {
         $this->singleton('filesystem', static function ($app) {
             return $app->loadComponent('filesystems', 'Illuminate\Filesystem\FilesystemServiceProvider', 'filesystem');
+        });
+
+        $this->singleton('filesystem.disk', function () {
+            return $this->loadComponent('filesystems', 'Illuminate\Filesystem\FilesystemServiceProvider', 'filesystem.disk');
+        });
+
+        $this->singleton('filesystem.cloud', function () {
+            return $this->loadComponent('filesystems', 'Illuminate\Filesystem\FilesystemServiceProvider', 'filesystem.cloud');
         });
     }
 
@@ -436,7 +442,7 @@ trait CoreBindings
      */
     protected function getMonologHandler()
     {
-        return (new StreamHandler(storage_path('logs/lumen.log'), Logger::DEBUG))
+        return (new StreamHandler(\storage_path('logs/lumen.log'), Logger::DEBUG))
                             ->setFormatter(new LineFormatter(null, null, true, true));
     }
 

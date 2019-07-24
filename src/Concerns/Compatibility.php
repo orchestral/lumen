@@ -75,7 +75,7 @@ trait Compatibility
      */
     public function configPath($path = '')
     {
-        return config_path($path);
+        return \config_path($path);
     }
 
     /**
