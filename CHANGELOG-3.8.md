@@ -2,6 +2,14 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/lumen`.
 
+## 3.8.5
+
+Released: 2019-07-24
+
+### Added
+
+* Register Filesystem cloud disks into the container.
+
 ## 3.8.4
 
 Released: 2019-07-01
