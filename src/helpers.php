@@ -72,7 +72,7 @@ if (! \function_exists('api\url')) {
      *
      * @param  string  $path
      * @param  array  $parameters
-     * @param  bool  $secure
+     * @param  bool|null  $secure
      *
      * @return string
      */
