@@ -105,7 +105,7 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function registerCacheClearCommand()
     {
-        $this->app->singleton('command.cache.clear', function ($app) {
+        $this->app->singleton('command.cache.clear', static function ($app) {
             return new CacheClearCommand($app['cache'], $app['files']);
         });
     }
@@ -117,7 +117,7 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function registerCacheForgetCommand()
     {
-        $this->app->singleton('command.cache.forget', function ($app) {
+        $this->app->singleton('command.cache.forget', static function ($app) {
             return new CacheForgetCommand($app['cache']);
         });
     }
@@ -129,7 +129,7 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function registerCacheTableCommand()
     {
-        $this->app->singleton('command.cache.table', function ($app) {
+        $this->app->singleton('command.cache.table', static function ($app) {
             return new CacheTableCommand($app['files'], $app['composer']);
         });
     }
@@ -153,7 +153,7 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function registerMigrateCommand()
     {
-        $this->app->singleton('command.migrate', function ($app) {
+        $this->app->singleton('command.migrate', static function ($app) {
             return new MigrateCommand($app['migrator']);
         });
     }
@@ -165,7 +165,7 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function registerMigrateInstallCommand()
     {
-        $this->app->singleton('command.migrate.install', function ($app) {
+        $this->app->singleton('command.migrate.install', static function ($app) {
             return new MigrateInstallCommand($app['migration.repository']);
         });
     }
@@ -177,15 +177,13 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function registerMigrateMakeCommand()
     {
-        $this->app->singleton('command.migrate.make', function ($app) {
+        $this->app->singleton('command.migrate.make', static function ($app) {
             // Once we have the migration creator registered, we will create the command
             // and inject the creator. The creator is responsible for the actual file
             // creation of the migrations, and may be extended by these developers.
-            $creator = $app['migration.creator'];
-
-            $composer = $app['composer'];
-
-            return new MigrateMakeCommand($creator, $composer);
+            return new MigrateMakeCommand(
+                $app['migration.creator'], $app['composer']
+            );
         });
     }
 
@@ -196,7 +194,7 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function registerMigrateFreshCommand()
     {
-        $this->app->singleton('command.migrate.fresh', function () {
+        $this->app->singleton('command.migrate.fresh', static function () {
             return new MigrateFreshCommand();
         });
     }
@@ -208,7 +206,7 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function registerMigrateRefreshCommand()
     {
-        $this->app->singleton('command.migrate.refresh', function () {
+        $this->app->singleton('command.migrate.refresh', static function () {
             return new MigrateRefreshCommand();
         });
     }
@@ -220,7 +218,7 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function registerMigrateResetCommand()
     {
-        $this->app->singleton('command.migrate.reset', function ($app) {
+        $this->app->singleton('command.migrate.reset', static function ($app) {
             return new MigrateResetCommand($app['migrator']);
         });
     }
@@ -232,7 +230,7 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function registerMigrateRollbackCommand()
     {
-        $this->app->singleton('command.migrate.rollback', function ($app) {
+        $this->app->singleton('command.migrate.rollback', static function ($app) {
             return new MigrateRollbackCommand($app['migrator']);
         });
     }
@@ -244,7 +242,7 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function registerMigrateStatusCommand()
     {
-        $this->app->singleton('command.migrate.status', function ($app) {
+        $this->app->singleton('command.migrate.status', static function ($app) {
             return new MigrateStatusCommand($app['migrator']);
         });
     }
@@ -256,7 +254,7 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function registerQueueFailedCommand()
     {
-        $this->app->singleton('command.queue.failed', function () {
+        $this->app->singleton('command.queue.failed', static function () {
             return new ListFailedQueueCommand();
         });
     }
@@ -268,7 +266,7 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function registerQueueForgetCommand()
     {
-        $this->app->singleton('command.queue.forget', function () {
+        $this->app->singleton('command.queue.forget', static function () {
             return new ForgetFailedQueueCommand();
         });
     }
@@ -280,7 +278,7 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function registerQueueFlushCommand()
     {
-        $this->app->singleton('command.queue.flush', function () {
+        $this->app->singleton('command.queue.flush', static function () {
             return new FlushFailedQueueCommand();
         });
     }
@@ -292,7 +290,7 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function registerQueueListenCommand()
     {
-        $this->app->singleton('command.queue.listen', function ($app) {
+        $this->app->singleton('command.queue.listen', static function ($app) {
             return new QueueListenCommand($app['queue.listener']);
         });
     }
@@ -304,7 +302,7 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function registerQueueRestartCommand()
     {
-        $this->app->singleton('command.queue.restart', function () {
+        $this->app->singleton('command.queue.restart', static function () {
             return new QueueRestartCommand();
         });
     }
@@ -316,7 +314,7 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function registerQueueRetryCommand()
     {
-        $this->app->singleton('command.queue.retry', function () {
+        $this->app->singleton('command.queue.retry', static function () {
             return new QueueRetryCommand();
         });
     }
@@ -328,7 +326,7 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function registerQueueWorkCommand()
     {
-        $this->app->singleton('command.queue.work', function ($app) {
+        $this->app->singleton('command.queue.work', static function ($app) {
             return new QueueWorkCommand($app['queue.worker']);
         });
     }
@@ -340,7 +338,7 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function registerQueueFailedTableCommand()
     {
-        $this->app->singleton('command.queue.failed-table', function ($app) {
+        $this->app->singleton('command.queue.failed-table', static function ($app) {
             return new FailedTableCommand($app['files'], $app['composer']);
         });
     }
@@ -352,7 +350,7 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function registerQueueTableCommand()
     {
-        $this->app->singleton('command.queue.table', function ($app) {
+        $this->app->singleton('command.queue.table', static function ($app) {
             return new TableCommand($app['files'], $app['composer']);
         });
     }
@@ -364,7 +362,7 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function registerSeederMakeCommand()
     {
-        $this->app->singleton('command.seeder.make', function ($app) {
+        $this->app->singleton('command.seeder.make', static function ($app) {
             return new SeederMakeCommand($app['files'], $app['composer']);
         });
     }
@@ -376,7 +374,7 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function registerSeedCommand()
     {
-        $this->app->singleton('command.seed', function ($app) {
+        $this->app->singleton('command.seed', static function ($app) {
             return new SeedCommand($app['db']);
         });
     }
