@@ -1,8 +1,11 @@
 <?php
 
+use Tests\Lumen;
+
+use Tests\LumenTestCase;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
-class LumenExampleTest extends LumenTestCase
+class ExampleTest extends LumenTestCase
 {
     use DatabaseTransactions;
 
