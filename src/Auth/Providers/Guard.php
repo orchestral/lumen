@@ -49,6 +49,10 @@ class Guard extends Authorization
                 get_class($this),
                 'Unable to authenticate with invalid API key and token.'
             );
+        } else {
+            $request->setUserResolver(static function () use ($user) {
+                return $user;
+            });
         }
 
         return $user;

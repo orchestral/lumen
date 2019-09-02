@@ -21,7 +21,7 @@ $app = new Laravel\Lumen\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
 
-$app->withFacades();
+$app->withFacades(false);
 $app->withFoundation();
 $app->withEloquent();
 // $app->withFacadeAliases();
@@ -100,6 +100,6 @@ $app->get('/', function () use ($app) {
     return $app->version();
 });
 
-// require base_path('routes/api.php');
+// require base_path('lumen/routes/api.php');
 
 return $app;

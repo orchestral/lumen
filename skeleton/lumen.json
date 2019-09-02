@@ -7,6 +7,6 @@
   "bootstrap.php": "lumen/bootstrap.php",
   "phpunit.xml": "lumen/phpunit.xml",
   "server.php": "lumen/server.php",
-  "routes/api.php": "routes/api.php",
-  "routes/passport.php": "routes/passport.php"
+  "routes/api.php": "lumen/routes/api.php",
+  "routes/passport.php": "lumen/routes/passport.php"
 }
