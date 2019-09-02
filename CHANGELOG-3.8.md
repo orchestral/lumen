@@ -2,6 +2,17 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/lumen`.
 
+## 3.8.7
+
+Released: 2019-09-02
+
+### Changes
+
+* Set `$user` to `Illuminate\Http\Request::setUserResolver()` when user get authenticated via `Laravel\Lumen\Auth\Providers\Guard` implementations.
+* Able to report exception via `Exception::report()` if the method exists.
+* Able to render exception via `Exception::render()` if the method exists.
+* Able to render exception if it implements `Illuminate\Contracts\Support\Responsable`.
+
 ## 3.8.6
 
 Released: 2019-08-19
