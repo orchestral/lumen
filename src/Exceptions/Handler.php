@@ -38,7 +38,7 @@ class Handler implements ExceptionHandler
             return;
         }
 
-        if (method_exists($e, 'report')) {
+        if (\method_exists($e, 'report')) {
             return $e->report();
         }
 
@@ -91,7 +91,7 @@ class Handler implements ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        if (method_exists($e, 'render')) {
+        if (\method_exists($e, 'render')) {
             return $e->render($request);
         } elseif ($e instanceof Responsable) {
             return $e->toResponse($request);
