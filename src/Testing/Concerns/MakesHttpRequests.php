@@ -142,7 +142,7 @@ trait MakesHttpRequests
     }
 
     /**
-     * Visit the given URI with a OPTION request.
+     * Visit the given URI with a OPTIONS request.
      *
      * @param  string  $uri
      * @param  array  $data
@@ -150,11 +150,11 @@ trait MakesHttpRequests
      *
      * @return $this
      */
-    public function option($uri, array $data = [], array $headers = [])
+    public function options($uri, array $data = [], array $headers = [])
     {
         $server = $this->transformHeadersToServerVars($headers);
 
-        $this->call('OPTION', $uri, $data, [], [], $server);
+        $this->call('OPTIONS', $uri, $data, [], [], $server);
 
         return $this;
     }
