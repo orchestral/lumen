@@ -302,8 +302,8 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function registerQueueRestartCommand()
     {
-        $this->app->singleton('command.queue.restart', static function () {
-            return new QueueRestartCommand();
+        $this->app->singleton('command.queue.restart', static function ($app) {
+            return new QueueRestartCommand($app['cache.store']);
         });
     }
 
@@ -327,7 +327,7 @@ class ConsoleServiceProvider extends ServiceProvider
     protected function registerQueueWorkCommand()
     {
         $this->app->singleton('command.queue.work', static function ($app) {
-            return new QueueWorkCommand($app['queue.worker']);
+            return new QueueWorkCommand($app['queue.worker'], $app['cache.store']);
         });
     }
 
