@@ -2,6 +2,18 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/lumen`.
 
+## 3.8.8
+
+Released: 2019-09-07
+
+### Changes
+
+* Tweak minimum version for `laravel/framework` and `laravie/api`.
+
+### Fixes
+
+* Fixes `Laravel\Lumen\Testing\Concerns\MakesHttpRequests::options()`.
+
 ## 3.8.7
 
 Released: 2019-09-02
