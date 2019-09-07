@@ -143,6 +143,9 @@ class Application extends Container implements ApplicationContract
         $this->instance('env', $this->environment());
 
         $this->registerContainerAliases();
+
+        $this->configure('app');
+        $this->configure('view');
     }
 
     /**
