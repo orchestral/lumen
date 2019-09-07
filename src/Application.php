@@ -409,9 +409,7 @@ class Application extends Container implements ApplicationContract
     {
         $this->configure($config);
 
-        $providers = \array_diff((array) $providers, $this->loadedProviders);
-
-        foreach ($providers as $provider) {
+        foreach ((array) $providers as $provider) {
             $this->register($provider);
         }
 
@@ -433,10 +431,12 @@ class Application extends Container implements ApplicationContract
 
         $this->loadedConfigurations[$name] = true;
 
-        $path = $this->getConfigurationPath($name);
+        $paths = $this->getConfigurationPaths($name);
 
-        if (! \is_null($path)) {
-            $this->make('config')->set(Arr::dot([
+        $config = $this->make('config');
+
+        foreach($paths as $path) {
+            $config->set(Arr::dot([
                 $name => require $path,
             ]));
         }
@@ -450,12 +450,14 @@ class Application extends Container implements ApplicationContract
      * @param  string|null  $name
      *
      * @return string|null
+     *
+     * @deprecated v4.0.0
      */
     public function getConfigurationPath($name = null)
     {
-        if (\is_null($name)) {
-            return \config_path();
-        } elseif (\file_exists($path = $this->basePath('lumen/config/').$name.'.php')) {
+        $path = \end($this->getConfigurationPaths($name));
+
+        if (! \is_null($path)) {
             return $path;
         }
     }
@@ -570,10 +572,10 @@ class Application extends Container implements ApplicationContract
             return $this->basePath.($path ? '/'.$path : $path);
         }
 
-        if ($this->runningInConsole()) {
-            $this->basePath = getcwd();
+        if ($this->runningInConsole() && $this['env'] !== 'testing') {
+            $this->basePath = \getcwd();
         } else {
-            $this->basePath = realpath(getcwd().'/../');
+            $this->basePath = \realpath(\getcwd().'/../');
         }
 
         return $this->basePath($path);
@@ -740,5 +742,29 @@ class Application extends Container implements ApplicationContract
         foreach ($this->terminatingCallbacks as $terminating) {
             $this->call($terminating);
         }
+    }
+
+    /**
+     * Get the paths to the given configuration file.
+     *
+     * If no name is provided, then we'll return the path to the config folder.
+     *
+     * @param  string  $name
+     *
+     * @return array
+     */
+    protected function getConfigurationPaths(string $name): array
+    {
+        $paths = [];
+
+        if (\file_exists($laravelConfigFile = $this->basePath("config/{$name}.php"))) {
+            $paths[] = $laravelConfigFile;
+        }
+
+        if (\file_exists($lumenConfigFile = $this->basePath("lumen/config/{$name}.php"))) {
+            $paths[] = $lumenConfigFile;
+        }
+
+        return \array_filter($paths);
     }
 }

@@ -75,7 +75,13 @@ trait Compatibility
      */
     public function configPath($path = '')
     {
-        return \config_path($path);
+        if (empty($path)) {
+            return $this['path.config'];
+        } elseif (\file_exists($lumenPath = $this->basePath("lumen/config/{$path}"))) {
+            return $lumenPath;
+        }
+
+        return $this->basePath("config/{$path}");
     }
 
     /**
