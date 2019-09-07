@@ -575,7 +575,7 @@ class Application extends Container implements ApplicationContract
             return $this->basePath.($path ? '/'.$path : $path);
         }
 
-        if ($this->runningInConsole() && $this['env'] !== 'testing') {
+        if ($this->runningInConsole() && ! $this->runningUnitTests()) {
             $this->basePath = \getcwd();
         } else {
             $this->basePath = \realpath(\getcwd().'/../');
