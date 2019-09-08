@@ -147,6 +147,7 @@ trait MakesHttpRequests
      * @param  string  $uri
      * @param  array  $data
      * @param  array  $headers
+     *
      * @return $this
      */
     public function options($uri, array $data = [], array $headers = [])
@@ -164,6 +165,7 @@ trait MakesHttpRequests
      * @param  string  $uri
      * @param  array  $data
      * @param  array  $headers
+     *
      * @return $this
      */
     public function head($uri, array $data = [], array $headers = [])
@@ -346,6 +348,7 @@ trait MakesHttpRequests
      * Assert that the response doesn't contain the given JSON.
      *
      * @param  array  $data
+     *
      * @return $this
      */
     protected function seeJsonDoesntContains(array $data)
