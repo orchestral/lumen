@@ -1,6 +1,6 @@
 <?php
 
-use Tests\Lumen;
+namespace Tests\Lumen;
 
 use Tests\LumenTestCase;
 use Laravel\Lumen\Testing\DatabaseTransactions;
