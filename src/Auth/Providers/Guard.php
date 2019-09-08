@@ -46,7 +46,7 @@ class Guard extends Authorization
     {
         if (! $user = $this->auth->user()) {
             throw new UnauthorizedHttpException(
-                get_class($this),
+                \get_class($this),
                 'Unable to authenticate with invalid API key and token.'
             );
         } else {

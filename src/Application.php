@@ -438,7 +438,7 @@ class Application extends Container implements ApplicationContract
 
         $config = $this->make('config');
 
-        foreach($paths as $path) {
+        foreach ($paths as $path) {
             $config->set(Arr::dot([
                 $name => require $path,
             ]));

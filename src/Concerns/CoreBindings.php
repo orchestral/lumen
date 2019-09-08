@@ -176,7 +176,7 @@ trait CoreBindings
     protected function registerAuthBindings()
     {
         $this->singleton('auth', static function ($app) {
-            return $app->loadComponent('auth', 'Orchestra\Auth\AuthServiceProvider', 'auth');
+            return $app->loadComponent('auth', 'Orchestra\Auth\AuthServiceProvider');
         });
 
         $this->singleton('auth.driver', static function ($app) {
@@ -269,7 +269,7 @@ trait CoreBindings
      */
     protected function registerConfigBindings()
     {
-        $loader = new FileLoader(new Filesystem(), $this->resourcePath('config'));
+        $loader = new FileLoader(new Filesystem(), $this['path.config']);
 
         $this->singleton('config', static function ($app) use ($loader) {
             return new Repository($loader, $app->environment());
@@ -384,12 +384,12 @@ trait CoreBindings
             return $app->loadComponent('filesystems', 'Illuminate\Filesystem\FilesystemServiceProvider', 'filesystem');
         });
 
-        $this->singleton('filesystem.disk', function () {
-            return $this->loadComponent('filesystems', 'Illuminate\Filesystem\FilesystemServiceProvider', 'filesystem.disk');
+        $this->singleton('filesystem.disk', static function ($app) {
+            return $app->loadComponent('filesystems', 'Illuminate\Filesystem\FilesystemServiceProvider', 'filesystem.disk');
         });
 
-        $this->singleton('filesystem.cloud', function () {
-            return $this->loadComponent('filesystems', 'Illuminate\Filesystem\FilesystemServiceProvider', 'filesystem.cloud');
+        $this->singleton('filesystem.cloud', static function ($app) {
+            return $app->loadComponent('filesystems', 'Illuminate\Filesystem\FilesystemServiceProvider', 'filesystem.cloud');
         });
     }
 
@@ -492,7 +492,7 @@ trait CoreBindings
     protected function registerQueueBindings()
     {
         $this->singleton('queue', static function ($app) {
-            return $app->loadComponent('queue', 'Illuminate\Queue\QueueServiceProvider', 'queue');
+            return $app->loadComponent('queue', 'Illuminate\Queue\QueueServiceProvider');
         });
 
         $this->singleton('queue.listener', static function ($app) {
@@ -576,8 +576,6 @@ trait CoreBindings
     protected function registerTranslationBindings()
     {
         $this->singleton('translator', function ($app) {
-            $app->configure('app');
-
             $app->instance('path.lang', $this->getLanguagePath());
 
             $app->register('Orchestra\Translation\TranslationServiceProvider');
