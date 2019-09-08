@@ -84,7 +84,7 @@ trait ProvidesConvenienceMethods
      */
     protected function extractInputFromRules(Request $request, array $rules)
     {
-        return $request->only(Collection::make($rules)->keys()->map(function ($rule) {
+        return $request->only(Collection::make($rules)->keys()->map(static function ($rule) {
             return Str::contains($rule, '.') ? explode('.', $rule)[0] : $rule;
         })->unique()->toArray());
     }
