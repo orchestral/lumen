@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Collection;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Contracts\Debug\ExceptionHandler;
@@ -165,12 +166,12 @@ class Handler implements ExceptionHandler
      */
     protected function convertExceptionToArray(Exception $e)
     {
-        return env('APP_DEBUG', config('app.debug', false)) ? [
+        return \env('APP_DEBUG', \config('app.debug', false)) ? [
             'message' => $e->getMessage(),
             'exception' => get_class($e),
             'file' => $e->getFile(),
             'line' => $e->getLine(),
-            'trace' => collect($e->getTrace())->map(function ($trace) {
+            'trace' => Collection::make($e->getTrace())->map(static function ($trace) {
                 return Arr::except($trace, ['args']);
             })->all(),
         ] : [
