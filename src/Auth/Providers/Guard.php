@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Auth\AuthManager;
 use Dingo\Api\Auth\Provider\Authorization;
 
-class Guard extends Authorization
+abstract class Guard extends Authorization
 {
     use Concerns\AuthorizationHelpers;
 
@@ -55,18 +55,6 @@ class Guard extends Authorization
     }
 
     /**
-     * Authenticate user from request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     *
-     * @return \Illuminate\Contracts\Auth\Authenticatable|null
-     */
-    protected function authenticateUserFromRequest(Request $request)
-    {
-        return $this->auth->user();
-    }
-
-    /**
      * Get the providers authorization method.
      *
      * Note: Not used directly, added just for contract requirement.
@@ -79,12 +67,24 @@ class Guard extends Authorization
     }
 
     /**
+     * Authenticate user from request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return \Illuminate\Contracts\Auth\Authenticatable|null
+     */
+    protected function authenticateUserFromRequest(Request $request)
+    {
+        return $this->auth->user();
+    }
+
+    /**
      * Failed to authenticated user message.
      *
      * @return string
      */
     protected function failedToAuthenticateUserMessage(): string
     {
-        return 'Unable to authenticate with access token.';
+        return 'Unable to authenticate with invalid API key and token.';
     }
 }
