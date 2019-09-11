@@ -6,10 +6,11 @@ use Dingo\Api\Routing\Route;
 use Illuminate\Http\Request;
 use Illuminate\Auth\AuthManager;
 use Dingo\Api\Auth\Provider\Authorization;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class Guard extends Authorization
 {
+    use Concerns\AuthorizationHelpers;
+
     /**
      * Illuminate authentication manager.
      *
@@ -44,18 +45,25 @@ class Guard extends Authorization
      */
     public function authenticate(Request $request, Route $route)
     {
-        if (! $user = $this->auth->user()) {
-            throw new UnauthorizedHttpException(
-                \get_class($this),
-                'Unable to authenticate with invalid API key and token.'
-            );
-        } else {
-            $request->setUserResolver(static function () use ($user) {
-                return $user;
-            });
+        if (\is_null($user = $this->authenticateUserFromRequest($request))) {
+            throw $this->failedToAuthenticateUser();
         }
 
+        $this->setUserResolverToRequest($request, $user);
+
         return $user;
+    }
+
+    /**
+     * Authenticate user from request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return \Illuminate\Contracts\Auth\Authenticatable|null
+     */
+    protected function authenticateUserFromRequest(Request $request)
+    {
+        return $this->auth->user();
     }
 
     /**
@@ -68,5 +76,15 @@ class Guard extends Authorization
     public function getAuthorizationMethod()
     {
         return 'API_TOKEN';
+    }
+
+    /**
+     * Failed to authenticated user message.
+     *
+     * @return string
+     */
+    protected function failedToAuthenticateUserMessage(): string
+    {
+        return 'Unable to authenticate with access token.';
     }
 }

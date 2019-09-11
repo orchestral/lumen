@@ -11,6 +11,8 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class JWT extends Authorization
 {
+    use Concerns\AuthorizationHelpers;
+
     /**
      * Authenticate request with a JWT.
      *
@@ -23,11 +25,13 @@ class JWT extends Authorization
     {
         try {
             if (! $user = JWTAuth::parseToken()->authenticate()) {
-                throw new UnauthorizedHttpException('JWTAuth', 'Unable to authenticate with invalid token.');
+                throw $this->failedToAuthenticateUser();
             }
         } catch (JWTException $exception) {
             throw new UnauthorizedHttpException('JWTAuth', $exception->getMessage(), $exception);
         }
+
+        $this->setUserResolverToRequest($request, $user);
 
         return $user;
     }
@@ -40,5 +44,15 @@ class JWT extends Authorization
     public function getAuthorizationMethod()
     {
         return 'bearer';
+    }
+
+    /**
+     * Failed to authenticated user message.
+     *
+     * @return string
+     */
+    protected function failedToAuthenticateUserMessage(): string
+    {
+        return 'Unable to authenticate with invalid token.';
     }
 }
