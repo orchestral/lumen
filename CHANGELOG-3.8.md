@@ -2,6 +2,19 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/lumen`.
 
+## 3.8.9
+
+Released: 2019-09-14
+
+### Changes
+
+* Allow `laravie/api` version `3.0+` to be installed when it become available.
+* Additional use `static function` rather than `function` whenever possible, the PHP engine does not need to instantiate and later GC a `$this` variable for said closure.
+
+### Fixes
+
+* Fixes tests skeleton code.
+
 ## 3.8.8
 
 Released: 2019-09-07
