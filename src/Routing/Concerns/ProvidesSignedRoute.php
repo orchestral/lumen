@@ -2,8 +2,8 @@
 
 namespace Laravel\Lumen\Routing\Concerns;
 
-use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\InteractsWithTime;
 

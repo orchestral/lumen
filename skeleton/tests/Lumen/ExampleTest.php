@@ -2,8 +2,8 @@
 
 namespace Tests\Lumen;
 
-use Tests\LumenTestCase;
 use Laravel\Lumen\Testing\DatabaseTransactions;
+use Tests\LumenTestCase;
 
 class ExampleTest extends LumenTestCase
 {

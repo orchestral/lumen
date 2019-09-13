@@ -2,12 +2,12 @@
 
 namespace Laravel\Lumen\Auth\Providers;
 
+use Dingo\Api\Auth\Provider\Authorization;
 use Dingo\Api\Routing\Route;
 use Illuminate\Http\Request;
-use Tymon\JWTAuth\Facades\JWTAuth;
-use Dingo\Api\Auth\Provider\Authorization;
-use Tymon\JWTAuth\Exceptions\JWTException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class JWT extends Authorization
 {

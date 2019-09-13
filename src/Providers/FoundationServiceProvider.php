@@ -2,9 +2,9 @@
 
 namespace Laravel\Lumen\Providers;
 
+use Illuminate\Contracts\Foundation\Application;
 use Laravel\Lumen\Foundation\Foundation;
 use Laravel\Lumen\Foundation\RouteResolver;
-use Illuminate\Contracts\Foundation\Application;
 use Orchestra\Extension\ExtensionServiceProvider as ServiceProvider;
 
 class FoundationServiceProvider extends ServiceProvider

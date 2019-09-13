@@ -3,14 +3,14 @@
 namespace Laravel\Lumen;
 
 use Closure;
-use RuntimeException;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Laravel\Lumen\Routing\Router;
 use Illuminate\Container\Container;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
+use Laravel\Lumen\Routing\Router;
 use Orchestra\Contracts\Foundation\Application as ApplicationContract;
+use RuntimeException;
 
 class Application extends Container implements ApplicationContract
 {

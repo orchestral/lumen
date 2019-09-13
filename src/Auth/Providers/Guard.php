@@ -2,10 +2,10 @@
 
 namespace Laravel\Lumen\Auth\Providers;
 
-use Dingo\Api\Routing\Route;
-use Illuminate\Http\Request;
-use Illuminate\Auth\AuthManager;
 use Dingo\Api\Auth\Provider\Authorization;
+use Dingo\Api\Routing\Route;
+use Illuminate\Auth\AuthManager;
+use Illuminate\Http\Request;
 
 abstract class Guard extends Authorization
 {

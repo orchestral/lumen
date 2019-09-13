@@ -2,11 +2,11 @@
 
 namespace Laravel\Lumen\Testing\Concerns;
 
-use Mockery;
-use Illuminate\Support\Carbon;
-use Orchestra\Foundation\Testing\Installation;
 use Illuminate\Contracts\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Carbon;
+use Mockery;
 use Orchestra\Foundation\Testing\Concerns\WithInstallation;
+use Orchestra\Foundation\Testing\Installation;
 
 trait Testing
 {

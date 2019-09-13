@@ -2,10 +2,10 @@
 
 namespace App\Lumen;
 
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Foundation\Auth\Access\Authorizable;
 use Orchestra\Model\User as Eloquent;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-use Illuminate\Foundation\Auth\Access\Authorizable;
-use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
 class User extends Eloquent implements AuthorizableContract, JWTSubject
 {

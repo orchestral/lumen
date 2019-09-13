@@ -2,8 +2,8 @@
 
 namespace Laravel\Lumen\Routing;
 
-use Orchestra\Routing\VersionedHelpers;
 use Dingo\Api\Routing\Helpers as BaseHelpers;
+use Orchestra\Routing\VersionedHelpers;
 
 trait Helpers
 {

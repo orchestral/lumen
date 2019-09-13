@@ -2,20 +2,20 @@
 
 namespace Laravel\Lumen\Concerns;
 
-use Monolog\Logger;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 use Illuminate\Log\LogManager;
 use Illuminate\Support\Composer;
-use Orchestra\Config\FileLoader;
-use Orchestra\Config\Repository;
-use Monolog\Handler\StreamHandler;
-use Monolog\Formatter\LineFormatter;
-use Illuminate\Filesystem\Filesystem;
 use Laravel\Lumen\Http\ResponseFactory;
 use Laravel\Lumen\Routing\UrlGenerator;
-use Zend\Diactoros\Response as PsrResponse;
+use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+use Orchestra\Config\FileLoader;
+use Orchestra\Config\Repository;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
+use Zend\Diactoros\Response as PsrResponse;
 
 trait CoreBindings
 {

@@ -2,11 +2,11 @@
 
 namespace App\Lumen\Providers;
 
-use Exception;
 use App\Lumen\User;
-use Tymon\JWTAuth\Facades\JWTAuth;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthServiceProvider extends ServiceProvider
 {

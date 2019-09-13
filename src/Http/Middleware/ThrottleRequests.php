@@ -2,8 +2,8 @@
 
 namespace Laravel\Lumen\Http\Middleware;
 
-use RuntimeException;
 use Illuminate\Routing\Middleware\ThrottleRequests as Throttle;
+use RuntimeException;
 
 class ThrottleRequests extends Throttle
 {

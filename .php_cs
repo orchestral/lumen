@@ -11,7 +11,7 @@ return PhpCsFixer\Config::create()
                 'no_empty_comment' => false,
                 'no_extra_consecutive_blank_lines' => false,
                 'not_operator_with_successor_space' => true,
-                'ordered_imports' => ['sortAlgorithm' => 'length'],
+                'ordered_imports' => ['sortAlgorithm' => 'alpha'],
                 'phpdoc_align' => false,
                 'phpdoc_no_empty_return' => false,
                 'single_trait_insert_per_statement' => false,

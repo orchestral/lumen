@@ -2,12 +2,12 @@
 
 namespace App\Lumen\Http\Controllers;
 
-use Tymon\JWTAuth\JWTAuth;
-use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Http\Request;
 use Laravel\Lumen\Http\ResponseFactory;
-use Tymon\JWTAuth\Exceptions\JWTException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\JWTAuth;
 
 /**
  * User authentication is handled via JSON Web Tokens (JWT).

@@ -2,8 +2,8 @@
 
 namespace Laravel\Lumen\Testing;
 
-use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 trait AuthenticateWithJWT
 {
