@@ -55,7 +55,7 @@ You can also choose to add new path to autoload to detect `lumen/app` using PSR-
 Dingo API is preinstall with Lumen. To start using it you just need to uncomment the following from `lumen/bootstrap.php`:
 
 ```php
-require base_path('routes/api.php');
+require base_path('lumen/routes/api.php');
 ```
 
 ## JWT Authentication
