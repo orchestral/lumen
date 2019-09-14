@@ -107,16 +107,6 @@ trait Compatibility
     }
 
     /**
-     * Determine if the application configuration is cached.
-     *
-     * @return bool
-     */
-    public function configurationIsCached()
-    {
-        return false;
-    }
-
-    /**
      * Determine if the application events are cached.
      *
      * @return bool
@@ -178,16 +168,6 @@ trait Compatibility
     public function environmentFilePath()
     {
         throw new Exception(__FUNCTION__.' is not implemented by Lumen.');
-    }
-
-    /**
-     * Get the path to the routes cache file.
-     *
-     * @return string
-     */
-    public function getCachedRoutesPath()
-    {
-        return $this->bootstrapPath('cache/routes.php');
     }
 
     /**
