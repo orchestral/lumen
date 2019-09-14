@@ -17,7 +17,7 @@ This repository contains the core code of the Orchestra Lumen. If you want to bu
 
 First, install the Lumenate installer and make sure that the global Composer `bin` directory is within your system's `$PATH`:
 
-    composer global require "orchestra/lumenate=~0.4"
+    composer global require "orchestra/lumenate=^1.0"
 
 From within a working Orchestra Platform project, run the following command:
 
@@ -55,7 +55,7 @@ You can also choose to add new path to autoload to detect `lumen/app` using PSR-
 Dingo API is preinstall with Lumen. To start using it you just need to uncomment the following from `lumen/bootstrap.php`:
 
 ```php
-require base_path('routes/api.php');
+require base_path('lumen/routes/api.php');
 ```
 
 ## JWT Authentication
