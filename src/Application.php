@@ -446,26 +446,6 @@ class Application extends Container implements ApplicationContract
     }
 
     /**
-     * Get the path to the given configuration file.
-     *
-     * If no name is provided, then we'll return the path to the config folder.
-     *
-     * @param  string|null  $name
-     *
-     * @return string|null
-     *
-     * @deprecated v4.0.0
-     */
-    public function getConfigurationPath($name = null)
-    {
-        $path = \end($this->getConfigurationPaths($name));
-
-        if (! \is_null($path)) {
-            return $path;
-        }
-    }
-
-    /**
      * Get the registered service provider instances if any exist.
      *
      * @param  \Illuminate\Support\ServiceProvider|string  $provider
