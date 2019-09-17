@@ -207,7 +207,7 @@ trait Compatibility
      */
     public function hasBeenBootstrapped()
     {
-        throw new Exception(__FUNCTION__.' is not implemented by Lumen.');
+        return true;
     }
 
     /**
@@ -217,7 +217,7 @@ trait Compatibility
      */
     public function loadDeferredProviders()
     {
-        throw new Exception(__FUNCTION__.' is not implemented by Lumen.');
+        //
     }
 
     /**
