@@ -97,16 +97,6 @@ trait Compatibility
     }
 
     /**
-     * Get the path to the environment file directory.
-     *
-     * @return string
-     */
-    public function environmentPath()
-    {
-        throw new Exception(__FUNCTION__.' is not implemented by Lumen.');
-    }
-
-    /**
      * Determine if the application events are cached.
      *
      * @return bool
@@ -139,38 +129,6 @@ trait Compatibility
     }
 
     /**
-     * Detect the application's current environment.
-     *
-     * @param  \Closure  $callback
-     *
-     * @return string
-     */
-    public function detectEnvironment(Closure $callback)
-    {
-        throw new Exception(__FUNCTION__.' is not implemented by Lumen.');
-    }
-
-    /**
-     * Get the environment file the application is using.
-     *
-     * @return string
-     */
-    public function environmentFile()
-    {
-        throw new Exception(__FUNCTION__.' is not implemented by Lumen.');
-    }
-
-    /**
-     * Get the fully qualified path to the environment file.
-     *
-     * @return string
-     */
-    public function environmentFilePath()
-    {
-        throw new Exception(__FUNCTION__.' is not implemented by Lumen.');
-    }
-
-    /**
      * Get the current application locale.
      *
      * @return string
@@ -196,18 +154,6 @@ trait Compatibility
      * @return void
      */
     public function loadDeferredProviders()
-    {
-        throw new Exception(__FUNCTION__.' is not implemented by Lumen.');
-    }
-
-    /**
-     * Set the environment file to be loaded during bootstrapping.
-     *
-     * @param  string  $file
-     *
-     * @return $this
-     */
-    public function loadEnvironmentFrom($file)
     {
         throw new Exception(__FUNCTION__.' is not implemented by Lumen.');
     }
