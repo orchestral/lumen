@@ -67,24 +67,6 @@ trait Compatibility
     }
 
     /**
-     * Get the path to the application configuration files.
-     *
-     * @param  string  $path Optionally, a path to append to the config path
-     *
-     * @return string
-     */
-    public function configPath($path = '')
-    {
-        if (empty($path)) {
-            return $this['path.config'];
-        } elseif (\file_exists($lumenPath = $this->basePath("lumen/config/{$path}"))) {
-            return $lumenPath;
-        }
-
-        return $this->basePath("config/{$path}");
-    }
-
-    /**
      * Set the current application locale.
      *
      * @param  string  $locale
