@@ -165,7 +165,7 @@ class Application extends Container implements ApplicationContract
      */
     public function version()
     {
-        return 'Lumen (6.0.2) (Laravel Components ^6.0)';
+        return 'Lumen (6.1.0) (Laravel Components ^6.0)';
     }
 
     /**
@@ -582,6 +582,23 @@ class Application extends Container implements ApplicationContract
         }
 
         return $this->basePath($path);
+    }
+
+    /**
+     * Get the path to the application configuration files.
+     *
+     * @param  string  $path
+     * @return string
+     */
+    public function configPath($path = '')
+    {
+        if (empty($path)) {
+            return $this['path.config'];
+        } elseif (\file_exists($lumenPath = $this->basePath("lumen/config/{$path}"))) {
+            return $lumenPath;
+        }
+
+        return $this->basePath("config/{$path}");
     }
 
     /**
