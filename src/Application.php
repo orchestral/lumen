@@ -649,7 +649,6 @@ class Application extends Container implements ApplicationContract
      * Get the storage path for the application.
      *
      * @param  string|null  $path
-     * @param  string|null  $path
      *
      * @return string
      */
