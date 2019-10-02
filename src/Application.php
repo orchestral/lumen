@@ -165,7 +165,7 @@ class Application extends Container implements ApplicationContract
      */
     public function version()
     {
-        return 'Lumen (6.1.0) (Laravel Components ^6.0)';
+        return 'Lumen (7.0.0-dev) (Laravel Components ^7.0)';
     }
 
     /**
@@ -628,7 +628,6 @@ class Application extends Container implements ApplicationContract
     /**
      * Get the storage path for the application.
      *
-     * @param  string|null  $path
      * @param  string|null  $path
      *
      * @return string
