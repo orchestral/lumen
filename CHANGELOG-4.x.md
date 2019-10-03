@@ -2,6 +2,15 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/lumen`.
 
+## 4.1.0
+
+Released: 2019-10-03
+
+### Changes
+
+* `Laravel\Lumen\Application::hasBeenBootstrapped()` now default to return `true` instead of throwing an `Exception`.
+* `Laravel\Lumen\Application::loadDeferredProviders()` now does return `void` (does nothing) instead of throwing an `Exception`.
+
 ## 4.0.0
 
 Released: 2019-09-14
