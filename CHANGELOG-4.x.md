@@ -2,6 +2,15 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/lumen`.
 
+## 4.2.0
+
+Released: 2019-10-11
+
+### Changes
+
+* Update support for Laravel Framework v6.2+.
+* Improves support for locale support under `Laravel\Lumen\Application` by properly implements `setLocale()`, `getLocale()` and `isLocale()`.
+
 ## 4.1.0
 
 Released: 2019-10-03
