@@ -588,6 +588,7 @@ class Application extends Container implements ApplicationContract
      * Get the path to the application configuration files.
      *
      * @param  string  $path
+     *
      * @return string
      */
     public function configPath($path = '')
@@ -777,6 +778,7 @@ class Application extends Container implements ApplicationContract
      * Set the current application locale.
      *
      * @param  string  $locale
+     *
      * @return void
      */
     public function setLocale($locale)
@@ -789,6 +791,7 @@ class Application extends Container implements ApplicationContract
      * Determine if application locale is the given locale.
      *
      * @param  string  $locale
+     *
      * @return bool
      */
     public function isLocale($locale)
