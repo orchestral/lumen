@@ -67,18 +67,6 @@ trait Compatibility
     }
 
     /**
-     * Set the current application locale.
-     *
-     * @param  string  $locale
-     *
-     * @return void
-     */
-    public function setLocale($locale)
-    {
-        throw new Exception(__FUNCTION__.' is not implemented by Lumen.');
-    }
-
-    /**
      * Determine if the application events are cached.
      *
      * @return bool
@@ -106,16 +94,6 @@ trait Compatibility
      * @return void
      */
     public function bootstrapWith(array $bootstrappers)
-    {
-        throw new Exception(__FUNCTION__.' is not implemented by Lumen.');
-    }
-
-    /**
-     * Get the current application locale.
-     *
-     * @return string
-     */
-    public function getLocale()
     {
         throw new Exception(__FUNCTION__.' is not implemented by Lumen.');
     }

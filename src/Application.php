@@ -568,6 +568,7 @@ class Application extends Container implements ApplicationContract
      * Get the path to the application configuration files.
      *
      * @param  string  $path
+     *
      * @return string
      */
     public function configPath($path = '')
@@ -731,6 +732,41 @@ class Application extends Container implements ApplicationContract
         foreach ($this->terminatingCallbacks as $terminating) {
             $this->call($terminating);
         }
+    }
+
+    /**
+     * Get the current application locale.
+     *
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this['config']->get('app.locale');
+    }
+
+    /**
+     * Set the current application locale.
+     *
+     * @param  string  $locale
+     *
+     * @return void
+     */
+    public function setLocale($locale)
+    {
+        $this['config']->set('app.locale', $locale);
+        $this['translator']->setLocale($locale);
+    }
+
+    /**
+     * Determine if application locale is the given locale.
+     *
+     * @param  string  $locale
+     *
+     * @return bool
+     */
+    public function isLocale($locale)
+    {
+        return $this->getLocale() == $locale;
     }
 
     /**
