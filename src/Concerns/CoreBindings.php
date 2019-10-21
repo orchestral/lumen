@@ -310,6 +310,8 @@ trait CoreBindings
     protected function registerDatabaseBindings()
     {
         $this->singleton('db', static function ($app) {
+            $app->configure('app');
+
             return $app->loadComponent(
                 'database', [
                     'Illuminate\Database\DatabaseServiceProvider',
