@@ -101,9 +101,7 @@ trait ProvidesConvenienceMethods
      */
     protected function throwValidationException(Request $request, $validator)
     {
-        throw new ValidationException($validator, $this->buildFailedValidationResponse(
-            $request, $this->formatValidationErrors($validator)
-        ));
+        throw new ValidationException($validator, $this->buildFailedValidationResponse($request, $this->formatValidationErrors($validator)));
     }
 
     /**
