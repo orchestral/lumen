@@ -1,5 +1,8 @@
 <?php
 
+use function Laravel\Lumen\redirect;
+use function Laravel\Lumen\response;
+use function Laravel\Lumen\route;
 use Laravel\Lumen\Application;
 use Laravel\Lumen\Http\Request;
 use Mockery as m;
@@ -18,7 +21,7 @@ class FullApplicationTest extends TestCase
         $app = new Application;
 
         $app->router->get('/', function () {
-            return \api\response('Hello World');
+            return response('Hello World');
         });
 
         $response = $app->handle($request = Request::create('/', 'GET'));
@@ -34,7 +37,7 @@ class FullApplicationTest extends TestCase
         $app = new Application;
 
         $app->router->get('/', function () {
-            return \api\response('Hello World');
+            return response('Hello World');
         });
 
         $response = $app->handle(SymfonyRequest::create('/', 'GET'));
@@ -46,7 +49,7 @@ class FullApplicationTest extends TestCase
         $app = new Application;
 
         $app->router->addRoute(['GET', 'POST'], '/', function () {
-            return \api\response('Hello World');
+            return response('Hello World');
         });
 
         $response = $app->handle(Request::create('/', 'GET'));
@@ -65,7 +68,7 @@ class FullApplicationTest extends TestCase
         $app = new Application;
 
         $app->router->get('/foo/{bar}/{baz}', function ($bar, $baz) {
-            return \api\response($bar.$baz);
+            return response($bar.$baz);
         });
 
         $response = $app->handle($request = Request::create('/foo/1/2', 'GET'));
@@ -82,7 +85,7 @@ class FullApplicationTest extends TestCase
         $app = new Application;
 
         $app->router->get('/foo-bar/{baz}', function ($baz = 'default-value') {
-            return \api\response($baz);
+            return response($baz);
         });
 
         $response = $app->handle(Request::create('/foo-bar/something', 'GET'));
@@ -98,7 +101,7 @@ class FullApplicationTest extends TestCase
         $app->middleware(['LumenTestMiddleware']);
 
         $app->router->get('/', function () {
-            return \api\response('Hello World');
+            return response('Hello World');
         });
 
         $response = $app->handle(Request::create('/', 'GET'));
@@ -114,19 +117,19 @@ class FullApplicationTest extends TestCase
         $app->routeMiddleware(['foo' => 'LumenTestMiddleware']);
 
         $app->router->get('/', function () {
-            return \api\response('Hello World');
+            return response('Hello World');
         });
 
         $app->router->get('/foo', ['middleware' => 'foo', function () {
-            return \api\response('Hello World');
+            return response('Hello World');
         }]);
 
         $app->router->get('/bar', ['middleware' => ['foo'], function () {
-            return \api\response('Hello World');
+            return response('Hello World');
         }]);
 
         $app->router->get('/fooBar', ['middleware' => 'passing|foo', function () {
-            return \api\response('Hello World');
+            return response('Hello World');
         }]);
 
         $response = $app->handle(Request::create('/', 'GET'));
@@ -145,7 +148,7 @@ class FullApplicationTest extends TestCase
         $app->middleware(['LumenTestParameterizedMiddleware:foo,bar']);
 
         $app->router->get('/', function () {
-            return \api\response('Hello World');
+            return response('Hello World');
         });
 
         $response = $app->handle(Request::create('/', 'GET'));
@@ -161,7 +164,7 @@ class FullApplicationTest extends TestCase
         $app->routeMiddleware(['foo' => 'LumenTestParameterizedMiddleware']);
 
         $app->router->get('/', ['middleware' => 'foo:bar,boom', function () {
-            return \api\response('Hello World');
+            return response('Hello World');
         }]);
 
         $response = $app->handle(Request::create('/', 'GET'));
@@ -269,7 +272,7 @@ class FullApplicationTest extends TestCase
         $app->instance('middleware.disable', true);
 
         $app->router->get('/', function () {
-            return \api\response('Hello World');
+            return response('Hello World');
         });
 
         $response = $app->handle(Request::create('/', 'GET'));
@@ -285,7 +288,7 @@ class FullApplicationTest extends TestCase
         $app->middleware(['LumenTestTerminateMiddleware']);
 
         $app->router->get('/', function () {
-            return \api\response('Hello World');
+            return response('Hello World');
         });
 
         $response = $app->handle(Request::create('/', 'GET'));
@@ -302,7 +305,7 @@ class FullApplicationTest extends TestCase
         $app->instance('middleware.disable', true);
 
         $app->router->get('/', function () {
-            return \api\response('Hello World');
+            return response('Hello World');
         });
 
         $response = $app->handle(Request::create('/', 'GET'));
@@ -318,7 +321,7 @@ class FullApplicationTest extends TestCase
         $mock->shouldIgnoreMissing();
 
         $app->router->get('/', function () {
-            return \api\response('Hello World');
+            return response('Hello World');
         });
 
         $response = $app->handle(Request::create('/foo', 'GET'));
@@ -333,7 +336,7 @@ class FullApplicationTest extends TestCase
         $mock->shouldIgnoreMissing();
 
         $app->router->post('/', function () {
-            return \api\response('Hello World');
+            return response('Hello World');
         });
 
         $response = $app->handle(Request::create('/', 'GET'));
@@ -392,13 +395,13 @@ class FullApplicationTest extends TestCase
         }]);
 
         $this->assertEquals('http://lumen.laravel.com/something', url('something'));
-        $this->assertEquals('http://lumen.laravel.com/foo-bar', \api\route('foo'));
-        $this->assertEquals('http://lumen.laravel.com/foo-bar/1/2', \api\route('bar', ['baz' => 1, 'boom' => 2]));
-        $this->assertEquals('http://lumen.laravel.com/foo-bar?baz=1&boom=2', \api\route('foo', ['baz' => 1, 'boom' => 2]));
-        $this->assertEquals('http://lumen.laravel.com/foo-bar/1/2', \api\route('optional', ['baz' => 1, 'boom' => 2]));
-        $this->assertEquals('http://lumen.laravel.com/foo-bar/1', \api\route('optional', ['baz' => 1]));
-        $this->assertEquals('http://lumen.laravel.com/foo-bar/1/2', \api\route('regex', ['baz' => 1, 'boom' => 2]));
-        $this->assertEquals('http://lumen.laravel.com/foo-bar/1', \api\route('regex', ['baz' => 1]));
+        $this->assertEquals('http://lumen.laravel.com/foo-bar', route('foo'));
+        $this->assertEquals('http://lumen.laravel.com/foo-bar/1/2', route('bar', ['baz' => 1, 'boom' => 2]));
+        $this->assertEquals('http://lumen.laravel.com/foo-bar?baz=1&boom=2', route('foo', ['baz' => 1, 'boom' => 2]));
+        $this->assertEquals('http://lumen.laravel.com/foo-bar/1/2', route('optional', ['baz' => 1, 'boom' => 2]));
+        $this->assertEquals('http://lumen.laravel.com/foo-bar/1', route('optional', ['baz' => 1]));
+        $this->assertEquals('http://lumen.laravel.com/foo-bar/1/2', route('regex', ['baz' => 1, 'boom' => 2]));
+        $this->assertEquals('http://lumen.laravel.com/foo-bar/1', route('regex', ['baz' => 1]));
     }
 
     public function testGeneratingUrlsForRegexParameters()
@@ -654,7 +657,7 @@ class FullApplicationTest extends TestCase
         $app = new Application;
 
         $app->router->get('/', function (Illuminate\Http\Request $request) {
-            return \api\redirect('home');
+            return redirect('home');
         });
 
         $response = $app->handle(Request::create('/', 'GET'));
@@ -671,7 +674,7 @@ class FullApplicationTest extends TestCase
         }]);
 
         $app->router->get('/', function (Illuminate\Http\Request $request) {
-            return \api\redirect()->route('login');
+            return redirect()->route('login');
         });
 
         $response = $app->handle(Request::create('/', 'GET'));
