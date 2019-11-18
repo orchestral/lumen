@@ -2,6 +2,14 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/lumen`.
 
+## 4.2.1
+
+Released: 2019-11-03
+
+### Fixed
+
+* Load `app` configuration when bootstrapping `db` component to allow faker configuration is available.
+
 ## 4.2.0
 
 Released: 2019-10-11

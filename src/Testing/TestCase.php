@@ -161,9 +161,7 @@ abstract class TestCase extends BaseTestCase
 
         $this->beforeApplicationDestroyed(static function () use (&$events) {
             if ($events) {
-                throw new Exception(
-                    'The following events were not fired: ['.\implode(', ', $events).']'
-                );
+                throw new Exception('The following events were not fired: ['.\implode(', ', $events).']');
             }
         });
 
