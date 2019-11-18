@@ -3,6 +3,7 @@
 use function Laravel\Lumen\redirect;
 use function Laravel\Lumen\response;
 use function Laravel\Lumen\route;
+use function Laravel\Lumen\url;
 use Laravel\Lumen\Application;
 use Laravel\Lumen\Http\Request;
 use Mockery as m;
@@ -425,12 +426,12 @@ class FullApplicationTest extends TestCase
             //
         }]);
 
-        $this->assertEquals('http://lumen.laravel.com/something', api\url('something'));
-        $this->assertEquals('http://lumen.laravel.com/foo-bar', api\route('foo'));
-        $this->assertEquals('http://lumen.laravel.com/foo-bar/1/2', api\route('bar', ['baz' => 1, 'boom' => 2]));
-        $this->assertEquals('http://lumen.laravel.com/foo-bar/1/2', api\route('baz', ['baz' => 1, 'boom' => 2]));
-        $this->assertEquals('http://lumen.laravel.com/foo-bar/{baz:[0-9]+}/{boom:[0-9]+}?ba=1&bo=2', api\route('baz', ['ba' => 1, 'bo' => 2]));
-        $this->assertEquals('http://lumen.laravel.com/foo-bar/5', api\route('boom', ['baz' => 5]));
+        $this->assertEquals('http://lumen.laravel.com/something', url('something'));
+        $this->assertEquals('http://lumen.laravel.com/foo-bar', route('foo'));
+        $this->assertEquals('http://lumen.laravel.com/foo-bar/1/2', route('bar', ['baz' => 1, 'boom' => 2]));
+        $this->assertEquals('http://lumen.laravel.com/foo-bar/1/2', route('baz', ['baz' => 1, 'boom' => 2]));
+        $this->assertEquals('http://lumen.laravel.com/foo-bar/{baz:[0-9]+}/{boom:[0-9]+}?ba=1&bo=2', route('baz', ['ba' => 1, 'bo' => 2]));
+        $this->assertEquals('http://lumen.laravel.com/foo-bar/5', route('boom', ['baz' => 5]));
     }
 
     public function testRegisterServiceProvider()
@@ -495,7 +496,7 @@ class FullApplicationTest extends TestCase
         $routes = new FastRoute\RouteCollector(new FastRoute\RouteParser\Std, new FastRoute\DataGenerator\GroupCountBased);
 
         $routes->addRoute('GET', '/', [function () {
-            return api\response('Hello World');
+            return response('Hello World');
         }]);
 
         $app = new Application;
@@ -905,7 +906,7 @@ class LumenTestMiddleware
 {
     public function handle($request, $next)
     {
-        return api\response('Middleware');
+        return response('Middleware');
     }
 }
 
@@ -924,7 +925,7 @@ class LumenTestParameterizedMiddleware
 {
     public function handle($request, $next, $parameter1, $parameter2)
     {
-        return api\response("Middleware - $parameter1 - $parameter2");
+        return response("Middleware - $parameter1 - $parameter2");
     }
 }
 

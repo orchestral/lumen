@@ -2,6 +2,7 @@
 
 namespace App\Lumen\Http\Middleware;
 
+use function Laravel\Lumen\response;
 use Closure;
 use Illuminate\Contracts\Auth\Factory as Auth;
 
@@ -38,7 +39,7 @@ class Authenticate
     public function handle($request, Closure $next, $guard = null)
     {
         if ($this->auth->guard($guard)->guest()) {
-            return \api\response('Unauthorized.', 401);
+            return response('Unauthorized.', 401);
         }
 
         return $next($request);
