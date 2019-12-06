@@ -53,9 +53,9 @@ class Request extends BaseRequest
     /**
      * Get a unique fingerprint for the request / route / IP address.
      *
-     * @return string
-     *
      * @throws \RuntimeException
+     *
+     * @return string
      */
     public function fingerprint()
     {

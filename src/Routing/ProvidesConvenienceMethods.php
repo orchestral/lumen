@@ -59,9 +59,9 @@ trait ProvidesConvenienceMethods
      * @param  array  $messages
      * @param  array  $customAttributes
      *
-     * @return array
-     *
      * @throws \Illuminate\Validation\ValidationException
+     *
+     * @return array
      */
     public function validate(Request $request, array $rules, array $messages = [], array $customAttributes = [])
     {
@@ -95,9 +95,9 @@ trait ProvidesConvenienceMethods
      * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Contracts\Validation\Validator  $validator
      *
-     * @return void
-     *
      * @throws \Illuminate\Validation\ValidationException
+     *
+     * @return void
      */
     protected function throwValidationException(Request $request, $validator)
     {
@@ -134,9 +134,9 @@ trait ProvidesConvenienceMethods
      * @param  mixed  $ability
      * @param  mixed|array  $arguments
      *
-     * @return \Illuminate\Auth\Access\Response
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return \Illuminate\Auth\Access\Response
      */
     public function authorize($ability, $arguments = [])
     {
@@ -152,9 +152,9 @@ trait ProvidesConvenienceMethods
      * @param  mixed  $ability
      * @param  mixed|array  $arguments
      *
-     * @return \Illuminate\Auth\Access\Response
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return \Illuminate\Auth\Access\Response
      */
     public function authorizeForUser($user, $ability, $arguments = [])
     {

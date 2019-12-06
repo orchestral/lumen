@@ -19,9 +19,9 @@ trait RegistersExceptionHandlers
      * @param  string  $message
      * @param  array   $headers
      *
-     * @return void
-     *
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+     *
+     * @return void
      */
     public function abort($code, $message = '', array $headers = [])
     {

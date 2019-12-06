@@ -715,9 +715,9 @@ class Application extends Container implements ApplicationContract
     /**
      * Get the application namespace.
      *
-     * @return string
-     *
      * @throws \RuntimeException
+     *
+     * @return string
      */
     public function getNamespace()
     {
