@@ -10,9 +10,9 @@ if (! \function_exists('api\redirect')) {
      * Get an instance of the redirector.
      *
      * @param  string|null  $to
-     * @param  int     $status
-     * @param  array   $headers
-     * @param  bool    $secure
+     * @param  int  $status
+     * @param  array  $headers
+     * @param  bool  $secure
      *
      * @return \Laravel\Lumen\Http\Redirector|\Illuminate\Http\RedirectResponse
      */
@@ -33,8 +33,8 @@ if (! \function_exists('api\response')) {
      * Return a new response from the application.
      *
      * @param  object|string  $content
-     * @param  int     $status
-     * @param  array   $headers
+     * @param  int  $status
+     * @param  array  $headers
      *
      * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
      */
@@ -55,8 +55,8 @@ if (! \function_exists('api\route')) {
      * Generate a URL to a named route.
      *
      * @param  string  $name
-     * @param  array   $parameters
-     * @param  bool    $secure
+     * @param  array  $parameters
+     * @param  bool  $secure
      *
      * @return string
      */
