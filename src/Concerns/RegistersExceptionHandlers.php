@@ -20,9 +20,9 @@ trait RegistersExceptionHandlers
      * @param  string  $message
      * @param  array  $headers
      *
-     * @return void
-     *
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+     *
+     * @return void
      */
     public function abort($code, $message = '', array $headers = [])
     {
@@ -74,6 +74,7 @@ trait RegistersExceptionHandlers
      *
      * @param  array  $error
      * @param  int|null  $traceOffset
+     *
      * @return \Symfony\Component\ErrorHandler\Error\FatalError
      */
     protected function fatalErrorFromPhpError(array $error, $traceOffset = null)

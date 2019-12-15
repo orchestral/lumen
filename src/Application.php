@@ -465,16 +465,16 @@ class Application extends Container implements ApplicationContract
      * Register the facades for the application.
      *
      * @param  bool  $aliases
-     * @param  array $custom
+     * @param  array  $userAliases
      *
      * @return void
      */
-    public function withFacades($aliases = true, $custom = [])
+    public function withFacades($aliases = true, $userAliases = [])
     {
         Facade::setFacadeApplication($this);
 
         if ($aliases) {
-            $this->withAliases($custom);
+            $this->withAliases($userAliases);
         }
 
         return $this;
@@ -685,9 +685,9 @@ class Application extends Container implements ApplicationContract
     /**
      * Get the application namespace.
      *
-     * @return string
-     *
      * @throws \RuntimeException
+     *
+     * @return string
      */
     public function getNamespace()
     {

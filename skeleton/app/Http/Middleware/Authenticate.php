@@ -2,9 +2,9 @@
 
 namespace App\Lumen\Http\Middleware;
 
-use function Laravel\Lumen\response;
 use Closure;
 use Illuminate\Contracts\Auth\Factory as Auth;
+use function Laravel\Lumen\response;
 
 class Authenticate
 {

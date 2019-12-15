@@ -2,7 +2,6 @@
 
 namespace Laravel\Lumen\Concerns;
 
-use Closure;
 use Exception;
 
 trait Compatibility

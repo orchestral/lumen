@@ -113,9 +113,9 @@ trait ProvidesSignedRoute
      * @param  mixed   $parameters
      * @param  bool|null  $secure
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return string
      */
     abstract public function route($name, $parameters = [], $secure = null);
 }

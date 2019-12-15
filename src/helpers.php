@@ -9,7 +9,9 @@ use Laravel\Lumen\Http\ResponseFactory;
  * Get an instance of the redirector.
  *
  * @param  string|null  $to
- * @param  bool    $secure
+ * @param  int  $status
+ * @param  array  $headers
+ * @param  bool  $secure
  *
  * @return \Laravel\Lumen\Http\Redirector|\Illuminate\Http\RedirectResponse
  */
@@ -28,6 +30,8 @@ function redirect($to = null, int $status = 302, array $headers = [], $secure = 
  * Return a new response from the application.
  *
  * @param  object|string  $content
+ * @param  int  $status
+ * @param  array  $headers
  *
  * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
  */
@@ -46,7 +50,10 @@ function response($content = '', int $status = 200, array $headers = [])
  * Generate a URL to a named route.
  *
  * @param  string  $name
- * @param  bool    $secure
+ * @param  array  $parameters
+ * @param  bool  $secure
+ *
+ * @return string
  */
 function route($name, array $parameters = [], $secure = null): string
 {

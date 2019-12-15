@@ -113,7 +113,7 @@ class Router
     /**
      * Merge the given group attributes with the last added group.
      *
-     * @param  array $new
+     * @param  array  $new
      *
      * @return array
      */
@@ -264,7 +264,7 @@ class Router
      * Merge the namespace group into the action.
      *
      * @param  array  $action
-     * @param  string $namespace
+     * @param  string  $namespace
      *
      * @return array
      */
@@ -280,8 +280,8 @@ class Router
     /**
      * Prepend the namespace onto the use clause.
      *
-     * @param  string $class
-     * @param  string $namespace
+     * @param  string  $class
+     * @param  string  $namespace
      *
      * @return string
      */
@@ -315,8 +315,8 @@ class Router
     /**
      * Merge the as group into the action.
      *
-     * @param  array $action
-     * @param  string $as
+     * @param  array  $action
+     * @param  string  $as
      *
      * @return array
      */
