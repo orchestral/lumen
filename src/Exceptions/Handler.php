@@ -144,7 +144,7 @@ class Handler implements ExceptionHandler
      */
     protected function convertExceptionToArray(Throwable $e)
     {
-        return \env('APP_DEBUG', \config('app.debug', false)) ? [
+        return \config('app.debug', false) ? [
             'message' => $e->getMessage(),
             'exception' => get_class($e),
             'file' => $e->getFile(),
