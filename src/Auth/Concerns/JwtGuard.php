@@ -2,7 +2,6 @@
 
 namespace Laravel\Lumen\Auth\Concerns;
 
-use Exception;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -11,20 +10,16 @@ trait JwtGuard
     /**
      * Bind authentication for API Token.
      *
+     * @param  string  $name
+     *
      * @return void
      */
-    protected function bootJwtGuard(): void
+    protected function bootJwtGuard(string $name = 'jwt'): void
     {
-        Auth::viaRequest('jwt', function ($request) {
-            try {
-                if (! $user = JWTAuth::parseToken()->authenticate()) {
-                    return;
-                }
-            } catch (Exception $e) {
-                return;
-            }
-
-            return $user;
+        Auth::viaRequest($name, static function ($request) {
+            return \rescue(static function () {
+                return JWTAuth::parseToken()->authenticate();
+            });
         });
     }
 }
