@@ -13,6 +13,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\ValidationException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Debug\Exception\FlattenException;
 use Symfony\Component\Debug\ExceptionHandler as SymfonyExceptionHandler;
@@ -47,7 +48,7 @@ class Handler implements ExceptionHandler
         }
 
         try {
-            $logger = \app('Psr\Log\LoggerInterface');
+            $logger = \app(LoggerInterface::class);
         } catch (Exception $ex) {
             throw $e; // throw the original exception
         }
