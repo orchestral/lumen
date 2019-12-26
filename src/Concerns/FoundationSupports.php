@@ -13,7 +13,9 @@ trait FoundationSupports
      */
     public function withFoundation()
     {
-        (new UserAccessPolicy())->bootstrap($this);
+        $this->booted(static function ($app) {
+            (new UserAccessPolicy())->bootstrap($app);
+        });
 
         $this->registerMemoryBindings();
         $this->registerAuthorizationBindings();
