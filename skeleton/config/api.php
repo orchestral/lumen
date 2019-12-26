@@ -164,7 +164,9 @@ return [
     |
     */
 
-    'auth' => [],
+    'auth' => [
+        // 'passport' => App\Lumen\Auth\Providers\Passport::class,
+    ],
 
     /*
     |--------------------------------------------------------------------------
