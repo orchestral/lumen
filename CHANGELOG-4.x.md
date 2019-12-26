@@ -2,6 +2,15 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/lumen`.
 
+## 4.3.1
+
+Released: 2019-12-27
+
+### Changes
+
+* Remove redundant `env()` request.
+* Performance improvements to `Laravel\Lumen\Application::runningInConsole()`.
+
 ## 4.3.0
 
 Released: 2019-12-26
