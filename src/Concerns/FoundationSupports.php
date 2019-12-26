@@ -2,7 +2,7 @@
 
 namespace Laravel\Lumen\Concerns;
 
-use Orchestra\Foundation\Listeners\UserAccess;
+use Orchestra\Foundation\Bootstrap\UserAccessPolicy;
 
 trait FoundationSupports
 {
@@ -13,7 +13,7 @@ trait FoundationSupports
      */
     public function withFoundation()
     {
-        $this->make('events')->listen('orchestra.auth: roles', UserAccess::class);
+        (new UserAccessPolicy())->bootstrap($this);
 
         $this->registerMemoryBindings();
         $this->registerAuthorizationBindings();
