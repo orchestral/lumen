@@ -111,8 +111,6 @@ class Application extends Container implements ApplicationContract
      */
     public function __construct($basePath = null)
     {
-        \date_default_timezone_set(\env('APP_TIMEZONE', 'UTC'));
-
         $this->basePath = $basePath;
 
         $this->bootstrapContainer();
