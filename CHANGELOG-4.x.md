@@ -2,6 +2,33 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/lumen`.
 
+## 4.3.1
+
+Released: 2019-12-27
+
+### Changes
+
+* Remove redundant `env()` request.
+* Performance improvements to `Laravel\Lumen\Application::runningInConsole()`.
+
+## 4.3.0
+
+Released: 2019-12-26
+
+### Added
+
+* Added to skeleton:
+    - `App\Lumen\Auth\Providers\Authorization`.
+    - `App\Lumen\Auth\Providers\Passport`.
+    - Ignores `Laravel\Passport\Exceptions\OAuthServerException` from Lumen exception report handler.
+
+### Changes
+
+* Changes to skeleton:
+    - Boot `Laravie\Authen\BootAuthenProvider` by default via `App\Lumen\Providers\AuthServiceProvider`.
+* Stop inappropriate `env()` lookup in `Laravel\Lumen\Exceptions\Handler`.
+* Register `Orchestra\Foundation\Testing\Concerns\WithInstallation` to `Laravel\Lumen\Testing\TestCase`.
+
 ## 4.2.1
 
 Released: 2019-11-03

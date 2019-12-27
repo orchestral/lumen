@@ -7,12 +7,14 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Facades\Facade;
 use Mockery;
+use Orchestra\Foundation\Testing\Concerns\WithInstallation;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
     use Concerns\MakesHttpRequests,
-        Concerns\Testing;
+        Concerns\Testing,
+        WithInstallation;
 
     /**
      * The base URL to use while testing the application.
@@ -41,7 +43,7 @@ abstract class TestCase extends BaseTestCase
 
         $this->app = $this->createApplication();
 
-        $url = $this->app->make('config')->get('app.url', env('APP_URL', 'http://localhost'));
+        $url = $this->app->make('config')->get('app.url', 'http://localhost');
 
         $this->app->make('url')->forceRootUrl($url);
 

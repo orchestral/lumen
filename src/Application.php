@@ -649,7 +649,7 @@ class Application extends Container implements ApplicationContract
      */
     public function runningInConsole()
     {
-        return \php_sapi_name() === 'cli' || \php_sapi_name() === 'phpdbg';
+        return \PHP_SAPI === 'cli' || \PHP_SAPI === 'phpdbg';
     }
 
     /**
