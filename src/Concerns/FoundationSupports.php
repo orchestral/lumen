@@ -2,7 +2,9 @@
 
 namespace Laravel\Lumen\Concerns;
 
+use Orchestra\Foundation\Auth\User;
 use Orchestra\Foundation\Bootstrap\UserAccessPolicy;
+use Orchestra\Model\HS;
 
 trait FoundationSupports
 {
@@ -13,6 +15,8 @@ trait FoundationSupports
      */
     public function withFoundation()
     {
+        HS::override('User', User::class);
+
         $this->booted(static function ($app) {
             (new UserAccessPolicy())->bootstrap($app);
         });
