@@ -2,6 +2,14 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/lumen`.
 
+## 4.4.0
+
+Released: 2020-01-05
+
+### Changes
+
+* Improves eloquent hot-swap implementation.
+
 ## 4.3.1
 
 Released: 2019-12-27

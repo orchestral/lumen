@@ -10,6 +10,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Lumen\Routing\Router;
 use Orchestra\Contracts\Foundation\Application as ApplicationContract;
+use Orchestra\Model\HS;
 use RuntimeException;
 
 class Application extends Container implements ApplicationContract
@@ -353,6 +354,8 @@ class Application extends Container implements ApplicationContract
     public function flush()
     {
         parent::flush();
+
+        HS::flush();
 
         $this->middleware = [];
         $this->currentRoute = [];
