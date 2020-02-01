@@ -13,18 +13,13 @@ use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Nyholm\Psr7\Factory\Psr17Factory;
-use Nyholm\Psr7\Response as NyholmPsrResponse;
+use Nyholm\Psr7\Response as PsrResponse;
 use Orchestra\Config\FileLoader;
 use Orchestra\Config\Repository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
-use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
-use Zend\Diactoros\Response as ZendPsrResponse;
-use Zend\Diactoros\ServerRequestFactory;
 
 trait CoreBindings
 {
@@ -504,13 +499,9 @@ trait CoreBindings
      */
     protected function registerPsrResponseBindings()
     {
-        $this->singleton(ResponseInterface::class, static function () {
-            if (\class_exists(NyholmPsrResponse::class)) {
-                return new NyholmPsrResponse();
-            }
-
-            if (\class_exists(ZendPsrResponse::class)) {
-                return new ZendPsrResponse();
+        $this->singleton(ResponseInterface::class, function () {
+            if (class_exists(PsrResponse::class)) {
+                return new PsrResponse();
             }
 
             throw new Exception('Unable to resolve PSR response. Please install nyholm/psr7.');
