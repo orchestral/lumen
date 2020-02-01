@@ -2,6 +2,18 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/lumen`.
 
+## 4.4.1
+
+Released: 2020-02-02
+
+### Changes
+
+* Register redis container aliases.
+
+### Fixed
+
+* Fixes request instance to `Laravel\Lumen\Http\Request` when using Console.
+
 ## 4.4.0
 
 Released: 2020-01-05
