@@ -2,6 +2,7 @@
 
 namespace Laravel\Lumen\Concerns;
 
+use Exception;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 use Illuminate\Log\LogManager;
@@ -11,11 +12,19 @@ use Laravel\Lumen\Routing\UrlGenerator;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Nyholm\Psr7\Response as NyholmPsrResponse;
 use Orchestra\Config\FileLoader;
 use Orchestra\Config\Repository;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
+use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
-use Zend\Diactoros\Response as PsrResponse;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
+use Zend\Diactoros\Response as ZendPsrResponse;
+use Zend\Diactoros\ServerRequestFactory;
 
 trait CoreBindings
 {
@@ -472,8 +481,19 @@ trait CoreBindings
      */
     protected function registerPsrRequestBindings()
     {
-        $this->singleton('Psr\Http\Message\ServerRequestInterface', static function ($app) {
-            return (new DiactorosFactory())->createRequest($app->make('request'));
+        $this->singleton(ServerRequestInterface::class, static function ($app) {
+            if (\class_exists(Psr17Factory::class) && \class_exists(PsrHttpFactory::class)) {
+                $psr17Factory = new Psr17Factory();
+
+                return (new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory))
+                    ->createRequest($app->make('request'));
+            }
+
+            if (\class_exists(ServerRequestFactory::class) && \class_exists(DiactorosFactory::class)) {
+                return (new DiactorosFactory())->createRequest($app->make('request'));
+            }
+
+            throw new Exception('Unable to resolve PSR request. Please install symfony/psr-http-message-bridge and nyholm/psr7.');
         });
     }
 
@@ -484,8 +504,16 @@ trait CoreBindings
      */
     protected function registerPsrResponseBindings()
     {
-        $this->singleton('Psr\Http\Message\ResponseInterface', static function () {
-            return new PsrResponse();
+        $this->singleton(ResponseInterface::class, static function () {
+            if (\class_exists(NyholmPsrResponse::class)) {
+                return new NyholmPsrResponse();
+            }
+
+            if (\class_exists(ZendPsrResponse::class)) {
+                return new ZendPsrResponse();
+            }
+
+            throw new Exception('Unable to resolve PSR response. Please install nyholm/psr7.');
         });
     }
 
