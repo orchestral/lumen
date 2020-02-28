@@ -35,6 +35,8 @@ class Handler implements ExceptionHandler
      *
      * @param  \Exception  $e
      *
+     * @throws \Exception
+     *
      * @return void
      */
     public function report(Exception $e)
@@ -87,12 +89,14 @@ class Handler implements ExceptionHandler
     }
 
     /**
-     * Render an exception into a response.
+     * Render an exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Exception  $e
      *
-     * @return \Illuminate\Http\Response
+     * @throws \Exception
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function render($request, Exception $e)
     {

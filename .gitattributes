@@ -2,8 +2,6 @@
 
 # Ignore following folder/file.
 /.github export-ignore
-/build export-ignore
-/docs export-ignore
 /tests export-ignore
 /.coveralls.yml export-ignore
 /.editorconfig export-ignore
