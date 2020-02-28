@@ -2,6 +2,14 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/lumen`.
 
+## 4.5.0
+
+Released: 2020-02-13
+
+### Changes
+
+* Updated the PSR17 RequestFactory and PSR7 Response classes to use `nyholm/psr7`. If `nyholm/psr7` is not present, default back to `Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory` & `Zend\Diactoros\ServerRequestFactory` respectively.
+
 ## 4.4.1
 
 Released: 2020-02-02
