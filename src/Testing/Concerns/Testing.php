@@ -47,8 +47,6 @@ trait Testing
     {
         if (! $this->app) {
             $this->refreshApplication();
-
-            $this->app->make(ConsoleKernel::class);
         }
 
         $this->setUpTraits();
