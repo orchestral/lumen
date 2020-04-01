@@ -2,6 +2,19 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/lumen`.
 
+## 4.6.0
+
+Released: 2020-03-29
+
+### Changes
+
+* Accept SMS Links as valid urls.
+
+### Fixes
+
+* Prepare request when booting `Application` during test.
+* Fixes `bootstrap.php` skeleton.
+
 ## 4.5.0
 
 Released: 2020-02-13
