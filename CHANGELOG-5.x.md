@@ -2,6 +2,14 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/lumen`.
 
+## 5.0.1
+
+Released: 2020-04-20
+
+### Changes
+
+* Use BindingResolutionException to signal problem with container resolution.
+
 ## 5.0.0
 
 Released: 2020-04-03
