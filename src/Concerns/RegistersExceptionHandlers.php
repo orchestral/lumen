@@ -49,7 +49,7 @@ trait RegistersExceptionHandlers
         });
 
         \set_exception_handler(function ($e) {
-            $this->handleUncaughtException($e);
+            $this->handleException($e);
         });
 
         \register_shutdown_function(function () {
@@ -117,7 +117,7 @@ trait RegistersExceptionHandlers
      *
      * @return void
      */
-    protected function handleUncaughtException(Throwable $e)
+    protected function handleException(Throwable $e)
     {
         $handler = $this->resolveExceptionHandler();
 
