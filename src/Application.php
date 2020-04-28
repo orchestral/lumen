@@ -2,29 +2,45 @@
 
 namespace Laravel\Lumen;
 
-use Illuminate\Config\Repository as ConfigRepository;
+use Closure;
 use Illuminate\Container\Container;
-use Illuminate\Contracts\Container\BindingResolutionException;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Http\Request;
-use Illuminate\Log\LogManager;
-use Illuminate\Support\Composer;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Lumen\Routing\Router;
-use Nyholm\Psr7\Factory\Psr17Factory;
-use Nyholm\Psr7\Response as PsrResponse;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Orchestra\Contracts\Foundation\Application as ApplicationContract;
+use Orchestra\Model\HS;
 use RuntimeException;
-use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
-class Application extends Container
+class Application extends Container implements ApplicationContract
 {
-    use Concerns\RoutesRequests,
+    use Concerns\Compatibility,
+        Concerns\CoreBindings,
+        Concerns\FoundationSupports,
+        Concerns\RoutesRequests,
         Concerns\RegistersExceptionHandlers;
+
+    /**
+     * The array of booting callbacks.
+     *
+     * @var array
+     */
+    protected $bootingCallbacks = [];
+
+    /**
+     * The array of booted callbacks.
+     *
+     * @var array
+     */
+    protected $bootedCallbacks = [];
+
+    /**
+     * The array of terminating callbacks.
+     *
+     * @var array
+     */
+    protected $terminatingCallbacks = [];
 
     /**
      * Indicates if the class aliases have been registered.
@@ -93,7 +109,6 @@ class Application extends Container
      * Create a new Lumen application instance.
      *
      * @param  string|null  $basePath
-     * @return void
      */
     public function __construct($basePath = null)
     {
@@ -117,10 +132,19 @@ class Application extends Container
         $this->instance(self::class, $this);
 
         $this->instance('path', $this->path());
+        $this->instance('path.base', $this->basePath());
+        $this->instance('path.config', $this->basePath('config'));
+        $this->instance('path.database', $this->databasePath());
+        $this->instance('path.storage', $this->storagePath());
+        $this->instance('path.resources', $this->resourcePath());
+        $this->instance('path.bootstrap', $this->bootstrapPath());
 
         $this->instance('env', $this->environment());
 
         $this->registerContainerAliases();
+
+        $this->configure('app');
+        $this->configure('view');
     }
 
     /**
@@ -150,21 +174,22 @@ class Application extends Container
      */
     public function isDownForMaintenance()
     {
-        return false;
+        return \file_exists($this->storagePath('framework/down'));
     }
 
     /**
      * Get or check the current application environment.
      *
      * @param  mixed
+     *
      * @return string
      */
-    public function environment()
+    public function environment(...$environments)
     {
-        $env = env('APP_ENV', config('app.env', 'production'));
+        $env = \env('APP_ENV', 'production');
 
-        if (func_num_args() > 0) {
-            $patterns = is_array(func_get_arg(0)) ? func_get_arg(0) : func_get_args();
+        if (\func_num_args() > 0) {
+            $patterns = \is_array($environments[0]) ? $environments[0] : $environments;
 
             foreach ($patterns as $pattern) {
                 if (Str::is($pattern, $env)) {
@@ -182,21 +207,24 @@ class Application extends Container
      * Register a service provider with the application.
      *
      * @param  \Illuminate\Support\ServiceProvider|string  $provider
-     * @return \Illuminate\Support\ServiceProvider
+     * @param  array  $options
+     * @param  bool   $force
+     *
+     * @return void
      */
-    public function register($provider)
+    public function register($provider, $options = [], $force = false)
     {
         if (! $provider instanceof ServiceProvider) {
-            $provider = new $provider($this);
+            $provider = $this->resolveProvider($provider);
         }
 
-        if (array_key_exists($providerName = get_class($provider), $this->loadedProviders)) {
+        if (\array_key_exists($providerName = \get_class($provider), $this->loadedProviders)) {
             return;
         }
 
         $this->loadedProviders[$providerName] = $provider;
 
-        if (method_exists($provider, 'register')) {
+        if (\method_exists($provider, 'register')) {
             $provider->register();
         }
 
@@ -209,9 +237,11 @@ class Application extends Container
      * Register a deferred provider and service.
      *
      * @param  string  $provider
+     * @param  string|null  $service
+     *
      * @return void
      */
-    public function registerDeferredProvider($provider)
+    public function registerDeferredProvider($provider, $service = null)
     {
         return $this->register($provider);
     }
@@ -225,23 +255,71 @@ class Application extends Container
             return;
         }
 
-        array_walk($this->loadedProviders, function ($p) {
+        \array_walk($this->loadedProviders, function ($p) {
             $this->bootProvider($p);
         });
 
+        // Once the application has booted we will also fire some "booted" callbacks
+        // for any listeners that need to do work after this initial booting gets
+        // finished. This is useful when ordering the boot-up processes we run.
+        $this->fireAppCallbacks($this->bootingCallbacks);
+
         $this->booted = true;
+
+        $this->fireAppCallbacks($this->bootedCallbacks);
+    }
+
+    /**
+     * Resolve a service provider instance from the class name.
+     *
+     * @param  string  $provider
+     *
+     * @return \Illuminate\Support\ServiceProvider
+     */
+    public function resolveProvider($provider)
+    {
+        return new $provider($this);
     }
 
     /**
      * Boot the given service provider.
      *
      * @param  \Illuminate\Support\ServiceProvider  $provider
+     *
      * @return mixed
      */
     protected function bootProvider(ServiceProvider $provider)
     {
-        if (method_exists($provider, 'boot')) {
+        if (\method_exists($provider, 'boot')) {
             return $this->call([$provider, 'boot']);
+        }
+    }
+
+    /**
+     * Register a new boot listener.
+     *
+     * @param  mixed  $callback
+     *
+     * @return void
+     */
+    public function booting($callback)
+    {
+        $this->bootingCallbacks[] = $callback;
+    }
+
+    /**
+     * Register a new "booted" listener.
+     *
+     * @param  mixed  $callback
+     *
+     * @return void
+     */
+    public function booted($callback)
+    {
+        $this->bootedCallbacks[] = $callback;
+
+        if ($this->booted) {
+            $this->fireAppCallbacks([$callback]);
         }
     }
 
@@ -250,6 +328,7 @@ class Application extends Container
      *
      * @param  string  $abstract
      * @param  array  $parameters
+     *
      * @return mixed
      */
     public function make($abstract, array $parameters = [])
@@ -257,8 +336,8 @@ class Application extends Container
         $abstract = $this->getAlias($abstract);
 
         if (! $this->bound($abstract) &&
-            array_key_exists($abstract, $this->availableBindings) &&
-            ! array_key_exists($this->availableBindings[$abstract], $this->ranServiceBinders)) {
+            \array_key_exists($abstract, $this->availableBindings) &&
+            ! \array_key_exists($this->availableBindings[$abstract], $this->ranServiceBinders)) {
             $this->{$method = $this->availableBindings[$abstract]}();
 
             $this->ranServiceBinders[$method] = true;
@@ -268,296 +347,47 @@ class Application extends Container
     }
 
     /**
-     * Register container bindings for the application.
+     * Flush the container of all bindings and resolved instances.
      *
      * @return void
      */
-    protected function registerAuthBindings()
+    public function flush()
     {
-        $this->singleton('auth', function () {
-            return $this->loadComponent('auth', 'Illuminate\Auth\AuthServiceProvider', 'auth');
-        });
+        parent::flush();
 
-        $this->singleton('auth.driver', function () {
-            return $this->loadComponent('auth', 'Illuminate\Auth\AuthServiceProvider', 'auth.driver');
-        });
+        HS::flush();
 
-        $this->singleton('Illuminate\Contracts\Auth\Access\Gate', function () {
-            return $this->loadComponent('auth', 'Illuminate\Auth\AuthServiceProvider', 'Illuminate\Contracts\Auth\Access\Gate');
-        });
+        $this->middleware = [];
+        $this->currentRoute = [];
+        $this->routeMiddleware = [];
+        $this->loadedProviders = [];
+        $this->bootingCallbacks = [];
+        $this->bootedCallbacks = [];
+        $this->reboundCallbacks = [];
+        $this->resolvingCallbacks = [];
+        $this->terminatingCallbacks = [];
+        $this->availableBindings = [];
+        $this->ranServiceBinders = [];
+        $this->loadedConfigurations = [];
+        $this->afterResolvingCallbacks = [];
+
+        $this->router = null;
+        $this->dispatcher = null;
+        static::$instance = null;
     }
 
     /**
-     * Register container bindings for the application.
+     * Call the booting callbacks for the application.
+     *
+     * @param  array  $callbacks
      *
      * @return void
      */
-    protected function registerBroadcastingBindings()
+    protected function fireAppCallbacks(array $callbacks)
     {
-        $this->singleton('Illuminate\Contracts\Broadcasting\Factory', function () {
-            return $this->loadComponent('broadcasting', 'Illuminate\Broadcasting\BroadcastServiceProvider', 'Illuminate\Contracts\Broadcasting\Factory');
-        });
-
-        $this->singleton('Illuminate\Contracts\Broadcasting\Broadcaster', function () {
-            return $this->loadComponent('broadcasting', 'Illuminate\Broadcasting\BroadcastServiceProvider', 'Illuminate\Contracts\Broadcasting\Broadcaster');
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerBusBindings()
-    {
-        $this->singleton('Illuminate\Contracts\Bus\Dispatcher', function () {
-            $this->register('Illuminate\Bus\BusServiceProvider');
-
-            return $this->make('Illuminate\Contracts\Bus\Dispatcher');
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerCacheBindings()
-    {
-        $this->singleton('cache', function () {
-            return $this->loadComponent('cache', 'Illuminate\Cache\CacheServiceProvider');
-        });
-        $this->singleton('cache.store', function () {
-            return $this->loadComponent('cache', 'Illuminate\Cache\CacheServiceProvider', 'cache.store');
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerComposerBindings()
-    {
-        $this->singleton('composer', function ($app) {
-            return new Composer($app->make('files'), $this->basePath());
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerConfigBindings()
-    {
-        $this->singleton('config', function () {
-            return new ConfigRepository;
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerDatabaseBindings()
-    {
-        $this->singleton('db', function () {
-            $this->configure('app');
-
-            return $this->loadComponent(
-                'database', [
-                    'Illuminate\Database\DatabaseServiceProvider',
-                    'Illuminate\Pagination\PaginationServiceProvider',
-                ], 'db'
-            );
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerEncrypterBindings()
-    {
-        $this->singleton('encrypter', function () {
-            return $this->loadComponent('app', 'Illuminate\Encryption\EncryptionServiceProvider', 'encrypter');
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerEventBindings()
-    {
-        $this->singleton('events', function () {
-            $this->register('Illuminate\Events\EventServiceProvider');
-
-            return $this->make('events');
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerFilesBindings()
-    {
-        $this->singleton('files', function () {
-            return new Filesystem;
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerFilesystemBindings()
-    {
-        $this->singleton('filesystem', function () {
-            return $this->loadComponent('filesystems', 'Illuminate\Filesystem\FilesystemServiceProvider', 'filesystem');
-        });
-        $this->singleton('filesystem.disk', function () {
-            return $this->loadComponent('filesystems', 'Illuminate\Filesystem\FilesystemServiceProvider', 'filesystem.disk');
-        });
-        $this->singleton('filesystem.cloud', function () {
-            return $this->loadComponent('filesystems', 'Illuminate\Filesystem\FilesystemServiceProvider', 'filesystem.cloud');
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerHashBindings()
-    {
-        $this->singleton('hash', function () {
-            $this->register('Illuminate\Hashing\HashServiceProvider');
-
-            return $this->make('hash');
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerLogBindings()
-    {
-        $this->singleton('Psr\Log\LoggerInterface', function () {
-            $this->configure('logging');
-
-            return new LogManager($this);
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerQueueBindings()
-    {
-        $this->singleton('queue', function () {
-            return $this->loadComponent('queue', 'Illuminate\Queue\QueueServiceProvider', 'queue');
-        });
-        $this->singleton('queue.connection', function () {
-            return $this->loadComponent('queue', 'Illuminate\Queue\QueueServiceProvider', 'queue.connection');
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerRouterBindings()
-    {
-        $this->singleton('router', function () {
-            return $this->router;
-        });
-    }
-
-    /**
-     * Prepare the given request instance for use with the application.
-     *
-     * @param  \Symfony\Component\HttpFoundation\Request $request
-     * @return \Illuminate\Http\Request
-     */
-    protected function prepareRequest(SymfonyRequest $request)
-    {
-        if (! $request instanceof Request) {
-            $request = Request::createFromBase($request);
+        foreach ($callbacks as $callback) {
+            \call_user_func($callback, $this);
         }
-
-        $request->setUserResolver(function ($guard = null) {
-            return $this->make('auth')->guard($guard)->user();
-        })->setRouteResolver(function () {
-            return $this->currentRoute;
-        });
-
-        return $request;
-    }
-
-    /**
-     * Register container bindings for the PSR-7 request implementation.
-     *
-     * @return void
-     */
-    protected function registerPsrRequestBindings()
-    {
-        $this->singleton(ServerRequestInterface::class, function ($app) {
-            if (class_exists(Psr17Factory::class) && class_exists(PsrHttpFactory::class)) {
-                $psr17Factory = new Psr17Factory;
-
-                return (new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory))
-                    ->createRequest($app->make('request'));
-            }
-
-            throw new BindingResolutionException('Unable to resolve PSR request. Please install symfony/psr-http-message-bridge and nyholm/psr7.');
-        });
-    }
-
-    /**
-     * Register container bindings for the PSR-7 response implementation.
-     *
-     * @return void
-     */
-    protected function registerPsrResponseBindings()
-    {
-        $this->singleton(ResponseInterface::class, function () {
-            if (class_exists(PsrResponse::class)) {
-                return new PsrResponse;
-            }
-
-            throw new BindingResolutionException('Unable to resolve PSR response. Please install nyholm/psr7.');
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerTranslationBindings()
-    {
-        $this->singleton('translator', function () {
-            $this->configure('app');
-
-            $this->instance('path.lang', $this->getLanguagePath());
-
-            $this->register('Illuminate\Translation\TranslationServiceProvider');
-
-            return $this->make('translator');
-        });
     }
 
     /**
@@ -567,49 +397,7 @@ class Application extends Container
      */
     protected function getLanguagePath()
     {
-        if (is_dir($langPath = $this->basePath().'/resources/lang')) {
-            return $langPath;
-        } else {
-            return __DIR__.'/../resources/lang';
-        }
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerUrlGeneratorBindings()
-    {
-        $this->singleton('url', function () {
-            return new Routing\UrlGenerator($this);
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerValidatorBindings()
-    {
-        $this->singleton('validator', function () {
-            $this->register('Illuminate\Validation\ValidationServiceProvider');
-
-            return $this->make('validator');
-        });
-    }
-
-    /**
-     * Register container bindings for the application.
-     *
-     * @return void
-     */
-    protected function registerViewBindings()
-    {
-        $this->singleton('view', function () {
-            return $this->loadComponent('view', 'Illuminate\View\ViewServiceProvider');
-        });
+        return $this->resourcePath('lang');
     }
 
     /**
@@ -618,6 +406,7 @@ class Application extends Container
      * @param  string  $config
      * @param  array|string  $providers
      * @param  string|null  $return
+     *
      * @return mixed
      */
     public function loadComponent($config, $providers, $return = null)
@@ -635,6 +424,7 @@ class Application extends Container
      * Load a configuration file into the application.
      *
      * @param  string  $name
+     *
      * @return void
      */
     public function configure($name)
@@ -645,40 +435,31 @@ class Application extends Container
 
         $this->loadedConfigurations[$name] = true;
 
-        $path = $this->getConfigurationPath($name);
+        $paths = $this->getConfigurationPaths($name);
 
-        if ($path) {
-            $this->make('config')->set($name, require $path);
+        $config = $this->make('config');
+
+        foreach ($paths as $path) {
+            $config->set(Arr::dot([
+                $name => require $path,
+            ]));
         }
     }
 
     /**
-     * Get the path to the given configuration file.
+     * Get the registered service provider instances if any exist.
      *
-     * If no name is provided, then we'll return the path to the config folder.
+     * @param  \Illuminate\Support\ServiceProvider|string  $provider
      *
-     * @param  string|null  $name
-     * @return string
+     * @return array
      */
-    public function getConfigurationPath($name = null)
+    public function getProviders($provider)
     {
-        if (! $name) {
-            $appConfigDir = $this->basePath('config').'/';
+        $name = \is_string($provider) ? $provider : \get_class($provider);
 
-            if (file_exists($appConfigDir)) {
-                return $appConfigDir;
-            } elseif (file_exists($path = __DIR__.'/../config/')) {
-                return $path;
-            }
-        } else {
-            $appConfigPath = $this->basePath('config').'/'.$name.'.php';
-
-            if (file_exists($appConfigPath)) {
-                return $appConfigPath;
-            } elseif (file_exists($path = __DIR__.'/../config/'.$name.'.php')) {
-                return $path;
-            }
-        }
+        return Arr::where($this->loadedProviders, static function ($value) use ($name) {
+            return $value instanceof $name;
+        });
     }
 
     /**
@@ -686,6 +467,7 @@ class Application extends Container
      *
      * @param  bool  $aliases
      * @param  array  $userAliases
+     *
      * @return void
      */
     public function withFacades($aliases = true, $userAliases = [])
@@ -695,26 +477,32 @@ class Application extends Container
         if ($aliases) {
             $this->withAliases($userAliases);
         }
+
+        return $this;
     }
 
     /**
      * Register the aliases for the application.
      *
-     * @param  array  $userAliases
+     * @param  array  $custom
+     *
      * @return void
      */
-    public function withAliases($userAliases = [])
+    public function withAliases($custom = [])
     {
         $defaults = [
             'Illuminate\Support\Facades\Auth' => 'Auth',
             'Illuminate\Support\Facades\Cache' => 'Cache',
             'Illuminate\Support\Facades\DB' => 'DB',
+            'Illuminate\Support\Facades\Crypt' => 'Crypt',
             'Illuminate\Support\Facades\Event' => 'Event',
             'Illuminate\Support\Facades\Gate' => 'Gate',
+            'Illuminate\Support\Facades\Hash' => 'Hash',
             'Illuminate\Support\Facades\Log' => 'Log',
             'Illuminate\Support\Facades\Queue' => 'Queue',
             'Illuminate\Support\Facades\Route' => 'Route',
             'Illuminate\Support\Facades\Schema' => 'Schema',
+            'Illuminate\Support\Facades\Session' => 'Session',
             'Illuminate\Support\Facades\Storage' => 'Storage',
             'Illuminate\Support\Facades\URL' => 'URL',
             'Illuminate\Support\Facades\Validator' => 'Validator',
@@ -723,22 +511,26 @@ class Application extends Container
         if (! static::$aliasesRegistered) {
             static::$aliasesRegistered = true;
 
-            $merged = array_merge($defaults, $userAliases);
+            $merged = \array_merge($defaults, $custom);
 
             foreach ($merged as $original => $alias) {
-                class_alias($original, $alias);
+                \class_alias($original, $alias);
             }
         }
+
+        return $this;
     }
 
     /**
      * Load the Eloquent library for the application.
      *
-     * @return void
+     * @return $this
      */
     public function withEloquent()
     {
         $this->make('db');
+
+        return $this;
     }
 
     /**
@@ -748,13 +540,14 @@ class Application extends Container
      */
     public function path()
     {
-        return $this->basePath.DIRECTORY_SEPARATOR.'app';
+        return $this->basePath.DIRECTORY_SEPARATOR.'lumen'.DIRECTORY_SEPARATOR.'app';
     }
 
     /**
      * Get the base path for the application.
      *
      * @param  string|null  $path
+     *
      * @return string
      */
     public function basePath($path = null)
@@ -763,10 +556,10 @@ class Application extends Container
             return $this->basePath.($path ? '/'.$path : $path);
         }
 
-        if ($this->runningInConsole()) {
-            $this->basePath = getcwd();
+        if ($this->runningInConsole() && ! $this->runningUnitTests()) {
+            $this->basePath = \getcwd();
         } else {
-            $this->basePath = realpath(getcwd().'/../');
+            $this->basePath = \realpath(\getcwd().'/../');
         }
 
         return $this->basePath($path);
@@ -776,39 +569,53 @@ class Application extends Container
      * Get the path to the application configuration files.
      *
      * @param  string  $path
+     *
      * @return string
      */
     public function configPath($path = '')
     {
-        return $this->basePath.DIRECTORY_SEPARATOR.'config'.($path ? DIRECTORY_SEPARATOR.$path : $path);
+        if (empty($path)) {
+            return $this['path.config'];
+        } elseif (\file_exists($lumenPath = $this->basePath("lumen/config/{$path}"))) {
+            return $lumenPath;
+        }
+
+        return $this->basePath("config/{$path}");
     }
 
     /**
      * Get the path to the database directory.
      *
      * @param  string  $path
+     *
      * @return string
      */
     public function databasePath($path = '')
     {
-        return $this->basePath.DIRECTORY_SEPARATOR.'database'.($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return $this->basePath('database').($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
-     * Get the storage path for the application.
+     * Get the resource path for the application.
      *
      * @param  string|null  $path
+     *
      * @return string
      */
-    public function storagePath($path = '')
+    public function resourcePath($path = '')
     {
-        return ($this->storagePath ?: $this->basePath.DIRECTORY_SEPARATOR.'storage').($path ? DIRECTORY_SEPARATOR.$path : $path);
+        if ($this->resourcePath) {
+            return $this->resourcePath.($path ? '/'.$path : $path);
+        }
+
+        return $this->basePath('resources'.($path ? '/'.$path : $path));
     }
 
     /**
      * Set the storage directory.
      *
      * @param  string  $path
+     *
      * @return $this
      */
     public function useStoragePath($path)
@@ -821,24 +628,19 @@ class Application extends Container
     }
 
     /**
-     * Get the path to the resources directory.
+     * Get the storage path for the application.
      *
      * @param  string|null  $path
+     *
      * @return string
      */
-    public function resourcePath($path = '')
+    public function storagePath($path = '')
     {
-        return $this->basePath.DIRECTORY_SEPARATOR.'resources'.($path ? DIRECTORY_SEPARATOR.$path : $path);
-    }
+        if ($this->storagePath) {
+            return $this->storagePath.($path ? '/'.$path : $path);
+        }
 
-    /**
-     * Determine if the application events are cached.
-     *
-     * @return bool
-     */
-    public function eventsAreCached()
-    {
-        return false;
+        return $this->basePath('storage'.($path ? '/'.$path : $path));
     }
 
     /**
@@ -865,39 +667,40 @@ class Application extends Container
      * Prepare the application to execute a console command.
      *
      * @param  bool  $aliases
+     *
      * @return void
      */
     public function prepareForConsoleCommand($aliases = true)
     {
         $this->withFacades($aliases);
 
-        $this->make('cache');
-        $this->make('queue');
-
         $this->configure('database');
 
-        $this->register('Illuminate\Database\MigrationServiceProvider');
-        $this->register('Laravel\Lumen\Console\ConsoleServiceProvider');
+        $this->register(\Illuminate\Database\MigrationServiceProvider::class);
+        $this->register(\Orchestra\Database\ConsoleServiceProvider::class);
+        $this->register(Console\ConsoleServiceProvider::class);
+        $this->register(\Orchestra\Publisher\PublisherServiceProvider::class);
+        $this->register(\Orchestra\Foundation\Providers\SupportServiceProvider::class);
     }
 
     /**
      * Get the application namespace.
      *
-     * @return string
-     *
      * @throws \RuntimeException
+     *
+     * @return string
      */
     public function getNamespace()
     {
-        if (! is_null($this->namespace)) {
+        if (! \is_null($this->namespace)) {
             return $this->namespace;
         }
 
-        $composer = json_decode(file_get_contents(base_path('composer.json')), true);
+        $composer = \json_decode(\file_get_contents($this->basePath('composer.json')), true);
 
-        foreach ((array) data_get($composer, 'autoload.psr-4') as $namespace => $path) {
+        foreach ((array) ($composer['autoload']['psr-4'] ?? []) as $namespace => $path) {
             foreach ((array) $path as $pathChoice) {
-                if (realpath(app()->path()) == realpath(base_path().'/'.$pathChoice)) {
+                if (\realpath($this->path()) == \realpath($this->basePath().'/'.$pathChoice)) {
                     return $this->namespace = $namespace;
                 }
             }
@@ -907,28 +710,29 @@ class Application extends Container
     }
 
     /**
-     * Flush the container of all bindings and resolved instances.
+     * Register a terminating callback with the application.
+     *
+     * @param  \Closure  $callback
+     *
+     * @return $this
+     */
+    public function terminating(Closure $callback)
+    {
+        $this->terminatingCallbacks[] = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Terminate the application.
      *
      * @return void
      */
-    public function flush()
+    public function terminate()
     {
-        parent::flush();
-
-        $this->middleware = [];
-        $this->currentRoute = [];
-        $this->loadedProviders = [];
-        $this->routeMiddleware = [];
-        $this->reboundCallbacks = [];
-        $this->resolvingCallbacks = [];
-        $this->availableBindings = [];
-        $this->ranServiceBinders = [];
-        $this->loadedConfigurations = [];
-        $this->afterResolvingCallbacks = [];
-
-        $this->router = null;
-        $this->dispatcher = null;
-        static::$instance = null;
+        foreach ($this->terminatingCallbacks as $terminating) {
+            $this->call($terminating);
+        }
     }
 
     /**
@@ -945,6 +749,7 @@ class Application extends Container
      * Set the current application locale.
      *
      * @param  string  $locale
+     *
      * @return void
      */
     public function setLocale($locale)
@@ -957,6 +762,7 @@ class Application extends Container
      * Determine if application locale is the given locale.
      *
      * @param  string  $locale
+     *
      * @return bool
      */
     public function isLocale($locale)
@@ -965,94 +771,26 @@ class Application extends Container
     }
 
     /**
-     * Register the core container aliases.
+     * Get the paths to the given configuration file.
      *
-     * @return void
+     * If no name is provided, then we'll return the path to the config folder.
+     *
+     * @param  string  $name
+     *
+     * @return array
      */
-    protected function registerContainerAliases()
+    protected function getConfigurationPaths(string $name): array
     {
-        $this->aliases = [
-            'Illuminate\Contracts\Foundation\Application' => 'app',
-            'Illuminate\Contracts\Auth\Factory' => 'auth',
-            'Illuminate\Contracts\Auth\Guard' => 'auth.driver',
-            'Illuminate\Contracts\Cache\Factory' => 'cache',
-            'Illuminate\Contracts\Cache\Repository' => 'cache.store',
-            'Illuminate\Contracts\Config\Repository' => 'config',
-            'Illuminate\Container\Container' => 'app',
-            'Illuminate\Contracts\Container\Container' => 'app',
-            'Illuminate\Database\ConnectionResolverInterface' => 'db',
-            'Illuminate\Database\DatabaseManager' => 'db',
-            'Illuminate\Contracts\Encryption\Encrypter' => 'encrypter',
-            'Illuminate\Contracts\Events\Dispatcher' => 'events',
-            'Illuminate\Contracts\Filesystem\Factory' => 'filesystem',
-            'Illuminate\Contracts\Filesystem\Filesystem' => 'filesystem.disk',
-            'Illuminate\Contracts\Filesystem\Cloud' => 'filesystem.cloud',
-            'Illuminate\Contracts\Hashing\Hasher' => 'hash',
-            'log' => 'Psr\Log\LoggerInterface',
-            'Illuminate\Contracts\Queue\Factory' => 'queue',
-            'Illuminate\Contracts\Queue\Queue' => 'queue.connection',
-            'Illuminate\Redis\RedisManager' => 'redis',
-            'Illuminate\Contracts\Redis\Factory' => 'redis',
-            'Illuminate\Redis\Connections\Connection' => 'redis.connection',
-            'Illuminate\Contracts\Redis\Connection' => 'redis.connection',
-            'request' => 'Illuminate\Http\Request',
-            'Laravel\Lumen\Routing\Router' => 'router',
-            'Illuminate\Contracts\Translation\Translator' => 'translator',
-            'Laravel\Lumen\Routing\UrlGenerator' => 'url',
-            'Illuminate\Contracts\Validation\Factory' => 'validator',
-            'Illuminate\Contracts\View\Factory' => 'view',
-        ];
-    }
+        $paths = [];
 
-    /**
-     * The available container bindings and their respective load methods.
-     *
-     * @var array
-     */
-    public $availableBindings = [
-        'auth' => 'registerAuthBindings',
-        'auth.driver' => 'registerAuthBindings',
-        'Illuminate\Auth\AuthManager' => 'registerAuthBindings',
-        'Illuminate\Contracts\Auth\Guard' => 'registerAuthBindings',
-        'Illuminate\Contracts\Auth\Access\Gate' => 'registerAuthBindings',
-        'Illuminate\Contracts\Broadcasting\Broadcaster' => 'registerBroadcastingBindings',
-        'Illuminate\Contracts\Broadcasting\Factory' => 'registerBroadcastingBindings',
-        'Illuminate\Contracts\Bus\Dispatcher' => 'registerBusBindings',
-        'cache' => 'registerCacheBindings',
-        'cache.store' => 'registerCacheBindings',
-        'Illuminate\Contracts\Cache\Factory' => 'registerCacheBindings',
-        'Illuminate\Contracts\Cache\Repository' => 'registerCacheBindings',
-        'composer' => 'registerComposerBindings',
-        'config' => 'registerConfigBindings',
-        'db' => 'registerDatabaseBindings',
-        'Illuminate\Database\Eloquent\Factory' => 'registerDatabaseBindings',
-        'filesystem' => 'registerFilesystemBindings',
-        'filesystem.cloud' => 'registerFilesystemBindings',
-        'filesystem.disk' => 'registerFilesystemBindings',
-        'Illuminate\Contracts\Filesystem\Cloud' => 'registerFilesystemBindings',
-        'Illuminate\Contracts\Filesystem\Filesystem' => 'registerFilesystemBindings',
-        'Illuminate\Contracts\Filesystem\Factory' => 'registerFilesystemBindings',
-        'encrypter' => 'registerEncrypterBindings',
-        'Illuminate\Contracts\Encryption\Encrypter' => 'registerEncrypterBindings',
-        'events' => 'registerEventBindings',
-        'Illuminate\Contracts\Events\Dispatcher' => 'registerEventBindings',
-        'files' => 'registerFilesBindings',
-        'hash' => 'registerHashBindings',
-        'Illuminate\Contracts\Hashing\Hasher' => 'registerHashBindings',
-        'log' => 'registerLogBindings',
-        'Psr\Log\LoggerInterface' => 'registerLogBindings',
-        'queue' => 'registerQueueBindings',
-        'queue.connection' => 'registerQueueBindings',
-        'Illuminate\Contracts\Queue\Factory' => 'registerQueueBindings',
-        'Illuminate\Contracts\Queue\Queue' => 'registerQueueBindings',
-        'router' => 'registerRouterBindings',
-        'Psr\Http\Message\ServerRequestInterface' => 'registerPsrRequestBindings',
-        'Psr\Http\Message\ResponseInterface' => 'registerPsrResponseBindings',
-        'translator' => 'registerTranslationBindings',
-        'url' => 'registerUrlGeneratorBindings',
-        'validator' => 'registerValidatorBindings',
-        'Illuminate\Contracts\Validation\Factory' => 'registerValidatorBindings',
-        'view' => 'registerViewBindings',
-        'Illuminate\Contracts\View\Factory' => 'registerViewBindings',
-    ];
+        if (\file_exists($laravelConfigFile = $this->basePath("config/{$name}.php"))) {
+            $paths[] = $laravelConfigFile;
+        }
+
+        if (\file_exists($lumenConfigFile = $this->basePath("lumen/config/{$name}.php"))) {
+            $paths[] = $lumenConfigFile;
+        }
+
+        return \array_filter($paths);
+    }
 }
