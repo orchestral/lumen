@@ -20,6 +20,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
+use Illuminate\Contracts\Container\BindingResolutionException;
 
 trait CoreBindings
 {
@@ -488,7 +489,7 @@ trait CoreBindings
                 return (new DiactorosFactory())->createRequest($app->make('request'));
             }
 
-            throw new Exception('Unable to resolve PSR request. Please install symfony/psr-http-message-bridge and nyholm/psr7.');
+            throw new BindingResolutionException('Unable to resolve PSR request. Please install symfony/psr-http-message-bridge and nyholm/psr7.');
         });
     }
 
@@ -504,7 +505,7 @@ trait CoreBindings
                 return new PsrResponse();
             }
 
-            throw new Exception('Unable to resolve PSR response. Please install nyholm/psr7.');
+            throw new BindingResolutionException('Unable to resolve PSR response. Please install nyholm/psr7.');
         });
     }
 
