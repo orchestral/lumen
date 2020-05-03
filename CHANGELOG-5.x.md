@@ -2,6 +2,14 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/lumen`.
 
+## 5.0.3
+
+Released: 2020-05-04
+
+### Fixes
+
+* Fixes constructing `Symfony\Component\ErrorHandler\Error\FatalError`.
+
 ## 5.0.2
 
 Released: 2020-04-29
