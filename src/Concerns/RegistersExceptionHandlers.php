@@ -79,7 +79,7 @@ trait RegistersExceptionHandlers
      */
     protected function fatalErrorFromPhpError(array $error, $traceOffset = null)
     {
-        return new FatalError($error['message'], $error, $traceOffset);
+        return new FatalError($error['message'], 0, $error, $traceOffset);
     }
 
     /**
