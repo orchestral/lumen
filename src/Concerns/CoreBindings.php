@@ -2,7 +2,7 @@
 
 namespace Laravel\Lumen\Concerns;
 
-use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 use Illuminate\Log\LogManager;
@@ -20,7 +20,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
-use Illuminate\Contracts\Container\BindingResolutionException;
 
 trait CoreBindings
 {

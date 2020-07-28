@@ -2,7 +2,6 @@
 
 namespace Laravel\Lumen\Testing\Concerns;
 
-use Illuminate\Contracts\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Carbon;
 use Mockery;
 use Orchestra\Foundation\Testing\Concerns\WithInstallation;

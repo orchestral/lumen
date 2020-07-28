@@ -99,7 +99,7 @@ trait RegistersExceptionHandlers
      *
      * @param  \Throwable  $e
      *
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function sendExceptionToHandler(Throwable $e)
     {

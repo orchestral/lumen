@@ -85,6 +85,6 @@ class LoadEnvironmentVariables
             $output->writeln($error);
         }
 
-        die(1);
+        exit(1);
     }
 }

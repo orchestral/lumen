@@ -25,6 +25,14 @@ class EventServiceProvider extends ServiceProvider
     protected $subscribe = [];
 
     /**
+     * {@inheritdoc}
+     */
+    public function register()
+    {
+        //
+    }
+
+    /**
      * Register the application's event listeners.
      *
      * @return void
@@ -35,10 +43,12 @@ class EventServiceProvider extends ServiceProvider
     }
 
     /**
-     * {@inheritdoc}
+     * Get the events and handlers.
+     *
+     * @return array
      */
-    public function register()
+    public function listens()
     {
-        //
+        return $this->listen;
     }
 }

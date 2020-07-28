@@ -164,7 +164,7 @@ class Application extends Container implements ApplicationContract
      */
     public function version()
     {
-        return 'Lumen (7.1.1) (Laravel Components ^7.0)';
+        return 'Lumen (7.2.1) (Laravel Components ^7.0)';
     }
 
     /**
@@ -201,6 +201,18 @@ class Application extends Container implements ApplicationContract
         }
 
         return $env;
+    }
+
+    /**
+     * Determine if the given service provider is loaded.
+     *
+     * @param  string  $provider
+     *
+     * @return bool
+     */
+    public function providerIsLoaded(string $provider)
+    {
+        return isset($this->loadedProviders[$provider]);
     }
 
     /**
@@ -243,7 +255,7 @@ class Application extends Container implements ApplicationContract
      */
     public function registerDeferredProvider($provider, $service = null)
     {
-        return $this->register($provider);
+        $this->register($provider);
     }
 
     /**
@@ -255,9 +267,9 @@ class Application extends Container implements ApplicationContract
             return;
         }
 
-        \array_walk($this->loadedProviders, function ($p) {
-            $this->bootProvider($p);
-        });
+        foreach ($this->loadedProviders as $provider) {
+            $this->bootProvider($provider);
+        }
 
         // Once the application has booted we will also fire some "booted" callbacks
         // for any listeners that need to do work after this initial booting gets
@@ -270,6 +282,20 @@ class Application extends Container implements ApplicationContract
     }
 
     /**
+     * Boot the given service provider.
+     *
+     * @param  \Illuminate\Support\ServiceProvider  $provider
+     *
+     * @return mixed
+     */
+    protected function bootProvider(ServiceProvider $provider)
+    {
+        if (method_exists($provider, 'boot')) {
+            return $this->call([$provider, 'boot']);
+        }
+    }
+
+    /**
      * Resolve a service provider instance from the class name.
      *
      * @param  string  $provider
@@ -279,20 +305,6 @@ class Application extends Container implements ApplicationContract
     public function resolveProvider($provider)
     {
         return new $provider($this);
-    }
-
-    /**
-     * Boot the given service provider.
-     *
-     * @param  \Illuminate\Support\ServiceProvider  $provider
-     *
-     * @return mixed
-     */
-    protected function bootProvider(ServiceProvider $provider)
-    {
-        if (\method_exists($provider, 'boot')) {
-            return $this->call([$provider, 'boot']);
-        }
     }
 
     /**
@@ -491,21 +503,18 @@ class Application extends Container implements ApplicationContract
     public function withAliases($custom = [])
     {
         $defaults = [
-            'Illuminate\Support\Facades\Auth' => 'Auth',
-            'Illuminate\Support\Facades\Cache' => 'Cache',
-            'Illuminate\Support\Facades\DB' => 'DB',
-            'Illuminate\Support\Facades\Crypt' => 'Crypt',
-            'Illuminate\Support\Facades\Event' => 'Event',
-            'Illuminate\Support\Facades\Gate' => 'Gate',
-            'Illuminate\Support\Facades\Hash' => 'Hash',
-            'Illuminate\Support\Facades\Log' => 'Log',
-            'Illuminate\Support\Facades\Queue' => 'Queue',
-            'Illuminate\Support\Facades\Route' => 'Route',
-            'Illuminate\Support\Facades\Schema' => 'Schema',
-            'Illuminate\Support\Facades\Session' => 'Session',
-            'Illuminate\Support\Facades\Storage' => 'Storage',
-            'Illuminate\Support\Facades\URL' => 'URL',
-            'Illuminate\Support\Facades\Validator' => 'Validator',
+            \Illuminate\Support\Facades\Auth::class => 'Auth',
+            \Illuminate\Support\Facades\Cache::class => 'Cache',
+            \Illuminate\Support\Facades\DB::class => 'DB',
+            \Illuminate\Support\Facades\Event::class => 'Event',
+            \Illuminate\Support\Facades\Gate::class => 'Gate',
+            \Illuminate\Support\Facades\Log::class => 'Log',
+            \Illuminate\Support\Facades\Queue::class => 'Queue',
+            \Illuminate\Support\Facades\Route::class => 'Route',
+            \Illuminate\Support\Facades\Schema::class => 'Schema',
+            \Illuminate\Support\Facades\Storage::class => 'Storage',
+            \Illuminate\Support\Facades\URL::class => 'URL',
+            \Illuminate\Support\Facades\Validator::class => 'Validator',
         ];
 
         if (! static::$aliasesRegistered) {
